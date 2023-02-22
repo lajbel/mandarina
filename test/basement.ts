@@ -1,6 +1,10 @@
 import mandarina from "mandarinavn";
 
-const m = mandarina();
+// We create the Mandarina game context,
+// there's the init game options
+const m = mandarina({
+	width: 640,
+});
 
 // We define characters
 m.character("dude", "Dude");

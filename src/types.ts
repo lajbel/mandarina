@@ -1,6 +1,6 @@
-import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2 } from "kaboom";
+import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt } from "kaboom";
 
-declare function mandarina(): MandarinaCtx;
+declare function mandarina(opt?: MandarinaOpt): MandarinaCtx;
 
 // #region Mandarina Plugin
 
@@ -34,6 +34,11 @@ export interface MandarinaPlugin {
 export interface MandarinaCtx extends MandarinaPlugin {
     /** Kaboom's context. */
     k: KaboomCtx;
+}
+
+export interface MandarinaOpt extends KaboomOpt {
+    /** Default textbox options. */
+    textbox?: TextboxOpt,
 }
 
 // #endregion

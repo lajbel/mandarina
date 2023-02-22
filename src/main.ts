@@ -1,5 +1,5 @@
 import kaboom, { KaboomCtx } from "kaboom";
-import { MandarinaCtx, MandarinaPlugin } from "./types";
+import { MandarinaCtx, MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
 
@@ -24,8 +24,9 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
 }
 
 // The Mandaarina function creates a Kaboom game and add the plugin.
-export default function mandarina(): MandarinaCtx {
+export default function mandarina(opt: MandarinaOpt): MandarinaCtx {
     const k = kaboom({
+        ...opt,
         plugins: [ mandarinaPlugin ]
     });
 
