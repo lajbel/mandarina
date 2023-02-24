@@ -2,8 +2,9 @@ import kaboom, { KaboomCtx } from "kaboom";
 import { MandarinaCtx, MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
-import { say } from "./textbox";
 import { addChapter } from "./chapter";
+
+import { say } from "./actions/narration";
 
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
     // Exported to Kaboom's Context
@@ -40,7 +41,7 @@ export default function mandarina(opt: MandarinaOpt): MandarinaCtx {
         ...mandarinaPlugin(k),
     };
 
-    startNovel(mandarinaCtx);
+    startNovel(mandarinaCtx, opt);
 
     return mandarinaCtx;
 }

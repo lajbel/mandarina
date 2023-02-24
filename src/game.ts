@@ -1,12 +1,12 @@
-import { MandarinaCtx } from "./types";
+import { MandarinaCtx, MandarinaOpt } from "./types";
 import { addTextbox } from "./textbox";
 import { processAction } from "./action";
 
-export function startNovel(m: MandarinaCtx) {
+export function startNovel(m: MandarinaCtx, opt: MandarinaOpt) {
     const k = m.k;
 
     return k.scene("mandarina_novel", () => {
-        m.textbox = addTextbox(m, {});
+        m.textbox = addTextbox(m, opt.textbox ?? {});
 
         // Process the first game action.
         processAction(m);
