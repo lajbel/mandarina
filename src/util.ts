@@ -7,7 +7,7 @@ export function array2Vec2(k: KaboomCtx, arr: number[]) {
     return k.vec2(arr[0], arr[1]);
 }
 
-// Used to translate the selected texts align to the 
+// Used to translate the selected texts align to the
 // anchor.
 
 // left -> topleft

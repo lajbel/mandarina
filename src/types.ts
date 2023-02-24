@@ -1,4 +1,4 @@
-import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt } from "kaboom";
+import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt, OpacityComp, AnchorComp } from "kaboom";
 
 declare function mandarina(opt?: MandarinaOpt): MandarinaCtx;
 
@@ -6,6 +6,9 @@ declare function mandarina(opt?: MandarinaOpt): MandarinaCtx;
 
 export interface MandarinaPlugin {
     k: KaboomCtx;
+
+    /** The textbox object, if there's one */
+    textbox?: Textbox;
 
     /** Internal game data. */
     data: {
@@ -16,12 +19,13 @@ export interface MandarinaPlugin {
         /** Current data */
         current: {
             /** Current chapter. */
-            chapter: number;
+            chapter: string;
             /** Current action. */
             action: number;
         }
     };
 
+    // #region Configuration and setup
     /**
      * Add a character to the game.
      * @param id Character's id, will be used to refer the character in all game code.
@@ -29,6 +33,28 @@ export interface MandarinaPlugin {
      * @param opt Character's extra options.
      */
     character(id: string, name: string, opt?: CharacterDataOpt): void;
+
+    /**
+     * Add a chapter to the game.
+     * @param id Chapter's id, will be used to refer the chapter in all game code.
+     * @param actions Chapter's actions.
+     */
+    chapter(id: string, actions: () => Action[]): void;
+    // #endregion
+
+    // #region Actions
+    /**
+     * Writes a text in the textbox as a character.
+     * @param characterId Character's id.
+     * @param text Text to write.
+    */
+    say(characterId: string, text: string): Action;
+    /**
+     * Writes a text in the textbox.
+     * @param text Text to write.
+    */
+    say(text: string): Action;
+    // #endregion
 }
 
 export interface MandarinaCtx extends MandarinaPlugin {
@@ -51,7 +77,7 @@ export interface Action {
     /** If action won't wait for an user interaction to continue to the next one. */
     autoskip?: boolean;
     /** Action's execution function. */
-    exec: (textbox: Textbox) => void;
+    exec: () => void | Promise<void>;
 }
 
 // #endregion
@@ -78,21 +104,24 @@ export interface CharacterDataOpt {
 
 // #region Textbox
 
-type Textbox = GameObj<PosComp | TextboxComp>;
+export type Textbox = GameObj<PosComp | AnchorComp | OpacityComp | TextboxComp>;
 
 export interface TextboxComp extends Comp {
     /** If the textbox is in skip. */
     skipped: boolean;
     /** Current character of the writing text. */
     curChar: number;
-    
+
+    /** Setups some internal textbox variables. */
+    setup(): void;
+
     /** The textbox's text. */
     text?: GameObj<TextComp>;
     /** The textbox's name. */
     name?: GameObj<TextComp>;
 
     /** Writes a text in the textbox. */
-    write(this: Textbox, text: string): void;
+    write(this: Textbox, text: string): Promise<void>;
     /** Clears the textbox. */
     clear(this: Textbox): void;
     /** Skips the current text. */
@@ -101,6 +130,9 @@ export interface TextboxComp extends Comp {
     show(this: Textbox): void;
     /** Hides the textbox. */
     hide(this: Textbox): void;
+
+    /** Change the namebox's text */
+    changeName(this: Textbox, text: string): void;
 }
 
 export interface TextboxOpt {

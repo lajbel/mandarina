@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-empty-function */
 // The textbox object.
-import type { GameObj, KaboomCtx, SpriteData } from "kaboom";
-import type { MandarinaCtx, TextboxComp, TextboxOpt } from "./types";
-import { alignToAnchor } from "./util";
+import type { GameObj, KaboomCtx } from "kaboom";
+import type { MandarinaCtx, MandarinaPlugin, Textbox, TextboxComp, TextboxOpt } from "./types";
+import { createAction } from "./action";
 
 function textboxComp(k: KaboomCtx): TextboxComp {
     let textbox: GameObj;
@@ -16,11 +14,11 @@ function textboxComp(k: KaboomCtx): TextboxComp {
         skipped: false,
         curChar: 0,
 
-        add() {
+        setup() {
             textbox = this.text;
             namebox = this.name;
         },
-        
+
         write(text) {
             // TODO: Wait some miliseconds when , and .
             return new Promise<void>((resolve) => {
@@ -31,17 +29,17 @@ function textboxComp(k: KaboomCtx): TextboxComp {
                         this.skipped = false;
                         textbox.text = text;
                         this.curChar = 0;
-            
+
                         resolve();
                         return writing.cancel();
                     }
-            
+
                     textbox.text += text[this.curChar];
                     this.curChar++;
-            
+
                     if (this.curChar == text.length) {
                         this.curChar = 0;
-            
+
                         resolve();
                         return writing.cancel();
                     }
@@ -58,14 +56,20 @@ function textboxComp(k: KaboomCtx): TextboxComp {
         },
 
         show() {
+            this.opacity = 1;
         },
 
         hide() {
+            this.opacity = 0;
         },
+
+        changeName(text) {
+            namebox.text = text;
+        }
     };
 }
 
-export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): GameObj<TextboxComp> {
+export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     const k = m.k;
 
     const fOpt = {
@@ -83,13 +87,12 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): GameObj<TextboxCo
     // TODO: Temporary, because is imposible get the sprite's width and height right now.
     const textboxWidth = fOpt.sprite ? fOpt.width : fOpt.width;
     const textboxHeight = fOpt.sprite ? fOpt.height : fOpt.height;
-    
-    k.debug.log(textboxHeight);
-    
+
     // The textbox parent object.
-    const textbox = k.add([
+    const textbox: Textbox = k.add([
         k.pos(k.center().x, k.height()),
         k.anchor("bot"),
+        k.opacity(1),
 
         textboxComp(k),
     ]);
@@ -111,5 +114,42 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): GameObj<TextboxCo
         k.color(k.Color.fromHex(fOpt.textColor)),
     ]);
 
+    // The textbox's name.
+    textbox.name = textbox.add([
+        k.pos(-textboxWidth / 2, -textboxHeight - 20),
+        k.z(20),
+        k.text(""),
+        k.color(k.Color.fromHex(fOpt.textColor)),
+    ]);
+
+    // For now, this is the only way to get setup the
+    // textbox and namebox variables in the component.
+    textbox.setup();
+
     return textbox;
+}
+
+// #region Actions
+
+export function say(this: MandarinaPlugin, ...args: string[]) {
+    // If there's two args, that means there's a character
+    // if not, only write the first one as the text.
+    return createAction({
+        id: "say",
+        exec: async () => {
+            if(!this.textbox) throw new Error("Textbox not found.");
+
+            if(args.length > 1) {
+                const ch = this.data.characters.get(args[0]);
+                if(!ch) throw new Error(`Character with the ${args[0]} id's not found.`);
+
+                this.textbox.changeName(args[0]);
+                await this.textbox.write(args[1]);
+            }
+            else {
+                this.textbox.changeName("");
+                await this.textbox.write(args[0]);
+            }
+        }
+    });
 }

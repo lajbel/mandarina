@@ -2,6 +2,8 @@ import kaboom, { KaboomCtx } from "kaboom";
 import { MandarinaCtx, MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
+import { say } from "./textbox";
+import { addChapter } from "./chapter";
 
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
     // Exported to Kaboom's Context
@@ -13,13 +15,17 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
             characters: new Map(),
 
             current: {
-                chapter: 0,
+                chapter: "start",
                 action: 0,
             }
         },
 
         /** Configuration and setup */
         character: addCharacter,
+        chapter: addChapter,
+
+        /** Actions */
+        say,
     };
 }
 
