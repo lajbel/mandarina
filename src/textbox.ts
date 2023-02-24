@@ -1,7 +1,6 @@
 // The textbox object.
 import type { GameObj, KaboomCtx } from "kaboom";
-import type { MandarinaCtx, MandarinaPlugin, Textbox, TextboxComp, TextboxOpt } from "./types";
-import { createAction } from "./action";
+import type { MandarinaCtx, Textbox, TextboxComp, TextboxOpt } from "./types";
 
 function textboxComp(k: KaboomCtx): TextboxComp {
     let textbox: GameObj;
