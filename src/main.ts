@@ -2,9 +2,10 @@ import kaboom, { KaboomCtx } from "kaboom";
 import { MandarinaCtx, MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
-import { addChapter } from "./chapter";
+import { addChapter } from "./chapters";
 
 import { say } from "./actions/narration";
+import { showCharacter, hideCharacter } from "./actions/character";
 
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
     // Exported to Kaboom's Context
@@ -18,7 +19,7 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
             current: {
                 chapter: "start",
                 action: 0,
-            }
+            },
         },
 
         /** Configuration and setup */
@@ -27,6 +28,8 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
 
         /** Actions */
         say,
+        show: showCharacter,
+        hide: hideCharacter,
     };
 }
 
@@ -34,7 +37,7 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
 export default function mandarina(opt: MandarinaOpt): MandarinaCtx {
     const k = kaboom({
         ...opt,
-        plugins: [ mandarinaPlugin ]
+        plugins: [ mandarinaPlugin ],
     });
 
     const mandarinaCtx: MandarinaCtx = {

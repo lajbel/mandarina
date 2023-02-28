@@ -1,6 +1,6 @@
 import { MandarinaCtx, MandarinaOpt } from "./types";
 import { addTextbox } from "./textbox";
-import { processAction } from "./action";
+import { processAction } from "./chapters";
 
 export function startNovel(m: MandarinaCtx, opt: MandarinaOpt) {
     const k = m.k;

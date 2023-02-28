@@ -39,6 +39,14 @@
             {
                 "skipBlankLines": false
             }
+        ],
+        "comma-dangle": [
+            "error",
+            "always-multiline"
+        ],
+        "eol-last": [
+            "error",
+            "always"
         ]
     },
     "ignorePatterns": [

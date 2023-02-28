@@ -1,5 +1,5 @@
 import type { MandarinaPlugin } from "../types";
-import { createAction } from "../action";
+import { createAction } from "../chapters";
 
 export function say(this: MandarinaPlugin, ...args: string[]) {
     // If there's two args, that means there's a character

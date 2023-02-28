@@ -1,6 +1,12 @@
-// Actions are the core for the chapters in Mandarina
 import type { Action, MandarinaCtx } from "./types";
 
+// Chapters are how Mandarina novels are organized.
+export function addChapter(this: MandarinaCtx, name: string, actions: () => Action[]) {
+    this.data.chapters.set(name, actions());
+}
+
+// In a chapter, there are actions, which are the things that happen in the story.
+// Actions are functions that are executed in order.
 export function createAction(opt: Action): Action {
     return {
         id: opt.id,
@@ -9,6 +15,7 @@ export function createAction(opt: Action): Action {
     };
 }
 
+// Process actions info in game
 export async function processAction(m: MandarinaCtx) {
     const chapter = m.data.chapters.get(m.data.current.chapter);
     if(!chapter) return;
@@ -21,3 +28,4 @@ export async function processAction(m: MandarinaCtx) {
     m.data.current.action++;
     // if(action.autoskip) processAction(m);
 }
+

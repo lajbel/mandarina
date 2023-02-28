@@ -4,7 +4,7 @@ export function addCharacter(
     this: MandarinaPlugin,
     id: string,
     name: string,
-    opt: CharacterDataOpt
+    opt: CharacterDataOpt,
 ): void {
     if (this.data.characters.has(id))
         throw new Error(`Character with id "${id}" already exists.`);
@@ -14,9 +14,4 @@ export function addCharacter(
         name,
         opt,
     });
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function showCharacter(_characterId: string) {
-    // TODO
 }

@@ -19,11 +19,10 @@ function textboxComp(k: KaboomCtx): TextboxComp {
         },
 
         write(text) {
-            // TODO: Wait some miliseconds when , and .
             return new Promise<void>((resolve) => {
                 textbox.text = "";
 
-                const writing = k.loop(0.05, () => {
+                const writing = k.loop(0.05, async () => {
                     if (this.skipped) {
                         this.skipped = false;
                         textbox.text = text;
@@ -34,6 +33,9 @@ function textboxComp(k: KaboomCtx): TextboxComp {
                     }
 
                     textbox.text += text[this.curChar];
+
+                    if(text[this.curChar] == ",") await k.wait(0.1);
+
                     this.curChar++;
 
                     if (this.curChar == text.length) {
@@ -64,7 +66,7 @@ function textboxComp(k: KaboomCtx): TextboxComp {
 
         changeName(text) {
             namebox.text = text;
-        }
+        },
     };
 }
 

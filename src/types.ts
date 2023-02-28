@@ -54,6 +54,18 @@ export interface MandarinaPlugin {
      * @param text Text to write.
     */
     say(text: string): Action;
+    /**
+     * Shows a character in the screen.
+     * @param characterId Character's id.
+     * @param expression Character's expression.
+     * @param align Character's alignment.
+     */
+    show(characterId: string, expression: string, align: string): Action;
+    /**
+     * Hides a character in the screen.
+     * @param characterId Character's id.
+    */
+    hide(characterId: string): Action;
     // #endregion
 }
 
