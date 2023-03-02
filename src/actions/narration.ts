@@ -20,6 +20,6 @@ export function say(this: MandarinaPlugin, ...args: string[]) {
                 this.textbox.changeName("");
                 await this.textbox.write(args[0]);
             }
-        }
+        },
     });
 }

@@ -1,6 +1,5 @@
 // This file builds the project
 import esbuild from "esbuild";
-import ts from "typescript";
 import fs from "fs";
 
 const distDir = "dist";
@@ -45,7 +44,7 @@ formats.forEach((fmt) => {
 function buildTypes() {
     let dts = fs.readFileSync(`${srcDir}/types.ts`, "utf-8");
 
-    fs.writeFileSync(`${distDir}/mandarina.d.ts`, dts,);
+    fs.writeFileSync(`${distDir}/mandarina.d.ts`, dts);
 }
 
 buildTypes();
