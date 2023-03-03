@@ -22,25 +22,37 @@ export function showCharacter(
 
             // k.debug.log(`Showing character "${characterId}" with expression "${expression}" aligned to "${align}".`);
 
+            var height = expressionSprite.height ?? character.opt?.height ?? k.height();
             const alignments = {
                 "left": [
-                    k.pos(0, k.height()),
-                    k.anchor("botleft"),
+                    k.pos(k.width() * 0.25, height),
                 ],
                 "center": [
-                    k.pos(k.center().x, k.height()),
-                    k.anchor("bot"),
+                    k.pos(k.center().x, height),
                 ],
                 "right": [
-                    k.pos(k.width(), k.height()),
-                    k.anchor("botright"),
+                    k.pos(k.width() * 0.75, height),
                 ],
             };
 
-            k.add([
+            // Create character
+            var charobj = k.get("character_" + characterId, { recursive: true })[0];
+            var sprite = expressionSprite.sprite ?? character.opt?.sprite;
+            var anim = expressionSprite.anim ?? (character.opt?.anim ?? undefined);
+
+            if (charobj) {
+                if (sprite) charobj.use(k.sprite(sprite, {
+                    anim: anim,
+                    frame: expressionSprite.frame ?? 0
+                }))
+            } else k.add([
                 ...alignments[align],
                 k.z(layers.characters),
-                k.sprite(expressionSprite),
+                k.anchor("bot"),
+                sprite ? k.sprite(sprite, {
+                    anim: anim,
+                    frame: expressionSprite.frame ?? 0
+                }) : "",
                 k.opacity(1),
                 "character_" + characterId,
             ]);
@@ -58,6 +70,7 @@ export function hideCharacter(
 
     return createAction({
         id: "hide_character",
+        autoskip: true,
         exec: () => {
             k.get("character_" + characterId, { recursive: true })[0].destroy();
         },

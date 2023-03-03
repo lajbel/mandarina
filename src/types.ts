@@ -1,4 +1,4 @@
-import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt, OpacityComp, AnchorComp } from "kaboom";
+import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt, OpacityComp, AnchorComp, RectCompOpt, SpriteCompOpt, TextCompOpt } from "kaboom";
 
 declare function mandarina(opt?: MandarinaOpt): MandarinaCtx;
 
@@ -23,8 +23,9 @@ export interface MandarinaPlugin {
             /** Current action. */
             action: number;
 
-            runningAction: boolean;
-        }
+            running: boolean;
+        },
+        opt: MandarinaOpt
     };
 
     // #region Configuration and setup
@@ -78,11 +79,11 @@ export interface MandarinaCtx extends MandarinaPlugin {
 
 export interface MandarinaOpt extends KaboomOpt {
     /** Default textbox options. */
-    textbox?: TextboxOpt,
+    textbox?: TextboxOpt;
     /** Default text writes velocity. Default 0.05. */
-    writeVel?: number,
+    writeVel?: number;
     /** Default text writes waiting before a comma. Default 0.5. */
-    writeCommaWait?: number,
+    writeCommaWait?: number;
 }
 
 // #endregion
@@ -114,10 +115,27 @@ export interface CharacterData {
 }
 
 export interface CharacterDataOpt {
+    /** Default sprite. */
+    sprite?: string;
+    /** Default animation. */
+    anim?: string;
     /** Character's set of expressions. */
-    expressions?: Record<string, string>;
+    expressions?: Record<string, ExpressionOpt>;
+    /** Character display height */
+    height?: number;
     /** Character's name colour. */
     color?: string;
+}
+
+export interface ExpressionOpt {
+    /** Sprite for the expression */
+    sprite?: string;
+    /** Animation of the sprite */
+    anim?: string;
+    /** Character display height */
+    height?: number;
+    /** Frame of the animation */
+    frame?: number;
 }
 
 // #endregion
@@ -162,6 +180,12 @@ export interface TextboxOpt {
     /** Textbox's position. */
     pos?: Vec2;
 
+    /** Text wait. */
+    wait?: number;
+
+    /** Text wait. */
+    waitCharacters?: Array<WaitOpt>;
+
     /** Textbox's width. */
     width?: number;
 
@@ -179,6 +203,23 @@ export interface TextboxOpt {
 
     /** Textbox's text color. */
     textColor?: string;
+
+    /** Textbox's text margin. */
+    textMargin?: number;
+
+    /** Textbox's background color. */
+    backgroundColor?: string;
+
+    /** Rect options, for advanced customization. */
+    rectOpt?: RectCompOpt;
+    spriteOpt?: SpriteCompOpt;
+    textOpt?: TextCompOpt;
+    nameOpt?: TextCompOpt;
+}
+
+export interface WaitOpt {
+    character: string;
+    time?: number;
 }
 
 // #endregion

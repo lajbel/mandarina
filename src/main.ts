@@ -1,4 +1,4 @@
-import kaboom, { KaboomCtx } from "kaboom";
+import kaboom, { KaboomCtx, Debug } from "kaboom";
 import { MandarinaCtx, MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
@@ -7,7 +7,7 @@ import { addChapter } from "./chapters";
 import { say } from "./actions/narration";
 import { showCharacter, hideCharacter } from "./actions/character";
 
-export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
+export function mandarinaPlugin(k: KaboomCtx, opt:MandarinaOpt): MandarinaPlugin {
     // Exported to Kaboom's Context
     return {
         k: k,
@@ -20,8 +20,9 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
                 chapter: "start",
                 action: 0,
 
-                runningAction: false,
+                running: false,
             },
+            opt
         },
 
         /** Configuration and setup */
@@ -37,13 +38,10 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
 
 // The Mandaarina function creates a Kaboom game and add the plugin.
 export default function mandarina(opt: MandarinaOpt): MandarinaCtx {
-    const k = kaboom({
-        ...opt,
-        plugins: [ mandarinaPlugin ],
-    });
+    const k = kaboom(opt);
 
     const mandarinaCtx: MandarinaCtx = {
-        ...mandarinaPlugin(k),
+        ...mandarinaPlugin(k, opt),
     };
 
     startNovel(mandarinaCtx, opt);

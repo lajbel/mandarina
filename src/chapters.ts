@@ -26,14 +26,14 @@ export async function processAction(m: MandarinaCtx) {
     // If there's not action, won't do anything.
     if(!action) return;
 
-    if(m.data.current.runningAction && action.skip) return action.skip();
+    if(m.data.current.running && action.skip) return action.skip();
 
-    m.data.current.runningAction = true;
+    m.data.current.running = true;
 
     // Process action
     await action.exec();
 
-    m.data.current.runningAction = false;
+    m.data.current.running = false;
 
     m.data.current.action++;
     if(action.autoskip) processAction(m);
