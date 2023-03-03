@@ -29,6 +29,9 @@ export interface MandarinaPlugin {
     };
 
     // #region Configuration and setup
+    loadSprite: KaboomCtx["loadSprite"];
+    loadSound: KaboomCtx["loadSound"];
+
     /**
      * Add a character to the game.
      * @param id Character's id, will be used to refer the character in all game code.
