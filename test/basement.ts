@@ -5,7 +5,7 @@ import mandarina from "mandarinavn";
 const m = mandarina({});
 
 // Load sprites with Kaboom (temporary).
-m.k.loadSprite("testguy", "sprites/testguy.png");
+m.loadSprite("testguy", "sprites/testguy.png");
 
 // We define characters
 m.character("t", "Test Guy!", {

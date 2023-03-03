@@ -84,7 +84,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
 
     const fOpt = {
         width: opt?.width ?? k.width() - k.width()/16,
-        height: opt?.height ?? 300,
+        height: opt?.height ?? 200,
         pos: opt?.pos ?? k.vec2(0),
         sprite: opt?.sprite ?? undefined,
         textAlign: opt?.textAlign ?? "left",

@@ -25,6 +25,9 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
         },
 
         /** Configuration and setup */
+        loadSprite: k.loadSprite,
+        loadSound: k.loadSound,
+
         character: addCharacter,
         chapter: addChapter,
 
