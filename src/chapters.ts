@@ -12,6 +12,7 @@ export function createAction(opt: Action): Action {
         id: opt.id,
         autoskip: opt.autoskip,
         exec: opt.exec,
+        skip: opt.skip,
     };
 }
 
@@ -22,8 +23,17 @@ export async function processAction(m: MandarinaCtx) {
 
     const action = chapter[m.data.current.action];
 
+    // If there's not action, won't do anything.
+    if(!action) return;
+
+    if(m.data.current.runningAction && action.skip) return action.skip();
+
+    m.data.current.runningAction = true;
+
     // Process action
     await action.exec();
+
+    m.data.current.runningAction = false;
 
     m.data.current.action++;
     // if(action.autoskip) processAction(m);

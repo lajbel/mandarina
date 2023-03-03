@@ -22,6 +22,8 @@ export interface MandarinaPlugin {
             chapter: string;
             /** Current action. */
             action: number;
+
+            runningAction: boolean;
         }
     };
 
@@ -90,6 +92,8 @@ export interface Action {
     autoskip?: boolean;
     /** Action's execution function. */
     exec: () => void | Promise<void>;
+    /** Action's skipped function. */
+    skip?: () => void | Promise<void>;
 }
 
 // #endregion

@@ -19,22 +19,25 @@ function textboxComp(k: KaboomCtx): TextboxComp {
         },
 
         write(text) {
+            // TODO: Make wait time modifiable.
             return new Promise<void>((resolve) => {
                 textbox.text = "";
+                this.curChar = 0;
 
-                const writing = k.loop(0.05, async () => {
+                const write = async () => {
                     if (this.skipped) {
                         this.skipped = false;
                         textbox.text = text;
                         this.curChar = 0;
 
                         resolve();
-                        return writing.cancel();
+                        return;
                     }
 
                     textbox.text += text[this.curChar];
 
-                    if(text[this.curChar] == ",") await k.wait(0.1);
+                    // If character is a comma, wait 0.5 seconds.
+                    if (text[this.curChar] == ",") await k.wait(0.5);
 
                     this.curChar++;
 
@@ -42,9 +45,14 @@ function textboxComp(k: KaboomCtx): TextboxComp {
                         this.curChar = 0;
 
                         resolve();
-                        return writing.cancel();
+                        return;
                     }
-                });
+
+                    await k.wait(0.05);
+                    write();
+                };
+
+                write();
             });
         },
 
@@ -117,8 +125,9 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
 
     // The textbox's name.
     textbox.name = textbox.add([
-        k.pos(-textboxWidth / 2, -textboxHeight - 20),
+        k.pos(-textboxWidth / 2, -textboxHeight),
         k.z(20),
+        k.anchor("botleft"),
         k.text(""),
         k.color(k.Color.fromHex(fOpt.textColor)),
     ]);

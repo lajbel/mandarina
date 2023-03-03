@@ -19,6 +19,8 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
             current: {
                 chapter: "start",
                 action: 0,
+
+                runningAction: false,
             },
         },
 
