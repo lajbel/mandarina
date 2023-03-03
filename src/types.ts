@@ -89,7 +89,7 @@ export interface Action {
     /** If action won't wait for an user interaction to continue to the next one. */
     autoskip?: boolean;
     /** Action's execution function. */
-    exec: (next:Function) => void | Promise<void> | Action;
+    exec: (next:Function) => Promise<boolean> | boolean | void;
 }
 
 // #endregion
@@ -133,7 +133,7 @@ export interface TextboxComp extends Comp {
     name?: GameObj<TextComp>;
 
     /** Writes a text in the textbox. */
-    write(this: Textbox, text: string): Promise<void>;
+    write(this: Textbox, text: string): Promise<boolean>;
     /** Clears the textbox. */
     clear(this: Textbox): void;
     /** Skips the current text. */

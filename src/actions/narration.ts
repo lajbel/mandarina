@@ -14,11 +14,11 @@ export function say(this: MandarinaPlugin, ...args: string[]) {
                 if(!ch) throw new Error(`Character with the ${args[0]} ID was not found.`);
 
                 this.textbox.changeName(args[0]);
-                await this.textbox.write(args[1]);
+                return (await this.textbox.write(args[1]));
             }
             else {
                 this.textbox.changeName("");
-                await this.textbox.write(args[0]);
+                return (await this.textbox.write(args[0]));
             }
         },
     });

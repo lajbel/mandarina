@@ -5,7 +5,7 @@ import type { MandarinaCtx, Textbox, TextboxComp, TextboxOpt } from "./types";
 function textboxComp(k: KaboomCtx): TextboxComp {
     let textbox: GameObj;
     let namebox: GameObj;
-    let writing: EventController;
+    let writing: undefined | EventController;
 
     return {
         id: "mandarina_textbox",
@@ -20,17 +20,21 @@ function textboxComp(k: KaboomCtx): TextboxComp {
         },
 
         write(text) {
-            return new Promise<void>((resolve) => {
-                textbox.text = "";
-
-                writing = k.loop(0.05, async () => {
+            return new Promise<boolean>((resolve) => {
+                if (writing) {
+                    this.skip();
+                    resolve(false);
+                }
+                else writing = k.loop(0.05, async () => {
                     if (this.skipped) {
                         this.skipped = false;
                         textbox.text = text;
                         this.curChar = 0;
 
-                        resolve();
-                        return writing.cancel();
+                        resolve(true);
+                        writing?.cancel();
+                        writing = undefined;
+                        return;
                     }
 
                     textbox.text = text.substring(0, this.curChar);
@@ -41,6 +45,7 @@ function textboxComp(k: KaboomCtx): TextboxComp {
 
                     if (this.curChar == text.length) this.skipped = true;
                 });
+                return true;
             });
         },
 
