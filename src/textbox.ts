@@ -2,7 +2,9 @@
 import type { EventController, GameObj, KaboomCtx } from "kaboom";
 import type { MandarinaCtx, Textbox, TextboxComp, TextboxOpt } from "./types";
 
-function textboxComp(k: KaboomCtx): TextboxComp {
+function textboxComp(m: MandarinaCtx): TextboxComp {
+    const k = m.k;
+
     let textbox: GameObj;
     let namebox: GameObj;
     let writing: undefined | EventController;
@@ -66,7 +68,9 @@ function textboxComp(k: KaboomCtx): TextboxComp {
         },
 
         changeName(text) {
-            namebox.text = text;
+            var character = m.data.characters.get(text);
+            if (!character) throw new Error(`Character with ID "${text}" does not exist.`); 
+            namebox.text = character.name;
         },
     };
 }
@@ -96,7 +100,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
         k.anchor("bot"),
         k.opacity(1),
 
-        textboxComp(k),
+        textboxComp(m),
     ]);
 
     // The textbox's background.

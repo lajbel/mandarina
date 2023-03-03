@@ -11,7 +11,7 @@ export function say(this: MandarinaPlugin, ...args: string[]) {
             
             if(args.length > 1) {
                 const ch = this.data.characters.get(args[0]);
-                if(!ch) throw new Error(`Character with the ${args[0]} ID was not found.`);
+                if(!ch) throw new Error(`Character with ID "${args[0]}" does not exist.`);
 
                 this.textbox.changeName(args[0]);
                 return (await this.textbox.write(args[1]));
