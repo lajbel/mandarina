@@ -10,7 +10,7 @@ m.character("dude", "Dude");
 m.chapter("start", () => [
 	m.say("dude", "Hey!"),
 	m.say("dude", "Welcome to this Mandarina test!"),
-	m.say("dude", "Now this is going to crash. :D"),
+	m.say("dude", "Now, this is going to crash. :D"),
 ]);
 
 // We go to the Mandarina scene

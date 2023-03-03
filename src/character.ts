@@ -7,7 +7,7 @@ export function addCharacter(
     opt: CharacterDataOpt,
 ): void {
     if (this.data.characters.has(id))
-        throw new Error(`Character with id "${id}" already exists.`);
+        throw new Error(`Character with the ID "${id}" already exists.`);
 
     this.data.characters.set(id, {
         id,

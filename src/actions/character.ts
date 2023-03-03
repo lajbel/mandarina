@@ -14,7 +14,7 @@ export function showCharacter(
         id: "show_character",
         exec: () => {
             const character = this.data.characters.get(characterId);
-            if (!character) throw new Error(`Character with id "${characterId}" does not exist.`);
+            if (!character) throw new Error(`Character with ID "${characterId}" does not exist.`);
 
             const expressionSprite = character.opt?.expressions?.[expression];
             if (!expressionSprite) throw Error(`Expression "${expression}" does not exist.`);

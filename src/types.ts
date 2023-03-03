@@ -89,7 +89,7 @@ export interface Action {
     /** If action won't wait for an user interaction to continue to the next one. */
     autoskip?: boolean;
     /** Action's execution function. */
-    exec: () => void | Promise<void>;
+    exec: (next:Function) => void | Promise<void> | Action;
 }
 
 // #endregion

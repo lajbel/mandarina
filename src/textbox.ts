@@ -1,10 +1,11 @@
 // The textbox object.
-import type { GameObj, KaboomCtx } from "kaboom";
+import type { EventController, GameObj, KaboomCtx } from "kaboom";
 import type { MandarinaCtx, Textbox, TextboxComp, TextboxOpt } from "./types";
 
 function textboxComp(k: KaboomCtx): TextboxComp {
     let textbox: GameObj;
     let namebox: GameObj;
+    let writing: EventController;
 
     return {
         id: "mandarina_textbox",
@@ -22,7 +23,7 @@ function textboxComp(k: KaboomCtx): TextboxComp {
             return new Promise<void>((resolve) => {
                 textbox.text = "";
 
-                const writing = k.loop(0.05, async () => {
+                writing = k.loop(0.05, async () => {
                     if (this.skipped) {
                         this.skipped = false;
                         textbox.text = text;
@@ -32,18 +33,13 @@ function textboxComp(k: KaboomCtx): TextboxComp {
                         return writing.cancel();
                     }
 
-                    textbox.text += text[this.curChar];
+                    textbox.text = text.substring(0, this.curChar);
 
                     if(text[this.curChar] == ",") await k.wait(0.1);
 
                     this.curChar++;
 
-                    if (this.curChar == text.length) {
-                        this.curChar = 0;
-
-                        resolve();
-                        return writing.cancel();
-                    }
+                    if (this.curChar == text.length) this.skipped = true;
                 });
             });
         },
@@ -53,7 +49,7 @@ function textboxComp(k: KaboomCtx): TextboxComp {
         },
 
         skip() {
-            if (!this.skipped) this.skipped = true;
+            this.skipped = true;
         },
 
         show() {
@@ -117,9 +113,10 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
 
     // The textbox's name.
     textbox.name = textbox.add([
-        k.pos(-textboxWidth / 2, -textboxHeight - 20),
+        k.pos(-textboxWidth / 2, -textboxHeight),
         k.z(20),
         k.text(""),
+        k.anchor("botleft"),
         k.color(k.Color.fromHex(fOpt.textColor)),
     ]);
 

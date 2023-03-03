@@ -17,9 +17,7 @@ export function startNovel(m: MandarinaCtx, opt: MandarinaOpt) {
                 k.isKeyPressed("space") ||
                 k.isKeyPressed("right") ||
                 k.isMousePressed()
-            ) {
-                processAction(m);
-            }
+            ) processAction(m);
         });
 
         k.onKeyDown("up", () => {
