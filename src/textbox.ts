@@ -20,7 +20,7 @@ function textboxComp(m: MandarinaCtx, opt?: TextboxOpt): TextboxComp {
             namebox = this.name;
         },
 
-        write(text) {
+        write(text, char) {
             // DONE: Make wait time modifiable.
             return new Promise<void>((resolve) => {
                 this.curChar = 0;
@@ -38,16 +38,19 @@ function textboxComp(m: MandarinaCtx, opt?: TextboxOpt): TextboxComp {
                     // If character is considered special, wait for the wait time.
                     var charSkip = 1;
                     var time = opt?.wait ?? 0.05;
+                    var playSound = char?.opt?.sound ?? opt?.progressSound;
                     await opt?.waitCharacters?.forEach(async v => {
                         if (text.substring(this.curChar, this.curChar + v.character.length) == v.character) {
                             charSkip = v.character.length;
                             time = v.time ?? opt?.wait ?? 0.05;
+                            playSound = v.sound;
                             return false;
                         }
                     });
                     this.curChar += charSkip;
 
                     textbox.text = text.substring(0, this.curChar);
+                    if (playSound) k.play(playSound);
 
                     if (this.curChar >= text.length) {
                         this.curChar = 0;
@@ -90,9 +93,9 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     const k = m.k;
 
     const fOpt = {
-        width: opt?.width ?? k.width() - k.width()/16,
+        width: opt?.width ?? k.width() - 64,
         height: opt?.height ?? 200,
-        pos: opt?.pos ?? k.vec2(0),
+        pos: opt?.pos ?? k.vec2(k.center().x, k.height() - 32),
         wait: opt?.wait ?? 0.05,
         waitCharacters: opt?.waitCharacters,
         sprite: opt?.sprite ?? undefined,
@@ -105,7 +108,8 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
         rectOpt: opt?.rectOpt ?? undefined,
         spriteOpt: opt?.spriteOpt ?? undefined,
         textOpt: opt?.textOpt ?? undefined,
-        nameOpt: opt?.nameOpt ?? undefined
+        nameOpt: opt?.nameOpt ?? undefined,
+        progressSound: opt?.progressSound ?? undefined
     };
 
     // Get the textbox's width and height if is sprite, if not, use the opt values.
@@ -117,7 +121,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
 
     // The textbox parent object.
     const textbox: Textbox = k.add([
-        k.pos(k.center().x, k.height()),
+        k.pos(fOpt.pos),
         k.z(layers.textbox),
         k.anchor("bot"),
         k.opacity(1),

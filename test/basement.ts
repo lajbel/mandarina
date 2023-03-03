@@ -4,23 +4,40 @@ import mandarina from "mandarinavn";
 // there's the init game options
 const m = mandarina({
 	textbox: {
+		progressSound: "tick",
 		waitCharacters: [
 			{
 				character: ",",
-				time: 0.25
+				time: 0.25,
+				sound: "punc"
 			},
 			{
 				character: ".",
-				time: 0.5
+				time: 0.5,
+				sound: "punc"
 			},
 			{
-				character: "Mandarina"
+				character: "!",
+				time: 0.5,
+				sound: "punc"
+			},
+			{
+				character: "?",
+				time: 0.5,
+				sound: "punc"
+			},
+			{
+				character: " ",
+				time: 0.01
 			}
 		]
 	}
 });
 
 // Load sprites with Kaboom (temporary).
+m.k.loadSound("tick", "sounds/tick.mp3");
+m.k.loadSound("gap", "sounds/gap.mp3");
+m.k.loadSound("punc", "sounds/punc.mp3");
 m.k.loadSprite("testguy", "sprites/testguy.png");
 m.k.loadSprite("mspa", "sprites/mspa.png", {
 	sliceX: 4,
@@ -28,12 +45,13 @@ m.k.loadSprite("mspa", "sprites/mspa.png", {
 });
 
 // We define characters
-m.character("t", "Test Guy!", {
+m.character("t", "Test Guy", {
 	sprite: "testguy",
-	height: m.k.height() - 200,
+	height: m.k.height(),
 	expressions: {
 		"normal": {}
-	}
+	},
+	sound: "gap"
 });
 m.character("mspa", "MSPA Reader", {
 	sprite: "mspa",

@@ -45,7 +45,8 @@ export function showCharacter(
                     anim: anim,
                     frame: expressionSprite.frame ?? 0
                 }))
-            } else k.add([
+            } else {
+                charobj = k.add([
                 ...alignments[align],
                 k.z(layers.characters),
                 k.anchor("bot"),
@@ -53,9 +54,16 @@ export function showCharacter(
                     anim: anim,
                     frame: expressionSprite.frame ?? 0
                 }) : "",
-                k.opacity(1),
+                k.opacity(0),
                 "character_" + characterId,
-            ]);
+                ]);
+                k.tween(0, 1, 0.5, (x=>charobj.opacity=x), k.easings.easeInQuad)
+            }
+            var posy = charobj.pos.y;
+            k.tween(posy, posy + 20, 0.1, (x=>charobj.pos.y=x), k.easings.easeInQuad)
+            .then(() => 
+                k.tween(posy + 20, posy, 0.1, (x=>charobj.pos.y=x), k.easings.easeOutQuad)
+            );
         },
     });
 
@@ -72,7 +80,9 @@ export function hideCharacter(
         id: "hide_character",
         autoskip: true,
         exec: () => {
-            k.get("character_" + characterId, { recursive: true })[0].destroy();
+            var charobj = k.get("character_" + characterId, { recursive: true })[0];
+            k.tween(1, 0, 0.5, (x=>charobj.opacity=x), k.easings.easeInQuad)
+            .then(() => charobj.destroy());
         },
     });
 }

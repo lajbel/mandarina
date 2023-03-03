@@ -128,6 +128,8 @@ export interface CharacterDataOpt {
     height?: number;
     /** Character's name colour. */
     color?: string;
+    /** Character's unique voice. Can be overwritten by text sounds. */
+    sound?: string | undefined;
 }
 
 export interface ExpressionOpt {
@@ -162,7 +164,7 @@ export interface TextboxComp extends Comp {
     name?: GameObj<TextComp>;
 
     /** Writes a text in the textbox. */
-    write(this: Textbox, text: string): Promise<void>;
+    write(this: Textbox, text: string, char?: CharacterData): Promise<void>;
     /** Clears the textbox. */
     clear(this: Textbox): void;
     /** Skips the current text. */
@@ -215,14 +217,20 @@ export interface TextboxOpt {
 
     /** Rect options, for advanced customization. */
     rectOpt?: RectCompOpt;
+    /** Sprite options, for advanced customization. */
     spriteOpt?: SpriteCompOpt;
+    /** Text options, for advanced customization. */
     textOpt?: TextCompOpt;
+    /** Text options, for advanced customization. */
     nameOpt?: TextCompOpt;
+
+    progressSound?: string;
 }
 
 export interface WaitOpt {
     character: string;
     time?: number;
+    sound?: string | undefined;
 }
 
 // #endregion
