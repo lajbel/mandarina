@@ -62,7 +62,7 @@ export interface MandarinaPlugin {
      * @param expression Character's expression.
      * @param align Character's alignment.
      */
-    show(characterId: string, expression: string, align: string): Action;
+    show(characterId: string, expression: string, align?: string): Action;
     /**
      * Hides a character in the screen.
      * @param characterId Character's id.
@@ -79,6 +79,10 @@ export interface MandarinaCtx extends MandarinaPlugin {
 export interface MandarinaOpt extends KaboomOpt {
     /** Default textbox options. */
     textbox?: TextboxOpt,
+    /** Default text writes velocity. Default 0.05. */
+    writeVel?: number,
+    /** Default text writes waiting before a comma. Default 0.5. */
+    writeCommaWait?: number,
 }
 
 // #endregion

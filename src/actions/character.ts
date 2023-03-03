@@ -12,12 +12,15 @@ export function showCharacter(
 
     return createAction({
         id: "show_character",
+        autoskip: true,
         exec: () => {
             const character = this.data.characters.get(characterId);
             if (!character) throw new Error(`Character with id "${characterId}" does not exist.`);
 
             const expressionSprite = character.opt?.expressions?.[expression];
             if (!expressionSprite) throw Error(`Expression "${expression}" does not exist.`);
+
+            // k.debug.log(`Showing character "${characterId}" with expression "${expression}" aligned to "${align}".`);
 
             const alignments = {
                 "left": [

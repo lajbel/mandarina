@@ -36,6 +36,6 @@ export async function processAction(m: MandarinaCtx) {
     m.data.current.runningAction = false;
 
     m.data.current.action++;
-    // if(action.autoskip) processAction(m);
+    if(action.autoskip) processAction(m);
 }
 

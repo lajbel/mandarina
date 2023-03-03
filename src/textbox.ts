@@ -1,6 +1,7 @@
 // The textbox object.
 import type { GameObj, KaboomCtx } from "kaboom";
 import type { MandarinaCtx, Textbox, TextboxComp, TextboxOpt } from "./types";
+import { layers } from "./constants";
 
 function textboxComp(k: KaboomCtx): TextboxComp {
     let textbox: GameObj;
@@ -100,6 +101,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     // The textbox parent object.
     const textbox: Textbox = k.add([
         k.pos(k.center().x, k.height()),
+        k.z(layers.textbox),
         k.anchor("bot"),
         k.opacity(1),
 
