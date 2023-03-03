@@ -30,14 +30,14 @@ m.k.loadSprite("mspa", "sprites/mspa.png", {
 // We define characters
 m.character("t", "Test Guy!", {
 	sprite: "testguy",
-	height: m.k.height() - 300,
+	height: m.k.height() - 200,
 	expressions: {
 		"normal": {}
 	}
 });
 m.character("mspa", "MSPA Reader", {
 	sprite: "mspa",
-	height: m.k.height() - 300,
+	height: m.k.height() - 200,
 	expressions: {
 		"happyidle": {
 			frame: 0
