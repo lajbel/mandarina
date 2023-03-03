@@ -3,54 +3,64 @@
 		"they": [
 			"he",
 			"she",
-			"they"
+			"they",
+			"it"
 		],
 		"them": [
 			"him",
 			"her",
-			"them"
+			"them",
+			"it"
 		],
 		"their": [
 			"his",
 			"her",
-			"their"
+			"their",
+			"its"
 		],
 		"theirs": [
 			"his",
 			"hers",
-			"theirs"
+			"theirs",
+			"its"
 		],
 		"are": [
 			"is",
 			"is",
-			"are"
+			"are",
+			"is"
 		]
 	},
 	"spanish": {
 		"they": [
 			"él",
 			"ella",
-			"ellos"
+			"ellos",
+			"it [ADD SPANISH LOCALIZATION]"
 		],
 		"them": [
 			"él",
 			"ella",
-			"ellos"
+			"ellos",
+			"it [ADD SPANISH LOCALIZATION]"
 		],
 		"their": [
 			"su",
 			"su",
-			"su"
+			"su",
+			"its [ADD SPANISH LOCALIZATION]"
 		],
 		"theirs": [
 			"su",
 			"su",
-			"su"
+			"su",
+			"its [ADD SPANISH LOCALIZATION]"
 		],
 		"are": [
 			"es",
 			"es",
-			"es"
+			"es",
+			"is [ADD SPANISH LOCALIZATION]"
 		]
 	}
 }
