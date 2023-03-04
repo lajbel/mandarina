@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "npm run build && npm run test/build",
     "build": "node scripts/build.js",
-    "test/build": "npx esbuild test/basement.ts --bundle --outfile=test/womb.js"
+    "test/build": "npx esbuild test/basement.ts --bundle --outfile=test/womb.js",
+    "fmt": "npx eslint --fix src/"
   },
   "files": [
     "dist/",
