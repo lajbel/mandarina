@@ -1,7 +1,7 @@
 import { MandarinaPlugin } from "../types";
 import { createAction } from "../chapters";
 
-export function playSound(audio: string) {
+export function playSound(this: MandarinaPlugin, audio: string) {
     const k = this.k;
 
     return createAction({
