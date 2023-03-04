@@ -1,4 +1,4 @@
-import kaboom, { KaboomCtx, Debug } from "kaboom";
+import kaboom, { KaboomCtx } from "kaboom";
 import { MandarinaCtx, MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
@@ -22,7 +22,7 @@ export function mandarinaPlugin(k: KaboomCtx, opt:MandarinaOpt): MandarinaPlugin
 
                 running: false,
             },
-            opt
+            opt,
         },
 
         /** Configuration and setup */

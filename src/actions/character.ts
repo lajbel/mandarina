@@ -22,7 +22,7 @@ export function showCharacter(
 
             // k.debug.log(`Showing character "${characterId}" with expression "${expression}" aligned to "${align}".`);
 
-            var height = expressionSprite.height ?? character.opt?.height ?? k.height();
+            const height = expressionSprite.height ?? character.opt?.height ?? k.height();
             const alignments = {
                 "left": [
                     k.pos(k.width() * 0.25, height),
@@ -36,34 +36,34 @@ export function showCharacter(
             };
 
             // Create character
-            var charobj = k.get("character_" + characterId, { recursive: true })[0];
-            var sprite = expressionSprite.sprite ?? character.opt?.sprite;
-            var anim = expressionSprite.anim ?? (character.opt?.anim ?? undefined);
+            let charobj = k.get("character_" + characterId, { recursive: true })[0];
+            const sprite = expressionSprite.sprite ?? character.opt?.sprite;
+            const anim = expressionSprite.anim ?? (character.opt?.anim ?? undefined);
 
             if (charobj) {
                 if (sprite) charobj.use(k.sprite(sprite, {
                     anim: anim,
-                    frame: expressionSprite.frame ?? 0
-                }))
+                    frame: expressionSprite.frame ?? 0,
+                }));
             } else {
                 charobj = k.add([
-                ...alignments[align],
-                k.z(layers.characters),
-                k.anchor("bot"),
-                sprite ? k.sprite(sprite, {
-                    anim: anim,
-                    frame: expressionSprite.frame ?? 0
-                }) : "",
-                k.opacity(0),
-                "character_" + characterId,
+                    ...alignments[align],
+                    k.z(layers.characters),
+                    k.anchor("bot"),
+                    sprite ? k.sprite(sprite, {
+                        anim: anim,
+                        frame: expressionSprite.frame ?? 0,
+                    }) : "",
+                    k.opacity(0),
+                    "character_" + characterId,
                 ]);
-                k.tween(0, 1, 0.5, (x=>charobj.opacity=x), k.easings.easeInQuad)
+                k.tween(0, 1, 0.5, (x=>charobj.opacity=x), k.easings.easeInQuad);
             }
-            var posy = charobj.pos.y;
+            const posy = charobj.pos.y;
             k.tween(posy, posy + 20, 0.1, (x=>charobj.pos.y=x), k.easings.easeInQuad)
-            .then(() => 
-                k.tween(posy + 20, posy, 0.1, (x=>charobj.pos.y=x), k.easings.easeOutQuad)
-            );
+                .then(() =>
+                    k.tween(posy + 20, posy, 0.1, (x=>charobj.pos.y=x), k.easings.easeOutQuad),
+                );
         },
     });
 
@@ -80,9 +80,9 @@ export function hideCharacter(
         id: "hide_character",
         autoskip: true,
         exec: () => {
-            var charobj = k.get("character_" + characterId, { recursive: true })[0];
+            const charobj = k.get("character_" + characterId, { recursive: true })[0];
             k.tween(1, 0, 0.5, (x=>charobj.opacity=x), k.easings.easeInQuad)
-            .then(() => charobj.destroy());
+                .then(() => charobj.destroy());
         },
     });
 }
