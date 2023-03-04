@@ -1,4 +1,4 @@
-import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt, OpacityComp, AnchorComp } from "kaboom";
+import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt, OpacityComp, AnchorComp, RectCompOpt, SpriteCompOpt, TextCompOpt } from "kaboom";
 
 declare function mandarina(opt?: MandarinaOpt): MandarinaCtx;
 
@@ -23,8 +23,9 @@ export interface MandarinaPlugin {
             /** Current action. */
             action: number;
 
-            runningAction: boolean;
-        }
+            running: boolean;
+        },
+        opt: MandarinaOpt
     };
 
     // #region Configuration and setup
@@ -81,11 +82,11 @@ export interface MandarinaCtx extends MandarinaPlugin {
 
 export interface MandarinaOpt extends KaboomOpt {
     /** Default textbox options. */
-    textbox?: TextboxOpt,
+    textbox?: TextboxOpt;
     /** Default text writes velocity. Default 0.05. */
-    writeVel?: number,
+    writeVel?: number;
     /** Default text writes waiting before a comma. Default 0.5. */
-    writeCommaWait?: number,
+    writeCommaWait?: number;
 }
 
 // #endregion
@@ -117,10 +118,29 @@ export interface CharacterData {
 }
 
 export interface CharacterDataOpt {
+    /** Default sprite. */
+    sprite?: string;
+    /** Default animation. */
+    anim?: string;
     /** Character's set of expressions. */
-    expressions?: Record<string, string>;
+    expressions?: Record<string, ExpressionOpt>;
+    /** Character display height */
+    height?: number;
     /** Character's name colour. */
     color?: string;
+    /** Character's unique voice. Can be overwritten by text sounds. */
+    sound?: string | undefined;
+}
+
+export interface ExpressionOpt {
+    /** Sprite for the expression */
+    sprite?: string;
+    /** Animation of the sprite */
+    anim?: string;
+    /** Character display height */
+    height?: number;
+    /** Frame of the animation */
+    frame?: number;
 }
 
 // #endregion
@@ -144,7 +164,7 @@ export interface TextboxComp extends Comp {
     name?: GameObj<TextComp>;
 
     /** Writes a text in the textbox. */
-    write(this: Textbox, text: string): Promise<void>;
+    write(this: Textbox, text: string, char?: CharacterData): Promise<void>;
     /** Clears the textbox. */
     clear(this: Textbox): void;
     /** Skips the current text. */
@@ -165,6 +185,12 @@ export interface TextboxOpt {
     /** Textbox's position. */
     pos?: Vec2;
 
+    /** Text wait. */
+    wait?: number;
+
+    /** Text wait. */
+    waitCharacters?: Array<WaitOpt>;
+
     /** Textbox's width. */
     width?: number;
 
@@ -182,6 +208,29 @@ export interface TextboxOpt {
 
     /** Textbox's text color. */
     textColor?: string;
+
+    /** Textbox's text margin. */
+    textMargin?: number;
+
+    /** Textbox's background color. */
+    backgroundColor?: string;
+
+    /** Rect options, for advanced customization. */
+    rectOpt?: RectCompOpt;
+    /** Sprite options, for advanced customization. */
+    spriteOpt?: SpriteCompOpt;
+    /** Text options, for advanced customization. */
+    textOpt?: TextCompOpt;
+    /** Text options, for advanced customization. */
+    nameOpt?: TextCompOpt;
+
+    progressSound?: string;
+}
+
+export interface WaitOpt {
+    character: string;
+    time?: number;
+    sound?: string | undefined;
 }
 
 // #endregion

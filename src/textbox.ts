@@ -1,11 +1,12 @@
 // The textbox object.
-import type { GameObj, KaboomCtx } from "kaboom";
+import type { GameObj } from "kaboom";
 import type { MandarinaCtx, Textbox, TextboxComp, TextboxOpt } from "./types";
 import { layers } from "./constants";
 
-function textboxComp(k: KaboomCtx): TextboxComp {
+function textboxComp(m: MandarinaCtx, opt?: TextboxOpt): TextboxComp {
     let textbox: GameObj;
     let namebox: GameObj;
+    const k = m.k;
 
     return {
         id: "mandarina_textbox",
@@ -19,10 +20,9 @@ function textboxComp(k: KaboomCtx): TextboxComp {
             namebox = this.name;
         },
 
-        write(text) {
-            // TODO: Make wait time modifiable.
+        write(text, char) {
+            // DONE: Make wait time modifiable.
             return new Promise<void>((resolve) => {
-                textbox.text = "";
                 this.curChar = 0;
 
                 const write = async () => {
@@ -35,21 +35,31 @@ function textboxComp(k: KaboomCtx): TextboxComp {
                         return;
                     }
 
-                    textbox.text += text[this.curChar];
+                    // If character is considered special, wait for the wait time.
+                    let charSkip = 1;
+                    let time = opt?.wait ?? 0.05;
+                    let playSound = char?.opt?.sound ?? opt?.progressSound;
+                    await opt?.waitCharacters?.forEach(async v => {
+                        if (text.substring(this.curChar, this.curChar + v.character.length) == v.character) {
+                            charSkip = v.character.length;
+                            time = v.time ?? opt?.wait ?? 0.05;
+                            playSound = v.sound;
+                            return false;
+                        }
+                    });
+                    this.curChar += charSkip;
 
-                    // If character is a comma, wait 0.5 seconds.
-                    if (text[this.curChar] == ",") await k.wait(0.5);
+                    textbox.text = text.substring(0, this.curChar);
+                    if (playSound) k.play(playSound);
 
-                    this.curChar++;
-
-                    if (this.curChar == text.length) {
+                    if (this.curChar >= text.length) {
                         this.curChar = 0;
 
                         resolve();
                         return;
                     }
 
-                    await k.wait(0.05);
+                    await k.wait(time);
                     write();
                 };
 
@@ -83,14 +93,23 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     const k = m.k;
 
     const fOpt = {
-        width: opt?.width ?? k.width() - k.width()/16,
+        width: opt?.width ?? k.width() - 64,
         height: opt?.height ?? 200,
-        pos: opt?.pos ?? k.vec2(0),
+        pos: opt?.pos ?? k.vec2(k.center().x, k.height() - 32),
+        wait: opt?.wait ?? 0.05,
+        waitCharacters: opt?.waitCharacters,
         sprite: opt?.sprite ?? undefined,
         textAlign: opt?.textAlign ?? "left",
         textSize: opt?.textSize ?? 16,
         textFont: opt?.textFont ?? "sans-serif",
         textColor: opt?.textColor ?? "#000000",
+        textMargin: opt?.textMargin ?? 16,
+        backgroundColor: opt?.backgroundColor ?? "#FFFFFF",
+        rectOpt: opt?.rectOpt ?? undefined,
+        spriteOpt: opt?.spriteOpt ?? undefined,
+        textOpt: opt?.textOpt ?? undefined,
+        nameOpt: opt?.nameOpt ?? undefined,
+        progressSound: opt?.progressSound ?? undefined,
     };
 
     // Get the textbox's width and height if is sprite, if not, use the opt values.
@@ -98,14 +117,17 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     const textboxWidth = fOpt.sprite ? fOpt.width : fOpt.width;
     const textboxHeight = fOpt.sprite ? fOpt.height : fOpt.height;
 
+    k.destroyAll("textbox");
+
     // The textbox parent object.
     const textbox: Textbox = k.add([
-        k.pos(k.center().x, k.height()),
+        k.pos(fOpt.pos),
         k.z(layers.textbox),
         k.anchor("bot"),
         k.opacity(1),
 
-        textboxComp(k),
+        textboxComp(m, fOpt),
+        "textbox",
     ]);
 
     // The textbox's background.
@@ -113,16 +135,21 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
         k.z(10),
         k.anchor("bot"),
         fOpt.sprite ?
-            k.sprite(fOpt.sprite) :
-            k.rect(fOpt.width, fOpt.height),
+            k.sprite(fOpt.sprite, fOpt.spriteOpt) :
+            k.rect(fOpt.width, fOpt.height, fOpt.rectOpt),
+        "textbox",
     ]);
 
     // The textbox's text.
     textbox.text = textbox.add([
-        k.pos(-textboxWidth / 2, -textboxHeight),
+        k.pos((-textboxWidth / 2) + fOpt.textMargin, -textboxHeight + fOpt.textMargin),
         k.z(20),
-        k.text(""),
+        k.text("", {
+            ...fOpt.textOpt,
+            width: fOpt.width - (fOpt.textMargin * 2),
+        }),
         k.color(k.Color.fromHex(fOpt.textColor)),
+        "textbox",
     ]);
 
     // The textbox's name.
@@ -130,8 +157,9 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
         k.pos(-textboxWidth / 2, -textboxHeight),
         k.z(20),
         k.anchor("botleft"),
-        k.text(""),
+        k.text("", fOpt.nameOpt),
         k.color(k.Color.fromHex(fOpt.textColor)),
+        "textbox",
     ]);
 
     // For now, this is the only way to get setup the
