@@ -1,11 +1,10 @@
 // The textbox object.
-import type { GameObj, KaboomCtx } from "kaboom";
+import * as Kaboom from "kaboom";
 import type { MandarinaCtx, Textbox, TextboxComp, TextboxOpt } from "./types";
-import { layers } from "./constants";
 
-function textboxComp(k: KaboomCtx): TextboxComp {
-    let textbox: GameObj;
-    let namebox: GameObj;
+function textboxComp(k: Kaboom.KaboomCtx): TextboxComp {
+    let textbox: Kaboom.GameObj;
+    let namebox: Kaboom.GameObj;
 
     return {
         id: "mandarina_textbox",
@@ -93,10 +92,21 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
         textColor: opt?.textColor ?? "#000000",
     };
 
+    // Hacky way to get the sprite's width and height.
+    let loadedSpriteDimensions: Kaboom.Vec2 | null = null;
+
+    if(fOpt.sprite) {
+        const spr = k.add([
+            k.pos(k.vec2(k.width(), k.height()).scale(100)),
+            k.sprite(fOpt.sprite),
+        ]);
+
+        loadedSpriteDimensions = k.vec2(spr.width, spr.height);
+    }
+
     // Get the textbox's width and height if is sprite, if not, use the opt values.
-    // TODO: Temporary, because is imposible get the sprite's width and height right now.
-    const textboxWidth = fOpt.sprite ? fOpt.width : fOpt.width;
-    const textboxHeight = fOpt.sprite ? fOpt.height : fOpt.height;
+    const textboxWidth: number = fOpt.sprite ? loadedSpriteDimensions?.x as number : fOpt.width;
+    const textboxHeight: number = fOpt.sprite ? loadedSpriteDimensions?.y as number : fOpt.height;
 
     // The textbox parent object.
     const textbox: Textbox = k.add([
@@ -104,7 +114,6 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
         k.layer("textbox"),
         k.anchor("bot"),
         k.opacity(1),
-
         textboxComp(k),
     ]);
 
@@ -121,7 +130,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     textbox.text = textbox.add([
         k.pos(-textboxWidth / 2, -textboxHeight),
         k.layer("textbox"),
-        k.text(""),
+        k.text("", { width: textboxWidth, font: fOpt.textFont, align: fOpt.textAlign }),
         k.color(k.Color.fromHex(fOpt.textColor)),
     ]);
 

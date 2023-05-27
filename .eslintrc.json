@@ -49,6 +49,6 @@
     "ignorePatterns": [
         "node_modules/",
         "dist/",
-        "test/"
+        "example/"
     ]
 }

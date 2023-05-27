@@ -16,6 +16,8 @@ export function layerPlugin(k: KaboomCtx): LayerPlugin {
             defLayer = def ?? layersArr[0];
 
             k.onAdd((obj) => {
+                if(obj.is("layer")) return;
+
                 obj.use(this.layer(defLayer));
             });
         },

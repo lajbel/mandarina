@@ -12,7 +12,7 @@ export function startNovel(m: MandarinaCtx, opt: MandarinaOpt) {
             "characters",
             "textbox",
             "textbox_name",
-        ], "game");
+        ], "textbox");
 
         m.textbox = addTextbox(m, opt.textbox ?? {});
 

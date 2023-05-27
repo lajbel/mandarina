@@ -1,6 +1,5 @@
 import { MandarinaPlugin } from "../types";
 import { createAction } from "../chapters";
-import { layers } from "../constants";
 
 export function showCharacter(
     this: MandarinaPlugin,
@@ -39,7 +38,7 @@ export function showCharacter(
 
             k.add([
                 ...alignments[align],
-                k.z(layers.characters),
+                k.layer("characters"),
                 k.sprite(expressionSprite),
                 k.opacity(1),
                 "character_" + characterId,
