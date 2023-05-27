@@ -101,7 +101,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     // The textbox parent object.
     const textbox: Textbox = k.add([
         k.pos(k.center().x, k.height()),
-        k.z(layers.textbox),
+        k.layer("textbox"),
         k.anchor("bot"),
         k.opacity(1),
 
@@ -110,7 +110,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
 
     // The textbox's background.
     textbox.add([
-        k.z(10),
+        k.layer("textbox"),
         k.anchor("bot"),
         fOpt.sprite ?
             k.sprite(fOpt.sprite) :
@@ -120,7 +120,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     // The textbox's text.
     textbox.text = textbox.add([
         k.pos(-textboxWidth / 2, -textboxHeight),
-        k.z(20),
+        k.layer("textbox"),
         k.text(""),
         k.color(k.Color.fromHex(fOpt.textColor)),
     ]);
@@ -128,7 +128,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     // The textbox's name.
     textbox.name = textbox.add([
         k.pos(-textboxWidth / 2, -textboxHeight),
-        k.z(20),
+        k.layer("textbox_name"),
         k.anchor("botleft"),
         k.text(""),
         k.color(k.Color.fromHex(fOpt.textColor)),

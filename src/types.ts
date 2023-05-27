@@ -1,11 +1,12 @@
 import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt, OpacityComp, AnchorComp } from "kaboom";
+import { LayerPlugin } from "./plugins/layer";
 
 declare function mandarina(opt?: MandarinaOpt): MandarinaCtx;
 
 // #region Mandarina Plugin
 
 export interface MandarinaPlugin {
-    k: KaboomCtx;
+    k: KaboomCtx & LayerPlugin;
 
     /** The textbox object, if there's one */
     textbox?: Textbox;
@@ -76,7 +77,7 @@ export interface MandarinaPlugin {
 
 export interface MandarinaCtx extends MandarinaPlugin {
     /** Kaboom's context. */
-    k: KaboomCtx;
+    k: KaboomCtx & LayerPlugin;
 }
 
 export interface MandarinaOpt extends KaboomOpt {

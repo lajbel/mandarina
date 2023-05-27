@@ -6,6 +6,14 @@ export function startNovel(m: MandarinaCtx, opt: MandarinaOpt) {
     const k = m.k;
 
     return k.scene("mandarina", () => {
+        // Layers
+        k.layers([
+            "backgrounds",
+            "characters",
+            "textbox",
+            "textbox_name",
+        ], "game");
+
         m.textbox = addTextbox(m, opt.textbox ?? {});
 
         // Process the first game action.

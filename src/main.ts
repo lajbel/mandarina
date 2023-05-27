@@ -6,11 +6,12 @@ import { addChapter } from "./chapters";
 
 import { say } from "./actions/narration";
 import { showCharacter, hideCharacter } from "./actions/character";
+import { LayerPlugin, layerPlugin } from "./plugins/layer";
 
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
     // Exported to Kaboom's Context
     return {
-        k: k,
+        k: k as KaboomCtx & LayerPlugin,
 
         data: {
             chapters: new Map(),
@@ -42,7 +43,7 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
 export default function mandarina(opt: MandarinaOpt): MandarinaCtx {
     const k = kaboom({
         ...opt,
-        plugins: [ mandarinaPlugin ],
+        plugins: [ mandarinaPlugin, layerPlugin ],
     });
 
     const mandarinaCtx: MandarinaCtx = {
