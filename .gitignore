@@ -1,4 +1,4 @@
 node_modules
 dist
 .vscode
-test/game.js
+example/game.js
