@@ -1,4 +1,4 @@
-import { KaboomCtx } from "kaboom";
+import type { KaboomCtx } from "kaboom";
 
 export interface LayerPlugin  {
     layers: (layersArr: string[], def?: string) => void;

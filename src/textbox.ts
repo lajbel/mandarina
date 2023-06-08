@@ -1,10 +1,10 @@
 // The textbox object.
-import * as Kaboom from "kaboom";
-import type { MandarinaCtx, Textbox, TextboxComp, TextboxOpt } from "./types";
+import type * as KA from "kaboom";
+import type { MandarinaPlugin, Textbox, TextboxComp, TextboxOpt } from "./types";
 
-function textboxComp(k: Kaboom.KaboomCtx): TextboxComp {
-    let textbox: Kaboom.GameObj;
-    let namebox: Kaboom.GameObj;
+function textboxComp(k: KA.KaboomCtx): TextboxComp {
+    let textbox: KA.GameObj;
+    let namebox: KA.GameObj;
 
     return {
         id: "mandarina_textbox",
@@ -13,7 +13,7 @@ function textboxComp(k: Kaboom.KaboomCtx): TextboxComp {
         skipped: false,
         curChar: 0,
 
-        setup() {
+        add() {
             textbox = this.text;
             namebox = this.name;
         },
@@ -78,11 +78,11 @@ function textboxComp(k: Kaboom.KaboomCtx): TextboxComp {
     };
 }
 
-export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
+export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
     const k = m.k;
 
     const fOpt = {
-        width: opt?.width ?? k.width() - k.width()/16,
+        width: opt?.width ?? k.width() - k.width() / 16,
         height: opt?.height ?? 200,
         pos: opt?.pos ?? k.vec2(0),
         sprite: opt?.sprite ?? undefined,
@@ -93,7 +93,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     };
 
     // Hacky way to get the sprite's width and height.
-    let loadedSpriteDimensions: Kaboom.Vec2 | null = null;
+    let loadedSpriteDimensions: KA.Vec2 | null = null;
 
     if(fOpt.sprite) {
         const spr = k.add([
@@ -109,7 +109,7 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
     const textboxHeight: number = fOpt.sprite ? loadedSpriteDimensions?.y as number : fOpt.height;
 
     // The textbox parent object.
-    const textbox: Textbox = k.add([
+    const textbox: Textbox = k.make([
         k.pos(k.center().x, k.height()),
         k.layer("textbox"),
         k.anchor("bot"),
@@ -143,9 +143,6 @@ export function addTextbox(m: MandarinaCtx, opt?: TextboxOpt): Textbox {
         k.color(k.Color.fromHex(fOpt.textColor)),
     ]);
 
-    // For now, this is the only way to get setup the
-    // textbox and namebox variables in the component.
-    textbox.setup();
-
+    k.add(textbox);
     return textbox;
 }

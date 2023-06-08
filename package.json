@@ -1,6 +1,6 @@
 {
     "name": "mandarinavn",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "description": "A visual novel engine, using kaboom.js",
     "author": "lajbel",
     "license": "MIT",
@@ -9,9 +9,9 @@
     "types": "./dist/mandarina.d.ts",
     "type": "module",
     "scripts": {
-        "dev": "npm run build && npm run test/build",
+        "dev": "npm run build && npm run example",
         "build": "node scripts/build.js",
-        "test/build": "npx esbuild example/main.ts --bundle --outfile=example/game.js",
+        "example": "npx esbuild example/main.ts --bundle --outfile=example/game.js --watch --servedir=./example/",
         "fmt": "npx eslint --fix src/"
     },
     "files": [
@@ -20,7 +20,7 @@
         "README.md"
     ],
     "dependencies": {
-        "kaboom": "^3000.0.2"
+        "kaboom": "^3000.0.5"
     },
     "devDependencies": {
         "@types/node": "^18.14.0",

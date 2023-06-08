@@ -1,4 +1,4 @@
-import { MandarinaPlugin } from "../types";
+import type { MandarinaPlugin } from "../types";
 import { createAction } from "../chapters";
 
 export function showCharacter(
@@ -11,6 +11,7 @@ export function showCharacter(
 
     return createAction({
         id: "show_character",
+        type: "visual",
         autoskip: true,
         exec: () => {
             const character = this.data.characters.get(characterId);
@@ -44,6 +45,10 @@ export function showCharacter(
                 "character_" + characterId,
             ]);
         },
+        fadeIn() {
+            k.get("character_" + characterId, { recursive: true })[0].use(k.fadeIn(0.5));
+            return this;
+        }
     });
 
 
@@ -57,8 +62,13 @@ export function hideCharacter(
 
     return createAction({
         id: "hide_character",
+        type: "visual",
         exec: () => {
             k.get("character_" + characterId, { recursive: true })[0].destroy();
+        },
+        fadeIn() {
+            k.get("character_" + characterId, { recursive: true })[0].use(k.fadeIn(0.5));
+            return this;
         },
     });
 }

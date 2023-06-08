@@ -6,6 +6,7 @@ export function say(this: MandarinaPlugin, ...args: string[]) {
     // if not, only write the first one as the text.
     return createAction({
         id: "say",
+        type: "normal",
         exec: async () => {
             if(!this.textbox) throw new Error("Textbox not found.");
 

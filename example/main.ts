@@ -24,6 +24,7 @@ m.character("t", "Deffy", {
     },
 });
 
+
 m.chapter("start", () => [
     // Show our character.
     m.show("t", "normal"),

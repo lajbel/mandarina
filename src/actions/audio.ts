@@ -1,4 +1,4 @@
-import { MandarinaPlugin } from "../types";
+import type { MandarinaPlugin } from "../types";
 import { createAction } from "../chapters";
 
 export function playSound(this: MandarinaPlugin, audio: string) {
@@ -6,6 +6,7 @@ export function playSound(this: MandarinaPlugin, audio: string) {
 
     return createAction({
         id: "play_sound",
+        type: "normal",
         autoskip: true,
         exec: () => {
             k.play(audio);
