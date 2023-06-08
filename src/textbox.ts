@@ -81,7 +81,7 @@ function textboxComp(k: KA.KaboomCtx): TextboxComp {
 export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
     const k = m.k;
 
-    const fOpt = {
+    const options = {
         width: opt?.width ?? k.width() - k.width() / 16,
         height: opt?.height ?? 200,
         pos: opt?.pos ?? k.vec2(0),
@@ -90,23 +90,24 @@ export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
         textSize: opt?.textSize ?? 16,
         textFont: opt?.textFont ?? "sans-serif",
         textColor: opt?.textColor ?? "#000000",
+        textOffset: opt?.textOffset ? k.vec2(...opt.textOffset) : k.vec2(0),
     };
 
     // Hacky way to get the sprite's width and height.
     let loadedSpriteDimensions: KA.Vec2 | null = null;
 
-    if(fOpt.sprite) {
+    if(options.sprite) {
         const spr = k.add([
             k.pos(k.vec2(k.width(), k.height()).scale(100)),
-            k.sprite(fOpt.sprite),
+            k.sprite(options.sprite),
         ]);
 
         loadedSpriteDimensions = k.vec2(spr.width, spr.height);
     }
 
     // Get the textbox's width and height if is sprite, if not, use the opt values.
-    const textboxWidth: number = fOpt.sprite ? loadedSpriteDimensions?.x as number : fOpt.width;
-    const textboxHeight: number = fOpt.sprite ? loadedSpriteDimensions?.y as number : fOpt.height;
+    const textboxWidth: number = options.sprite ? loadedSpriteDimensions?.x as number : options.width;
+    const textboxHeight: number = options.sprite ? loadedSpriteDimensions?.y as number : options.height;
 
     // The textbox parent object.
     const textbox: Textbox = k.make([
@@ -121,17 +122,22 @@ export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
     textbox.add([
         k.layer("textbox"),
         k.anchor("bot"),
-        fOpt.sprite ?
-            k.sprite(fOpt.sprite) :
-            k.rect(fOpt.width, fOpt.height),
+        options.sprite ?
+            k.sprite(options.sprite) :
+            k.rect(options.width, options.height),
     ]);
 
     // The textbox's text.
     textbox.text = textbox.add([
-        k.pos(-textboxWidth / 2, -textboxHeight),
+        k.pos((-textboxWidth / 2) + options.textOffset.x, (-textboxHeight) + options.textOffset.y),
         k.layer("textbox"),
-        k.text("", { width: textboxWidth, font: fOpt.textFont, align: fOpt.textAlign }),
-        k.color(k.Color.fromHex(fOpt.textColor)),
+        k.text("", {
+            width: textboxWidth,
+            size: options.textSize,
+            font: options.textFont,
+            align: options.textAlign,
+        }),
+        k.color(k.Color.fromHex(options.textColor)),
     ]);
 
     // The textbox's name.
@@ -140,7 +146,7 @@ export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
         k.layer("textbox_name"),
         k.anchor("botleft"),
         k.text(""),
-        k.color(k.Color.fromHex(fOpt.textColor)),
+        k.color(k.Color.fromHex(options.textColor)),
     ]);
 
     k.add(textbox);

@@ -196,6 +196,9 @@ export interface TextboxOpt {
 
     /** Textbox's text color. */
     textColor?: string;
+
+    /** Textbox's text offset */
+    textOffset?: [number, number];
 }
 
 // #endregion

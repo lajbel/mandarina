@@ -9,7 +9,8 @@ const m = mandarina({
     textbox: {
         sprite: "dsimui_textbox",
         textFont: "sans-serif",
-        textSize: 16,
+        textSize: 24,
+        textOffset: [3, 3],
     }
 });
 
