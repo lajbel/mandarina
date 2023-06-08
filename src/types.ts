@@ -1,12 +1,11 @@
-import type { Comp, GameObj, KaboomCtx, PosComp, TextComp, Vec2, KaboomOpt, OpacityComp, AnchorComp } from "kaboom";
-import { LayerPlugin } from "./plugins/layer";
+import type * as KA from "kaboom";
+import type { LayerPlugin } from "./plugins/layer";
 
-declare function mandarina(opt?: MandarinaOpt): MandarinaCtx;
+declare function mandarina(opt?: MandarinaOpt): MandarinaPlugin;
 
 // #region Mandarina Plugin
-
 export interface MandarinaPlugin {
-    k: KaboomCtx & LayerPlugin;
+    k: KA.KaboomCtx & LayerPlugin;
 
     /** The textbox object, if there's one */
     textbox?: Textbox;
@@ -14,7 +13,7 @@ export interface MandarinaPlugin {
     /** Internal game data. */
     data: {
         /** Chapters. */
-        chapters: Map<string, Action[]>;
+        chapters: Map<string, Action<unknown>[]>;
         /** Characters. */
         characters: Map<string, CharacterData>;
         /** Current data */
@@ -29,8 +28,8 @@ export interface MandarinaPlugin {
     };
 
     // #region Configuration and setup
-    loadSprite: KaboomCtx["loadSprite"];
-    loadSound: KaboomCtx["loadSound"];
+    loadSprite: KA.KaboomCtx["loadSprite"];
+    loadSound: KA.KaboomCtx["loadSound"];
 
     /**
      * Add a character to the game.
@@ -45,7 +44,7 @@ export interface MandarinaPlugin {
      * @param id Chapter's id, will be used to refer the chapter in all game code.
      * @param actions Chapter's actions.
      */
-    chapter(id: string, actions: () => Action[]): void;
+    chapter(id: string, actions: () => Action<unknown>[]): void;
     // #endregion
 
     // #region Actions
@@ -54,33 +53,37 @@ export interface MandarinaPlugin {
      * @param characterId Character's id.
      * @param text Text to write.
     */
-    say(characterId: string, text: string): Action;
+    say(characterId: string, text: string): Action<"normal">;
     /**
      * Writes a text in the textbox.
      * @param text Text to write.
     */
-    say(text: string): Action;
+    say(text: string): Action<"normal">;
     /**
      * Shows a character in the screen.
      * @param characterId Character's id.
      * @param expression Character's expression.
      * @param align Character's alignment.
      */
-    show(characterId: string, expression: string, align?: string): Action;
+    show(characterId: string, expression: string, align?: string): Action<"visual">;
     /**
      * Hides a character in the screen.
      * @param characterId Character's id.
     */
-    hide(characterId: string): Action;
+    hide(characterId: string): Action<"visual">;
+    /**
+     * Shows a background in the screen.
+     * @param sprite Background's sprite.
+    */
+    bg(sprite: string): Action<"visual">;
+    /**
+     * Shows a color background in the screen.
+     */
+    bg(color: string | KA.Color): Action<"visual">;
     // #endregion
 }
 
-export interface MandarinaCtx extends MandarinaPlugin {
-    /** Kaboom's context. */
-    k: KaboomCtx & LayerPlugin;
-}
-
-export interface MandarinaOpt extends KaboomOpt {
+export interface MandarinaOpt extends KA.KaboomOpt {
     /** Default textbox options. */
     textbox?: TextboxOpt,
     /** Default text writes velocity. Default 0.05. */
@@ -92,17 +95,30 @@ export interface MandarinaOpt extends KaboomOpt {
 // #endregion
 
 // #region Actions
+export type ActionType = "normal" | "visual";
 
-export interface Action {
+export type ActionRaw = {
     /** Action's id. */
     id: string;
     /** If action won't wait for an user interaction to continue to the next one. */
     autoskip?: boolean;
+    /** Action type */
     /** Action's execution function. */
-    exec: () => void | Promise<void>;
+    exec(): void | Promise<void>;
     /** Action's skipped function. */
-    skip?: () => void | Promise<void>;
+    skip?(): void | Promise<void>;
 }
+
+export type ActionNormal = {
+    type: "normal";
+}
+
+export type ActionVisual = {
+    type: "visual";
+    fadeIn(): Action<"visual">;
+}
+
+export type Action<T = unknown> = ActionRaw & { type: T } & (ActionNormal | ActionVisual);
 
 // #endregion
 
@@ -128,21 +144,18 @@ export interface CharacterDataOpt {
 
 // #region Textbox
 
-export type Textbox = GameObj<PosComp | AnchorComp | OpacityComp | TextboxComp>;
+export type Textbox = KA.GameObj<KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp>;
 
-export interface TextboxComp extends Comp {
+export interface TextboxComp extends KA.Comp {
     /** If the textbox is in skip. */
     skipped: boolean;
     /** Current character of the writing text. */
     curChar: number;
 
-    /** Setups some internal textbox variables. */
-    setup(): void;
-
     /** The textbox's text. */
-    text?: GameObj<TextComp>;
+    text?: KA.GameObj<KA.TextComp>;
     /** The textbox's name. */
-    name?: GameObj<TextComp>;
+    name?: KA.GameObj<KA.TextComp>;
 
     /** Writes a text in the textbox. */
     write(this: Textbox, text: string): Promise<void>;
@@ -164,7 +177,7 @@ export interface TextboxOpt {
     sprite?: string;
 
     /** Textbox's position. */
-    pos?: Vec2;
+    pos?: KA.Vec2;
 
     /** Textbox's width. */
     width?: number;

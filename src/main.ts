@@ -1,11 +1,11 @@
 import kaboom, { KaboomCtx } from "kaboom";
-import { MandarinaCtx, MandarinaOpt, MandarinaPlugin } from "./types";
+import type { MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
 import { addChapter } from "./chapters";
-
 import { say } from "./actions/narration";
 import { showCharacter, hideCharacter } from "./actions/character";
+import { showBackground } from "./actions/backgrounds";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
 
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
@@ -36,17 +36,18 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
         say,
         show: showCharacter,
         hide: hideCharacter,
+        bg: showBackground,
     };
 }
 
 // The Mandaarina function creates a Kaboom game and add the plugin.
-export default function mandarina(opt: MandarinaOpt): MandarinaCtx {
+export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
     const k = kaboom({
         ...opt,
         plugins: [ mandarinaPlugin, layerPlugin ],
     });
 
-    const mandarinaCtx: MandarinaCtx = {
+    const mandarinaCtx: MandarinaPlugin = {
         ...mandarinaPlugin(k),
     };
 

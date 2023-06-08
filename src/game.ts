@@ -1,8 +1,8 @@
-import { MandarinaCtx, MandarinaOpt } from "./types";
+import type { MandarinaPlugin, MandarinaOpt } from "./types";
 import { addTextbox } from "./textbox";
 import { processAction } from "./chapters";
 
-export function startNovel(m: MandarinaCtx, opt: MandarinaOpt) {
+export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
     const k = m.k;
 
     return k.scene("mandarina", () => {

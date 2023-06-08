@@ -1,4 +1,4 @@
-import { MandarinaPlugin, CharacterDataOpt } from "./types";
+import type { MandarinaPlugin, CharacterDataOpt } from "./types";
 
 export function addCharacter(
     this: MandarinaPlugin,
