@@ -95,6 +95,7 @@ export interface MandarinaOpt extends KA.KaboomOpt {
 // #endregion
 
 // #region Actions
+// TODO: An action controller?
 export type ActionType = "normal" | "visual";
 
 export type ActionRaw = {
@@ -151,7 +152,6 @@ export interface TextboxComp extends KA.Comp {
     skipped: boolean;
     /** Current character of the writing text. */
     curChar: number;
-
     /** The textbox's text. */
     text?: KA.GameObj<KA.TextComp>;
     /** The textbox's name. */
@@ -167,7 +167,6 @@ export interface TextboxComp extends KA.Comp {
     show(this: Textbox): void;
     /** Hides the textbox. */
     hide(this: Textbox): void;
-
     /** Change the namebox's text */
     changeName(this: Textbox, text: string): void;
 }

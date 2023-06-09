@@ -5,7 +5,7 @@ import { processAction } from "./chapters";
 export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
     const k = m.k;
 
-    return k.scene("mandarina", () => {
+    k.scene("mandarina", () => {
         // Layers
         k.layers([
             "backgrounds",
