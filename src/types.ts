@@ -8,24 +8,7 @@ export interface MandarinaPlugin {
     k: KA.KaboomCtx & LayerPlugin;
 
     /** The textbox object, if there's one */
-    textbox?: Textbox;
-
-    /** Internal game data. */
-    data: {
-        /** Chapters. */
-        chapters: Map<string, Action<unknown>[]>;
-        /** Characters. */
-        characters: Map<string, CharacterData>;
-        /** Current data */
-        current: {
-            /** Current chapter. */
-            chapter: string;
-            /** Current action. */
-            action: number;
-
-            runningAction: boolean;
-        };
-    };
+    _textbox?: Textbox;
 
     // #region Configuration and setup
     loadSprite: KA.KaboomCtx["loadSprite"];

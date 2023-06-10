@@ -12,7 +12,7 @@
         "dev": "npx nodemon --watch ./src --watch ./example --exec \"npm run build && npm run example\" --ext \"ts\"",
         "build": "node scripts/build.js",
         "watch": "npx nodemon --watch ./src --exec \"npm run build\" --ext \"ts\"",
-        "example": "npx esbuild example/main.ts --bundle --outfile=example/game.js",
+        "example": "npx esbuild example/main.ts --bundle --outfile=example/game.js --servedir=./example/",
         "examplewatch": "npx esbuild example/main.ts --bundle --outfile=example/game.js --watch --servedir=./example/",
         "fmt": "npx eslint --fix src/"
     },

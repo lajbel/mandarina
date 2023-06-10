@@ -8,22 +8,21 @@ import { showCharacter, hideCharacter } from "./actions/character";
 import { showBackground } from "./actions/backgrounds";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
 
+export const data = {
+    chapters: new Map(),
+    characters: new Map(),
+
+    current: {
+        chapter: "start",
+        action: 0,
+        runningAction: false,
+    },
+};
+
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
     // Exported to Kaboom's Context
     return {
         k: k as KaboomCtx & LayerPlugin,
-
-        data: {
-            chapters: new Map(),
-            characters: new Map(),
-
-            current: {
-                chapter: "start",
-                action: 0,
-
-                runningAction: false,
-            },
-        },
 
         /** Configuration and setup */
         loadSprite: k.loadSprite,
@@ -44,8 +43,7 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
 export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
     const k = kaboom({
         ...opt,
-        plugins: [ mandarinaPlugin,
-            layerPlugin ],
+        plugins: [ mandarinaPlugin, layerPlugin ],
     });
 
     const mandarinaCtx: MandarinaPlugin = {

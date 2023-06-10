@@ -1,5 +1,6 @@
 import type * as KA from "kaboom";
 import type { MandarinaPlugin } from "../types";
+import { data } from "../main";
 import { createAction } from "../chapters";
 
 export function showCharacter(
@@ -16,27 +17,22 @@ export function showCharacter(
         type: "visual",
         autoskip: true,
         exec: () => {
-            const character = this.data.characters.get(characterId);
-            if (!character) throw new Error(`Character with id "${characterId}" does not exist.`);
+            const character = data.characters.get(characterId);
+            if (!character)
+                throw new Error(
+                    `Character with id "${characterId}" does not exist.`,
+                );
 
             const expressionSprite = character.opt?.expressions?.[expression];
-            if (!expressionSprite) throw Error(`Expression "${expression}" does not exist.`);
+            if (!expressionSprite)
+                throw Error(`Expression "${expression}" does not exist.`);
 
             // k.debug.log(`Showing character "${characterId}" with expression "${expression}" aligned to "${align}".`);
 
             const alignments = {
-                "left": [
-                    k.pos(0, k.height()),
-                    k.anchor("botleft"),
-                ],
-                "center": [
-                    k.pos(k.center().x, k.height()),
-                    k.anchor("bot"),
-                ],
-                "right": [
-                    k.pos(k.width(), k.height()),
-                    k.anchor("botright"),
-                ],
+                left: [ k.pos(0, k.height()), k.anchor("botleft") ],
+                center: [ k.pos(k.center().x, k.height()), k.anchor("bot") ],
+                right: [ k.pos(k.width(), k.height()), k.anchor("botright") ],
             };
 
             ch = k.add([
@@ -53,18 +49,13 @@ export function showCharacter(
                     ch.use(k.fadeIn(0.5));
                 }
             });
-            
+
             return this;
-        }
+        },
     });
-
-
 }
 
-export function hideCharacter(
-    this: MandarinaPlugin,
-    characterId: string,
-) {
+export function hideCharacter(this: MandarinaPlugin, characterId: string) {
     const k = this.k;
 
     return createAction({
@@ -74,7 +65,9 @@ export function hideCharacter(
             k.get("character_" + characterId, { recursive: true })[0].destroy();
         },
         fadeIn() {
-            k.get("character_" + characterId, { recursive: true })[0].use(k.fadeIn(0.5));
+            k.get("character_" + characterId, { recursive: true })[0].use(
+                k.fadeIn(0.5),
+            );
             return this;
         },
     });

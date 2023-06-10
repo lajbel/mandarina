@@ -8,14 +8,11 @@ export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
     k.scene("mandarina", () => {
         // Layers
         k.layers(
-            [ "backgrounds",
-                "characters",
-                "textbox",
-                "textbox_name" ],
+            [ "backgrounds", "characters", "textbox", "textbox_name" ],
             "textbox",
         );
 
-        m.textbox = addTextbox(m, opt.textbox ?? {});
+        m._textbox = addTextbox(m, opt.textbox ?? {});
 
         // Process the first game action.
         processAction(m);
