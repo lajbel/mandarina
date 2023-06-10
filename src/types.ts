@@ -24,7 +24,7 @@ export interface MandarinaPlugin {
             action: number;
 
             runningAction: boolean;
-        }
+        };
     };
 
     // #region Configuration and setup
@@ -52,12 +52,12 @@ export interface MandarinaPlugin {
      * Writes a text in the textbox as a character.
      * @param characterId Character's id.
      * @param text Text to write.
-    */
+     */
     say(characterId: string, text: string): Action<"normal">;
     /**
      * Writes a text in the textbox.
      * @param text Text to write.
-    */
+     */
     say(text: string): Action<"normal">;
     /**
      * Shows a character in the screen.
@@ -65,16 +65,20 @@ export interface MandarinaPlugin {
      * @param expression Character's expression.
      * @param align Character's alignment.
      */
-    show(characterId: string, expression: string, align?: string): Action<"visual">;
+    show(
+        characterId: string,
+        expression: string,
+        align?: string
+    ): Action<"visual">;
     /**
      * Hides a character in the screen.
      * @param characterId Character's id.
-    */
+     */
     hide(characterId: string): Action<"visual">;
     /**
      * Shows a background in the screen.
      * @param sprite Background's sprite.
-    */
+     */
     bg(sprite: string): Action<"visual">;
     /**
      * Shows a color background in the screen.
@@ -85,11 +89,11 @@ export interface MandarinaPlugin {
 
 export interface MandarinaOpt extends KA.KaboomOpt {
     /** Default textbox options. */
-    textbox?: TextboxOpt,
+    textbox?: TextboxOpt;
     /** Default text writes velocity. Default 0.05. */
-    writeVel?: number,
+    writeVel?: number;
     /** Default text writes waiting before a comma. Default 0.5. */
-    writeCommaWait?: number,
+    writeCommaWait?: number;
 }
 
 // #endregion
@@ -108,18 +112,21 @@ export type ActionRaw = {
     exec(): void | Promise<void>;
     /** Action's skipped function. */
     skip?(): void | Promise<void>;
-}
+};
 
 export type ActionNormal = {
     type: "normal";
-}
+};
 
 export type ActionVisual = {
     type: "visual";
     fadeIn(): Action<"visual">;
-}
+};
 
-export type Action<T = unknown> = ActionRaw & { type: T } & (ActionNormal | ActionVisual);
+export type Action<T = unknown> = ActionRaw & { type: T } & (
+        | ActionNormal
+        | ActionVisual
+    );
 
 // #endregion
 
@@ -145,7 +152,9 @@ export interface CharacterDataOpt {
 
 // #region Textbox
 
-export type Textbox = KA.GameObj<KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp>;
+export type Textbox = KA.GameObj<
+    KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
+>;
 
 export interface TextboxComp extends KA.Comp {
     /** If the textbox is in skip. */

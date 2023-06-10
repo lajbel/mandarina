@@ -1,3 +1,4 @@
+import type * as KA from "kaboom";
 import type { MandarinaPlugin } from "../types";
 import { createAction } from "../chapters";
 
@@ -8,6 +9,7 @@ export function showCharacter(
     align = "center",
 ) {
     const k = this.k;
+    let ch: KA.GameObj;
 
     return createAction({
         id: "show_character",
@@ -37,7 +39,7 @@ export function showCharacter(
                 ],
             };
 
-            k.add([
+            ch = k.add([
                 ...alignments[align],
                 k.layer("characters"),
                 k.sprite(expressionSprite),
@@ -46,7 +48,12 @@ export function showCharacter(
             ]);
         },
         fadeIn() {
-            k.get("character_" + characterId, { recursive: true })[0].use(k.fadeIn(0.5));
+            k.onAdd((obj) => {
+                if (obj.id === ch.id) {
+                    ch.use(k.fadeIn(0.5));
+                }
+            });
+            
             return this;
         }
     });

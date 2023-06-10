@@ -44,7 +44,8 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
 export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
     const k = kaboom({
         ...opt,
-        plugins: [ mandarinaPlugin, layerPlugin ],
+        plugins: [ mandarinaPlugin,
+            layerPlugin ],
     });
 
     const mandarinaCtx: MandarinaPlugin = {

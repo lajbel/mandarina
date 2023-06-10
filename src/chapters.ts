@@ -1,7 +1,11 @@
 import type { Action, ActionType, MandarinaPlugin } from "./types";
 
 // Chapters are how Mandarina novels are organized.
-export function addChapter(this: MandarinaPlugin, name: string, actions: () => Action<unknown>[]) {
+export function addChapter(
+    this: MandarinaPlugin,
+    name: string,
+    actions: () => Action<unknown>[],
+) {
     this.data.chapters.set(name, actions());
 }
 
@@ -14,14 +18,15 @@ export function createAction<T extends ActionType>(opt: Action<T>): Action<T> {
 // Process actions info in game
 export async function processAction(m: MandarinaPlugin) {
     const chapter = m.data.chapters.get(m.data.current.chapter);
-    if(!chapter) return;
+    if (!chapter) return;
 
     const action = chapter[m.data.current.action];
 
     // If there's not action, won't do anything.
-    if(!action) return;
+    if (!action) return;
 
-    if(m.data.current.runningAction && action && action.skip) return action.skip();
+    if (m.data.current.runningAction && action && action.skip)
+        return action.skip();
 
     m.data.current.runningAction = true;
 
@@ -31,6 +36,5 @@ export async function processAction(m: MandarinaPlugin) {
     m.data.current.runningAction = false;
 
     m.data.current.action++;
-    if(action.autoskip) processAction(m);
+    if (action.autoskip) processAction(m);
 }
-

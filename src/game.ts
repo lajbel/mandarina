@@ -7,12 +7,13 @@ export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
 
     k.scene("mandarina", () => {
         // Layers
-        k.layers([
-            "backgrounds",
-            "characters",
+        k.layers(
+            [ "backgrounds",
+                "characters",
+                "textbox",
+                "textbox_name" ],
             "textbox",
-            "textbox_name",
-        ], "textbox");
+        );
 
         m.textbox = addTextbox(m, opt.textbox ?? {});
 

@@ -1,6 +1,11 @@
 // The textbox object.
 import type * as KA from "kaboom";
-import type { MandarinaPlugin, Textbox, TextboxComp, TextboxOpt } from "./types";
+import type {
+    MandarinaPlugin,
+    Textbox,
+    TextboxComp,
+    TextboxOpt,
+} from "./types";
 
 function textboxComp(k: KA.KaboomCtx): TextboxComp {
     let textbox: KA.GameObj;
@@ -96,7 +101,7 @@ export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
     // Hacky way to get the sprite's width and height.
     let loadedSpriteDimensions: KA.Vec2 | null = null;
 
-    if(options.sprite) {
+    if (options.sprite) {
         const spr = k.add([
             k.pos(k.vec2(k.width(), k.height()).scale(100)),
             k.sprite(options.sprite),
@@ -106,8 +111,12 @@ export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
     }
 
     // Get the textbox's width and height if is sprite, if not, use the opt values.
-    const textboxWidth: number = options.sprite ? loadedSpriteDimensions?.x as number : options.width;
-    const textboxHeight: number = options.sprite ? loadedSpriteDimensions?.y as number : options.height;
+    const textboxWidth: number = options.sprite
+        ? (loadedSpriteDimensions?.x as number)
+        : options.width;
+    const textboxHeight: number = options.sprite
+        ? (loadedSpriteDimensions?.y as number)
+        : options.height;
 
     // The textbox parent object.
     const textbox: Textbox = k.make([
@@ -122,14 +131,17 @@ export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
     textbox.add([
         k.layer("textbox"),
         k.anchor("bot"),
-        options.sprite ?
-            k.sprite(options.sprite) :
-            k.rect(options.width, options.height),
+        options.sprite
+            ? k.sprite(options.sprite)
+            : k.rect(options.width, options.height),
     ]);
 
     // The textbox's text.
     textbox.text = textbox.add([
-        k.pos((-textboxWidth / 2) + options.textOffset.x, (-textboxHeight) + options.textOffset.y),
+        k.pos(
+            -textboxWidth / 2 + options.textOffset.x,
+            -textboxHeight + options.textOffset.y,
+        ),
         k.layer("textbox"),
         k.text("", {
             width: textboxWidth,
