@@ -32,6 +32,11 @@ export interface MandarinaPlugin {
 
     // #region Actions
     /**
+     * Changes the current chapter.
+     * @param name Chapter's id.
+     */
+    jump(name: string): Action<"normal">;
+    /**
      * Writes a text in the textbox as a character.
      * @param characterId Character's id.
      * @param text Text to write.

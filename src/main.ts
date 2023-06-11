@@ -3,7 +3,7 @@ import type { MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
 import { addChapter } from "./chapters";
-import { say } from "./actions/narration";
+import { changeChapter, say } from "./actions/narration";
 import { showCharacter, hideCharacter } from "./actions/character";
 import { showBackground } from "./actions/backgrounds";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
@@ -32,6 +32,7 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
         chapter: addChapter,
 
         /** Actions */
+        jump: changeChapter,
         say,
         show: showCharacter,
         hide: hideCharacter,

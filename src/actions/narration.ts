@@ -30,3 +30,15 @@ export function say(this: MandarinaPlugin, ...args: string[]) {
         },
     });
 }
+
+// Change the current chapter
+export function changeChapter(this: MandarinaPlugin, name: string) {
+    return createAction({
+        id: "change_chapter",
+        type: "normal",
+        exec: () => {
+            data.current.chapter = name;
+            data.current.action = 0;
+        },
+    });
+}
