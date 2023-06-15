@@ -1,7 +1,9 @@
 import type * as KA from "kaboom";
 import type { LayerPlugin } from "./plugins/layer";
 
+// #region Main function
 declare function mandarina(opt?: MandarinaOpt): MandarinaPlugin;
+// #endregion
 
 // #region Mandarina Plugin
 export type MandarinaPlugin = {
@@ -27,7 +29,7 @@ export type MandarinaPlugin = {
      * @param id Chapter's id, will be used to refer the chapter in all game code.
      * @param actions Chapter's actions.
      */
-    chapter(id: string, actions: () => Action<unknown>[]): void;
+    chapter<T extends ActionType>(id: string, actions: () => Action<T>[]): void;
 
     /**
      * Starts the game.
@@ -40,18 +42,18 @@ export type MandarinaPlugin = {
      * Changes the current chapter.
      * @param name Chapter's id.
      */
-    jump(name: string): Action<"normal">;
+    jump(name: string): ActionNormal;
     /**
      * Writes a text in the textbox as a character.
      * @param characterId Character's id.
      * @param text Text to write.
      */
-    say(characterId: string, text: string): Action<"normal">;
+    say(characterId: string, text: string): ActionNormal;
     /**
      * Writes a text in the textbox.
      * @param text Text to write.
      */
-    say(text: string): Action<"normal">;
+    say(text: string): ActionNormal;
     /**
      * Shows a character in the screen.
      * @param characterId Character's id.
@@ -88,16 +90,17 @@ export type MandarinaOpt = KA.KaboomOpt & {
     /** Default text writes waiting before a comma. Default 0.5. */
     writeCommaWait?: number;
 };
-
 // #endregion
 
 // #region Actions
 // TODO: An action controller?
-export type ActionType = "normal" | "visual";
+export type ActionType = "normal" | "visual" | "audio";
 
-export type ActionRaw = {
+export interface ActionRaw {
     /** Action's id. */
     id: string;
+    /** Action's type. */
+    type: ActionType;
     /** If action won't wait for an user interaction to continue to the next one. */
     autoskip?: boolean;
     /** Action type */
@@ -105,23 +108,37 @@ export type ActionRaw = {
     start(): void | Promise<void>;
     /** Action's skipped function. */
     skip?(): void | Promise<void>;
-};
+}
 
-export type ActionNormal = {
+export interface ActionNormal extends ActionRaw {
     type: "normal";
-};
+}
 
-export type ActionVisual = {
+export interface ActionVisual extends ActionRaw {
     type: "visual";
+    /** If the visual will fadeIn. */
     fade: boolean;
+    /** fadeIn visual. */
     fadeIn(): Action<"visual">;
-};
+}
 
-// IMPROVE ACTIONS TYPING
-export type Action<T = unknown> = ActionRaw & { type: T } & (
-        | ActionNormal
-        | ActionVisual
-    );
+export interface ActionAudio extends ActionRaw {
+    type: "audio";
+    volume: number;
+
+    /** Plays the audio with a different volumen */
+    withVolume(volume: number): ActionAudio;
+}
+
+type ActionByType<T> = T extends "normal"
+    ? ActionNormal
+    : T extends "visual"
+    ? ActionVisual
+    : T extends "audio"
+    ? ActionAudio
+    : never;
+
+export type Action<T extends ActionType = any> = ActionByType<T>;
 
 // #endregion
 
@@ -148,7 +165,7 @@ export type Textbox = KA.GameObj<
     KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
 >;
 
-export interface TextboxComp extends KA.Comp {
+export type TextboxComp = KA.Comp & {
     /** If the textbox is in skip. */
     skipped: boolean;
     /** Current character of the writing text. */
@@ -170,7 +187,7 @@ export interface TextboxComp extends KA.Comp {
     hide(this: Textbox): void;
     /** Change the namebox's text */
     changeName(this: Textbox, text: string): void;
-}
+};
 
 export type TextboxOpt = {
     /** Kaboom loaded sprite for use in textbox. */

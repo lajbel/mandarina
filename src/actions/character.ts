@@ -1,5 +1,5 @@
 import type { MandarinaPlugin } from "../types";
-import { data } from "../main";
+import { getData } from "../main";
 import { createAction } from "../game";
 
 export function showCharacter(
@@ -8,9 +8,10 @@ export function showCharacter(
     expression = "default",
     align = "center",
 ) {
-    const k = this.k;
+    const data = getData();
+    const k = data.k;
 
-    return createAction({
+    return createAction<"visual">({
         id: "show_character",
         type: "visual",
         autoskip: true,
@@ -52,7 +53,7 @@ export function showCharacter(
 export function hideCharacter(this: MandarinaPlugin, characterId: string) {
     const k = this.k;
 
-    return createAction({
+    return createAction<"normal">({
         id: "hide_character",
         type: "normal",
         start: () => {

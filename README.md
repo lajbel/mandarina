@@ -34,8 +34,8 @@ m.chapter("start", () => [
     m.jump("ch1"),
 ]);
 
-// We go to the Mandarina scene through kaboom.js
-m.k.go("mandarina_novel");
+// Start novel
+m.start();
 ```
 
 Full [`example`](example/)

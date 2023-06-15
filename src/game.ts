@@ -18,7 +18,10 @@ const LAYERS = [
 ];
 
 // Chapters are how Mandarina novels are organized.
-export function addChapter(name: string, actions: () => Action<unknown>[]) {
+export function addChapter<T extends ActionType>(
+    name: string,
+    actions: () => Action<T>[],
+) {
     getData().chapters.set(name, actions());
 }
 

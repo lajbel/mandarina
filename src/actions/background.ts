@@ -1,11 +1,11 @@
 import type { MandarinaPlugin } from "../types";
-import { data } from "../main";
+import { getData } from "../main";
 import { createAction } from "../game";
 
 export function showBackground(this: MandarinaPlugin, background: string) {
-    const k = data.k;
+    const k = getData().k;
 
-    return createAction({
+    return createAction<"visual">({
         id: "showBackground",
         type: "visual",
         autoskip: true,

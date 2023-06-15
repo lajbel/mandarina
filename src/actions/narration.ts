@@ -1,18 +1,18 @@
 import type { MandarinaPlugin } from "../types";
+import { getData } from "../main";
 import { createAction } from "../game";
-import { data } from "../main";
 
 export function say(this: MandarinaPlugin, ...args: string[]) {
     // If there's two args, that means there's a character
     // if not, only write the first one as the text.
-    return createAction({
+    return createAction<"normal">({
         id: "say",
         type: "normal",
         start: async () => {
             if (!this._textbox) throw new Error("Textbox not found.");
 
             if (args.length > 1) {
-                const ch = data.characters.get(args[0]);
+                const ch = getData().characters.get(args[0]);
                 if (!ch)
                     throw new Error(
                         `Character with the ${args[0]} id's not found.`,
@@ -33,12 +33,12 @@ export function say(this: MandarinaPlugin, ...args: string[]) {
 
 // Change the current chapter
 export function changeChapter(this: MandarinaPlugin, name: string) {
-    return createAction({
+    return createAction<"normal">({
         id: "change_chapter",
         type: "normal",
         start: () => {
-            data.current.chapter = name;
-            data.current.action = -1;
+            getData().current.chapter = name;
+            getData().current.action = -1;
         },
     });
 }
