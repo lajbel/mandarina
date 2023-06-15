@@ -5,7 +5,7 @@ import type {
     Textbox,
     TextboxComp,
     TextboxOpt,
-} from "./types";
+} from "../types";
 
 function textboxComp(k: KA.KaboomCtx): TextboxComp {
     let textbox: KA.GameObj;

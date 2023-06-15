@@ -1,5 +1,5 @@
 import type { MandarinaPlugin } from "../types";
-import { createAction } from "../chapters";
+import { createAction } from "../game";
 import { data } from "../main";
 
 export function say(this: MandarinaPlugin, ...args: string[]) {

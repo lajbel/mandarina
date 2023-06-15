@@ -1,6 +1,6 @@
 import type { MandarinaPlugin } from "../types";
 import { data } from "../main";
-import { createAction } from "../chapters";
+import { createAction } from "../game";
 
 export function showCharacter(
     this: MandarinaPlugin,

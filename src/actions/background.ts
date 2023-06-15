@@ -1,17 +1,15 @@
-import type * as KA from "kaboom";
 import type { MandarinaPlugin } from "../types";
-import { createAction } from "../chapters";
+import { data } from "../main";
+import { createAction } from "../game";
 
-export function showBackground(
-    this: MandarinaPlugin,
-    background: string | KA.Color,
-) {
-    const k = this.k;
+export function showBackground(this: MandarinaPlugin, background: string) {
+    const k = data.k;
 
     return createAction({
         id: "showBackground",
         type: "visual",
         autoskip: true,
+        fade: false,
         start: () => {
             if (typeof background === "string") {
                 k.add([ k.layer("backgrounds"), k.sprite(background) ]);

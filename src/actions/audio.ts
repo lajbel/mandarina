@@ -1,8 +1,11 @@
+// All audio related actions
+
 import type { MandarinaPlugin } from "../types";
-import { createAction } from "../chapters";
+import { data } from "../main";
+import { createAction } from "../game";
 
 export function playSound(this: MandarinaPlugin, audio: string) {
-    const k = this.k;
+    const k = data.k;
 
     return createAction({
         id: "play_sound",

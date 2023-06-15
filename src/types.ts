@@ -4,14 +4,14 @@ import type { LayerPlugin } from "./plugins/layer";
 declare function mandarina(opt?: MandarinaOpt): MandarinaPlugin;
 
 // #region Mandarina Plugin
-export interface MandarinaPlugin {
+export type MandarinaPlugin = {
     k: KA.KaboomCtx & LayerPlugin;
 
     /** The textbox object, if there's one */
     _textbox?: Textbox;
 
     // #region Configuration and setup
-    loadSprite: KA.KaboomCtx["loadSprite"];
+    loadImage: KA.KaboomCtx["loadSprite"];
     loadSound: KA.KaboomCtx["loadSound"];
 
     /**
@@ -28,6 +28,11 @@ export interface MandarinaPlugin {
      * @param actions Chapter's actions.
      */
     chapter(id: string, actions: () => Action<unknown>[]): void;
+
+    /**
+     * Starts the game.
+     */
+    start(): void;
     // #endregion
 
     // #region Actions
@@ -71,18 +76,18 @@ export interface MandarinaPlugin {
     /**
      * Shows a color background in the screen.
      */
-    bg(color: string | KA.Color): Action<"visual">;
+    bg(color: string): Action<"visual">;
     // #endregion
-}
+};
 
-export interface MandarinaOpt extends KA.KaboomOpt {
+export type MandarinaOpt = KA.KaboomOpt & {
     /** Default textbox options. */
     textbox?: TextboxOpt;
     /** Default text writes velocity. Default 0.05. */
     writeVel?: number;
     /** Default text writes waiting before a comma. Default 0.5. */
     writeCommaWait?: number;
-}
+};
 
 // #endregion
 
@@ -108,6 +113,7 @@ export type ActionNormal = {
 
 export type ActionVisual = {
     type: "visual";
+    fade: boolean;
     fadeIn(): Action<"visual">;
 };
 
@@ -120,27 +126,24 @@ export type Action<T = unknown> = ActionRaw & { type: T } & (
 // #endregion
 
 // #region Characters
-
-export interface CharacterData {
+export type CharacterData = {
     /** Character's id, will be used to refer the character in all game code. */
     id: string;
     /** Character's name, will be displayed in the game. */
     name: string;
     /** Character's extra options. */
     opt?: CharacterDataOpt;
-}
+};
 
-export interface CharacterDataOpt {
+export type CharacterDataOpt = {
     /** Character's set of expressions. */
     expressions?: Record<string, string>;
     /** Character's name colour. */
     color?: string;
-}
-
+};
 // #endregion
 
 // #region Textbox
-
 export type Textbox = KA.GameObj<
     KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
 >;
@@ -169,7 +172,7 @@ export interface TextboxComp extends KA.Comp {
     changeName(this: Textbox, text: string): void;
 }
 
-export interface TextboxOpt {
+export type TextboxOpt = {
     /** Kaboom loaded sprite for use in textbox. */
     sprite?: string;
 
@@ -196,7 +199,7 @@ export interface TextboxOpt {
 
     /** Textbox's text offset */
     textOffset?: [number, number];
-}
+};
 
 // #endregion
 

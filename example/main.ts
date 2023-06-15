@@ -14,14 +14,15 @@ const m = mandarina({
     },
 });
 
-// Load sprites with Kaboom (temporary).
-m.loadSprite("testguy", "sprites/testguy.png");
-m.loadSprite("dsimui_textbox", "sprites/textbox.png");
+// Load images (assets)
+m.loadImage("nerune", "assets/nerune.png");
+m.loadImage("ruby", "assets/ruby.png");
+m.loadImage("dsimui_textbox", "assets/textbox.png");
 
 // We define characters
 m.character("t", "Deffy", {
     expressions: {
-        normal: "testguy",
+        normal: "nerune",
     },
 });
 
@@ -41,13 +42,6 @@ m.chapter("start", () => [
 
 m.chapter("ch1", () => [
     m.say("t", "This is a simple explaination of how Mandarina works."),
-    m.say("t", "First, we need to define a character."),
-    m.say("t", "We can do that with the character function."),
-    m.say("t", "The first arg is the char name and the second is the name"),
 ]);
 
-// We go to the Mandarina scene
-// TODO: Implement onLoad for assets
-m.k.onLoad(() => {
-    m.k.go("mandarina");
-});
+m.start();

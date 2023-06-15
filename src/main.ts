@@ -1,17 +1,33 @@
 import kaboom, { KaboomCtx } from "kaboom";
-import type { Action, MandarinaOpt, MandarinaPlugin } from "./types";
-import { startNovel } from "./game";
-import { addCharacter } from "./character";
-import { addChapter } from "./chapters";
+import type {
+    Action,
+    MandarinaOpt,
+    MandarinaPlugin,
+    CharacterData,
+} from "./types";
+import { startNovel, addChapter, addCharacter } from "./game";
 import { changeChapter, say } from "./actions/narration";
 import { showCharacter, hideCharacter } from "./actions/character";
-import { showBackground } from "./actions/backgrounds";
+import { showBackground } from "./actions/background";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
 
-export const data = {
+export type Data = {
+    k: KaboomCtx & LayerPlugin;
+    chapters: Map<string, Action[]>;
+    characters: Map<string, CharacterData>;
+    current: {
+        chapter: string;
+        action: number;
+        runningAction: boolean;
+    };
+};
+
+export const data: Data = {
+    // TODO: `as` usage
+    // TODO: `!` usage
+    k: null!,
     chapters: new Map<string, Action[]>(),
     characters: new Map(),
-
     current: {
         chapter: "start",
         action: 0,
@@ -20,16 +36,24 @@ export const data = {
 };
 
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
+    // TODO: `as` usage
+    data.k = k as KaboomCtx & LayerPlugin;
+
     // Exported to Kaboom's Context
     return {
+        // TODO: `as` usage
         k: k as KaboomCtx & LayerPlugin,
 
         /** Configuration and setup */
-        loadSprite: k.loadSprite,
+        loadImage: k.loadSprite,
         loadSound: k.loadSound,
 
         character: addCharacter,
         chapter: addChapter,
+
+        start() {
+            k.go("mandarina");
+        },
 
         /** Actions */
         jump: changeChapter,
