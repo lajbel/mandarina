@@ -85,6 +85,10 @@ export type MandarinaPlugin = {
      * Shows a color background (k.rgb()) in the screen.
      */
     bg(color: KA.Color): Action<"visual">;
+    /**
+     * Plays a sound.
+     */
+    sound(sound: string): Action<"audio">;
     // #endregion
 };
 
@@ -171,7 +175,7 @@ export type Textbox = KA.GameObj<
     KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
 >;
 
-export type TextboxComp = KA.Comp & {
+export interface TextboxComp extends KA.Comp {
     /** If the textbox is in skip. */
     skipped: boolean;
     /** Current character of the writing text. */
@@ -193,7 +197,7 @@ export type TextboxComp = KA.Comp & {
     hide(this: Textbox): void;
     /** Change the namebox's text */
     changeName(this: Textbox, text: string): void;
-};
+}
 
 export type TextboxOpt = {
     /** Kaboom loaded sprite for use in textbox. */
@@ -223,7 +227,6 @@ export type TextboxOpt = {
     /** Textbox's text offset */
     textOffset?: [number, number];
 };
-
 // #endregion
 
 export default mandarina;
