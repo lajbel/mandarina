@@ -1,13 +1,10 @@
 // The textbox object.
 import type * as KA from "kaboom";
-import type {
-    MandarinaPlugin,
-    Textbox,
-    TextboxComp,
-    TextboxOpt,
-} from "../types";
+import type { Textbox, TextboxComp, TextboxOpt } from "../types";
+import { getData } from "../main";
 
-function textboxComp(k: KA.KaboomCtx): TextboxComp {
+function textboxComp(): TextboxComp {
+    const k = getData().k;
     let textbox: KA.GameObj;
     let namebox: KA.GameObj;
 
@@ -41,7 +38,7 @@ function textboxComp(k: KA.KaboomCtx): TextboxComp {
 
                     textbox.text += text[this.curChar];
 
-                    // If character is a comma, wait 0.5 seconds.
+                    // If character is a comma, wait some seconds.
                     if (text[this.curChar] == ",") await k.wait(0.5);
 
                     this.curChar++;
@@ -70,11 +67,27 @@ function textboxComp(k: KA.KaboomCtx): TextboxComp {
         },
 
         show() {
-            this.opacity = 1;
+            k.tween(
+                0,
+                1,
+                0.5,
+                (v) => {
+                    this.opacity = v;
+                },
+                k.easings.linear,
+            );
         },
 
         hide() {
-            this.opacity = 0;
+            k.tween(
+                1,
+                0,
+                0.5,
+                (v) => {
+                    this.opacity = v;
+                },
+                k.easings.linear,
+            );
         },
 
         changeName(text) {
@@ -83,13 +96,13 @@ function textboxComp(k: KA.KaboomCtx): TextboxComp {
     };
 }
 
-export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
-    const k = m.k;
+export function addTextbox(opt?: TextboxOpt): Textbox {
+    const k = getData().k;
 
     const options = {
         width: opt?.width ?? k.width() - k.width() / 16,
         height: opt?.height ?? 200,
-        pos: opt?.pos ?? k.vec2(0),
+        pos: opt?.pos ?? k.vec2(k.center().x, k.height()),
         sprite: opt?.sprite ?? undefined,
         textAlign: opt?.textAlign ?? "left",
         textSize: opt?.textSize ?? 16,
@@ -98,8 +111,7 @@ export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
         textOffset: opt?.textOffset ? k.vec2(...opt.textOffset) : k.vec2(0),
     };
 
-    // Hacky way to get the sprite's width and height.
-    let loadedSpriteDimensions: KA.Vec2 | null = null;
+    let boxDimensions: KA.Vec2;
 
     if (options.sprite) {
         const spr = k.add([
@@ -107,24 +119,22 @@ export function addTextbox(m: MandarinaPlugin, opt?: TextboxOpt): Textbox {
             k.sprite(options.sprite),
         ]);
 
-        loadedSpriteDimensions = k.vec2(spr.width, spr.height);
+        boxDimensions = k.vec2(spr.width, spr.height);
+    } else {
+        boxDimensions = k.vec2(options.width, options.height);
     }
 
     // Get the textbox's width and height if is sprite, if not, use the opt values.
-    const textboxWidth: number = options.sprite
-        ? (loadedSpriteDimensions?.x as number)
-        : options.width;
-    const textboxHeight: number = options.sprite
-        ? (loadedSpriteDimensions?.y as number)
-        : options.height;
+    const textboxWidth = boxDimensions.x;
+    const textboxHeight = boxDimensions.y;
 
     // The textbox parent object.
     const textbox: Textbox = k.make([
-        k.pos(k.center().x, k.height()),
+        k.pos(options.pos),
         k.layer("textbox"),
         k.anchor("bot"),
         k.opacity(1),
-        textboxComp(k),
+        textboxComp(),
     ]);
 
     // The textbox's background.

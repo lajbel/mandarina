@@ -6,7 +6,7 @@ import type {
     CharacterDataOpt,
 } from "./types";
 import { addTextbox } from "./objects/textbox";
-import { data } from "./main";
+import { getData } from "./main";
 
 // Some constants
 const LAYERS = [
@@ -19,7 +19,7 @@ const LAYERS = [
 
 // Chapters are how Mandarina novels are organized.
 export function addChapter(name: string, actions: () => Action<unknown>[]) {
-    data.chapters.set(name, actions());
+    getData().chapters.set(name, actions());
 }
 
 // In a chapter, there are actions, which are the things that happen in the story.
@@ -28,24 +28,10 @@ export function createAction<T extends ActionType>(opt: Action<T>): Action<T> {
     return opt;
 }
 
-// Characters are the actors
-export function addCharacter(
-    id: string,
-    name: string,
-    opt: CharacterDataOpt,
-): void {
-    if (data.characters.has(id))
-        throw new Error(`Character with id "${id}" already exists.`);
-
-    data.characters.set(id, {
-        id,
-        name,
-        opt,
-    });
-}
-
 // Process actions info in game
 export async function processAction(m: MandarinaPlugin) {
+    const data = getData();
+
     const chapter = data.chapters.get(data.current.chapter);
     if (!chapter) return;
 
@@ -72,16 +58,34 @@ export async function processAction(m: MandarinaPlugin) {
     }
 }
 
+// Characters are the actors
+export function addCharacter(
+    id: string,
+    name: string,
+    opt: CharacterDataOpt,
+): void {
+    const data = getData();
+
+    if (data.characters.has(id))
+        throw new Error(`Character with id "${id}" already exists.`);
+
+    data.characters.set(id, {
+        id,
+        name,
+        opt,
+    });
+}
+
 // The kaboom scene that starts the novel
 export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
-    const k = m.k;
+    const k = getData().k;
 
     k.scene("mandarina", () => {
         k.onLoad(() => {
             // Layers
             k.layers(LAYERS, "textbox");
 
-            m._textbox = addTextbox(m, opt.textbox ?? {});
+            m._textbox = addTextbox(opt.textbox);
 
             // Process the first game action.
             processAction(m);

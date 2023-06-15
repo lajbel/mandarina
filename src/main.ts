@@ -11,8 +11,11 @@ import { showCharacter, hideCharacter } from "./actions/character";
 import { showBackground } from "./actions/background";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
 
+let mandarinaPluginCtx: MandarinaPlugin;
+
 export type Data = {
     k: KaboomCtx & LayerPlugin;
+    m: MandarinaPlugin;
     chapters: Map<string, Action[]>;
     characters: Map<string, CharacterData>;
     current: {
@@ -22,10 +25,7 @@ export type Data = {
     };
 };
 
-export const data: Data = {
-    // TODO: `as` usage
-    // TODO: `!` usage
-    k: null!,
+export const data = {
     chapters: new Map<string, Action[]>(),
     characters: new Map(),
     current: {
@@ -35,12 +35,10 @@ export const data: Data = {
     },
 };
 
+// The plugin loaded to Kaboom
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
-    // TODO: `as` usage
-    data.k = k as KaboomCtx & LayerPlugin;
-
     // Exported to Kaboom's Context
-    return {
+    mandarinaPluginCtx = {
         // TODO: `as` usage
         k: k as KaboomCtx & LayerPlugin,
 
@@ -62,6 +60,8 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
         hide: hideCharacter,
         bg: showBackground,
     };
+
+    return mandarinaPluginCtx;
 }
 
 // The Mandaarina function creates a Kaboom game and add the plugin.
@@ -78,4 +78,13 @@ export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
     startNovel(mandarinaCtx, opt);
 
     return mandarinaCtx;
+}
+
+// Get data
+export function getData(): Data {
+    return {
+        m: mandarinaPluginCtx,
+        k: mandarinaPluginCtx.k,
+        ...data,
+    };
 }
