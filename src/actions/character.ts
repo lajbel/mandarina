@@ -14,6 +14,7 @@ export function showCharacter(
         id: "show_character",
         type: "visual",
         autoskip: true,
+        fade: false,
         start: () => {
             const character = data.characters.get(characterId);
             if (!character)
