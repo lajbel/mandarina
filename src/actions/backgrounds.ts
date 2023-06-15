@@ -7,19 +7,16 @@ export function showBackground(
     background: string | KA.Color,
 ) {
     const k = this.k;
-    let bg: KA.GameObj<unknown>;
 
     return createAction({
         id: "showBackground",
         type: "visual",
         autoskip: true,
-        exec: () => {
-            console.log("action exec runned");
-
+        start: () => {
             if (typeof background === "string") {
-                bg = k.add([ k.layer("backgrounds"), k.sprite(background) ]);
+                k.add([ k.layer("backgrounds"), k.sprite(background) ]);
             } else {
-                bg = k.add([
+                k.add([
                     k.layer("backgrounds"),
                     k.rect(k.width(), k.height()),
                     k.color(background),
@@ -27,17 +24,7 @@ export function showBackground(
             }
         },
         fadeIn() {
-            console.log("action fadein runned");
-
-            k.onAdd((obj) => {
-                console.log("nashex");
-
-                if (obj.id === bg.id) {
-                    k.debug.log("xds");
-                    bg.use(k.fadeIn(2));
-                }
-            });
-
+            this.fade = true;
             return this;
         },
     });

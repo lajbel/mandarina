@@ -8,7 +8,7 @@ export function playSound(this: MandarinaPlugin, audio: string) {
         id: "play_sound",
         type: "normal",
         autoskip: true,
-        exec: () => {
+        start: () => {
             k.play(audio);
         },
     });

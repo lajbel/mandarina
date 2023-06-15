@@ -35,7 +35,15 @@ m.chapter("start", () => [
     m.say("t", "Welcome to this Mandarina test!"),
     m.say("t", "This engine are in development, so it's not ready yet."),
 
-    m.show("t", "normal", "right").fadeIn(),
+    // Jump to another chapter
+    m.jump("ch1"),
+]);
+
+m.chapter("ch1", () => [
+    m.say("t", "This is a simple explaination of how Mandarina works."),
+    m.say("t", "First, we need to define a character."),
+    m.say("t", "We can do that with the character function."),
+    m.say("t", "The first arg is the char name and the second is the name"),
 ]);
 
 // We go to the Mandarina scene

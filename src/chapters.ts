@@ -27,11 +27,15 @@ export async function processAction(m: MandarinaPlugin) {
 
     data.current.runningAction = true;
 
-    // Process action
-    await action.exec();
+    // Process start action
+    await action.start();
 
     data.current.runningAction = false;
 
     data.current.action++;
-    if (action.autoskip) processAction(m);
+    if (action.autoskip) {
+        // TODO: implement
+        // action.finish();
+        processAction(m);
+    }
 }

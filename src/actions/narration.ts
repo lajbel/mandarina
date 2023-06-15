@@ -8,7 +8,7 @@ export function say(this: MandarinaPlugin, ...args: string[]) {
     return createAction({
         id: "say",
         type: "normal",
-        exec: async () => {
+        start: async () => {
             if (!this._textbox) throw new Error("Textbox not found.");
 
             if (args.length > 1) {
@@ -36,9 +36,9 @@ export function changeChapter(this: MandarinaPlugin, name: string) {
     return createAction({
         id: "change_chapter",
         type: "normal",
-        exec: () => {
+        start: () => {
             data.current.chapter = name;
-            data.current.action = 0;
+            data.current.action = -1;
         },
     });
 }

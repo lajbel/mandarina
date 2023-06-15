@@ -62,7 +62,7 @@ export interface MandarinaPlugin {
      * Hides a character in the screen.
      * @param characterId Character's id.
      */
-    hide(characterId: string): Action<"visual">;
+    hide(characterId: string): Action<"normal">;
     /**
      * Shows a background in the screen.
      * @param sprite Background's sprite.
@@ -97,7 +97,7 @@ export type ActionRaw = {
     autoskip?: boolean;
     /** Action type */
     /** Action's execution function. */
-    exec(): void | Promise<void>;
+    start(): void | Promise<void>;
     /** Action's skipped function. */
     skip?(): void | Promise<void>;
 };
@@ -111,6 +111,7 @@ export type ActionVisual = {
     fadeIn(): Action<"visual">;
 };
 
+// IMPROVE ACTIONS TYPING
 export type Action<T = unknown> = ActionRaw & { type: T } & (
         | ActionNormal
         | ActionVisual

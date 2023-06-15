@@ -1,5 +1,5 @@
 import kaboom, { KaboomCtx } from "kaboom";
-import type { MandarinaOpt, MandarinaPlugin } from "./types";
+import type { Action, MandarinaOpt, MandarinaPlugin } from "./types";
 import { startNovel } from "./game";
 import { addCharacter } from "./character";
 import { addChapter } from "./chapters";
@@ -9,7 +9,7 @@ import { showBackground } from "./actions/backgrounds";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
 
 export const data = {
-    chapters: new Map(),
+    chapters: new Map<string, Action[]>(),
     characters: new Map(),
 
     current: {

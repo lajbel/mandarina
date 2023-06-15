@@ -3,28 +3,39 @@
 Mandarina is an engine based in kaboom.js, made for make visual novels.
 
 ## Example code
+
 ```js
 import mandarina from "mandarinavn";
 
-// Some init options
+// Init options
 const m = mandarina({
-	textbox: {
+    textbox: {
         textFont: "comic-sans",
         textSize: 24,
-    }
+    },
 });
 
-// We define characters
+// Define characters
 m.character("d", "Dude");
 m.character("b", "Bro");
 
-// We create the start chapter
+// Create the start chapter
 m.chapter("start", () => [
-	m.say("d", "Hello bro"),
-	m.say("b", "Hi dude"),
+    // Show a background
+    m.bg(new m.k.Color(255, 255, 255)).fadeIn(),
+    // Show our character.
+    m.show("t", "normal"),
+    // Say something.
+    m.say("t", "Hi human, object, or whatever you are!"),
+    m.say("t", "Welcome to this Mandarina test!"),
+    m.say("t", "This engine are in development, so it's not ready yet."),
+
+    // Jump to another chapter
+    m.jump("ch1"),
 ]);
 
 // We go to the Mandarina scene through kaboom.js
 m.k.go("mandarina_novel");
 ```
+
 Full [`example`](example/)
