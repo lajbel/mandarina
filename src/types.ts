@@ -44,18 +44,18 @@ export type MandarinaPlugin = {
      * Changes the current chapter.
      * @param name Chapter's id.
      */
-    jump(name: string): ActionNormal;
+    jump(name: string): NormalAction;
     /**
      * Writes a text in the textbox as a character.
      * @param characterId Character's id.
      * @param text Text to write.
      */
-    say(characterId: string, text: string): ActionNormal;
+    say(characterId: string, text: string): NormalAction;
     /**
      * Writes a text in the textbox.
      * @param text Text to write.
      */
-    say(text: string): ActionNormal;
+    say(text: string): NormalAction;
     /**
      * Shows a character in the screen.
      * @param characterId Character's id.
@@ -71,24 +71,24 @@ export type MandarinaPlugin = {
      * Hides a character in the screen.
      * @param characterId Character's id.
      */
-    hide(characterId: string): Action<"normal">;
+    hide(characterId: string): NormalAction;
     /**
      * Shows a background in the screen.
      * @param sprite Background's sprite.
      */
-    bg(sprite: string): Action<"visual">;
+    bg(sprite: string): VisualAction;
     /**
      * Shows a color background (hex) in the screen.
      */
-    bg(color: string): Action<"visual">;
+    bg(color: string): VisualAction;
     /**
      * Shows a color background (k.rgb()) in the screen.
      */
-    bg(color: KA.Color): Action<"visual">;
+    bg(color: KA.Color): VisualAction;
     /**
      * Plays a sound.
      */
-    sound(sound: string): Action<"audio">;
+    sound(sound: string): AudioAction;
     // #endregion
 };
 
@@ -106,7 +106,7 @@ export type MandarinaOpt = KA.KaboomOpt & {
 // TODO: An action controller?
 export type ActionType = "normal" | "visual" | "audio";
 
-export interface ActionRaw {
+export interface BaseAction {
     /** Action's id. */
     id: string;
     /** Action's type. */
@@ -120,11 +120,11 @@ export interface ActionRaw {
     skip?(): void | Promise<void>;
 }
 
-export interface ActionNormal extends ActionRaw {
+export interface NormalAction extends BaseAction {
     type: "normal";
 }
 
-export interface ActionVisual extends ActionRaw {
+export interface VisualAction extends BaseAction {
     type: "visual";
     /** If the visual will fadeIn. */
     fade: boolean;
@@ -132,20 +132,20 @@ export interface ActionVisual extends ActionRaw {
     fadeIn(): Action<"visual">;
 }
 
-export interface ActionAudio extends ActionRaw {
+export interface AudioAction extends BaseAction {
     type: "audio";
     volume: number;
 
     /** Plays the audio with a different volumen */
-    withVolume(volume: number): ActionAudio;
+    withVolume(volume: number): AudioAction;
 }
 
 type ActionByType<T> = T extends "normal"
-    ? ActionNormal
+    ? NormalAction
     : T extends "visual"
-    ? ActionVisual
+    ? VisualAction
     : T extends "audio"
-    ? ActionAudio
+    ? AudioAction
     : never;
 
 export type Action<T extends ActionType = any> = ActionByType<T>;
