@@ -28,7 +28,7 @@ m.character("t", "Deffy", {
 
 m.chapter("start", () => [
     // Show a background
-    m.bg(new m.k.Color(255, 255, 255)).fadeIn(),
+    m.bg(m.k.rgb(255, 255, 255)).fadeIn(),
     // Show our character.
     m.show("t", "normal"),
     // Say something.

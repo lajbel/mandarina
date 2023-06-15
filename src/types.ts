@@ -11,6 +11,8 @@ export type MandarinaPlugin = {
 
     /** The textbox object, if there's one */
     _textbox?: Textbox;
+    /** In-game pronous */
+    pronouns: string;
 
     // #region Configuration and setup
     loadImage: KA.KaboomCtx["loadSprite"];
@@ -76,9 +78,13 @@ export type MandarinaPlugin = {
      */
     bg(sprite: string): Action<"visual">;
     /**
-     * Shows a color background in the screen.
+     * Shows a color background (hex) in the screen.
      */
     bg(color: string): Action<"visual">;
+    /**
+     * Shows a color background (k.rgb()) in the screen.
+     */
+    bg(color: KA.Color): Action<"visual">;
     // #endregion
 };
 

@@ -41,6 +41,7 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
     mandarinaPluginCtx = {
         // TODO: `as` usage
         k: k as KaboomCtx & LayerPlugin,
+        pronouns: "none",
 
         /** Configuration and setup */
         loadImage: k.loadSprite,
