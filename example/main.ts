@@ -21,6 +21,7 @@ m.loadImage("dsimui_textbox", "assets/textbox.png");
 
 // We define characters
 m.character("t", "Deffy", {
+    color: "#873e84",
     expressions: {
         normal: "nerune",
     },
@@ -29,8 +30,10 @@ m.character("t", "Deffy", {
 m.chapter("start", () => [
     // Show a background
     m.bg(m.k.rgb(255, 255, 255)).fadeIn(),
+    // A text
+    m.say("..."),
     // Show our character.
-    m.show("t", "normal"),
+    m.show("t", "normal").fadeIn(),
     // Say something.
     m.say("t", "Hi human, object, or whatever you are!"),
     m.say("t", "Welcome to this Mandarina test!"),

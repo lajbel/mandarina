@@ -4,7 +4,7 @@ import { getData } from "../main";
 // TODO: move to types.ts
 type Choice = {
     text: string;
-    actions: () => Action<unknown>[];
+    actions: () => Action[];
 };
 
 export function addChoices(choices: Choice[]) {

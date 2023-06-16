@@ -32,33 +32,57 @@ export function createAction<T extends ActionType>(opt: Action<T>): Action<T> {
 }
 
 // Process actions info in game
-export async function processAction(m: MandarinaPlugin) {
+function getCurrentAction() {
     const data = getData();
 
     const chapter = data.chapters.get(data.current.chapter);
     if (!chapter) return;
 
-    const action = chapter[data.current.action];
+    return chapter[data.current.action];
+}
 
-    // If there's not action, won't do anything.
+async function processAction() {
+    const data = getData();
+    const action = getCurrentAction();
     if (!action) return;
 
-    if (data.current.runningAction && action && action.skip)
-        return action.skip();
+    if (data.current.runningAction) skipAction();
 
     data.current.runningAction = true;
 
-    // Process start action
+    // Run action
     await action.start();
 
     data.current.runningAction = false;
 
-    data.current.action++;
     if (action.autoskip) {
-        // TODO: implement
-        // action.finish();
-        processAction(m);
+        skipAction();
+        nextAction();
     }
+}
+
+function nextAction() {
+    const data = getData();
+    data.current.action++;
+
+    processAction();
+}
+
+function previousAction() {
+    const data = getData();
+    const action = getCurrentAction();
+
+    action?.back();
+    data.current.action--;
+
+    processAction();
+}
+
+function skipAction() {
+    const action = getCurrentAction();
+    if (!action) return;
+
+    action.skip();
 }
 
 // Characters are the actors
@@ -91,7 +115,7 @@ export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
             m._textbox = addTextbox(opt.textbox);
 
             // Process the first game action.
-            processAction(m);
+            processAction();
 
             // Input
             k.onUpdate(() => {
@@ -100,16 +124,26 @@ export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
                     k.isKeyPressed("right") ||
                     k.isMousePressed()
                 ) {
-                    processAction(m);
+                    nextAction();
                 }
             });
 
             k.onKeyDown("up", () => {
-                k.camScale(k.camScale().add(k.vec2(k.dt())));
+                if (k.isKeyDown("shift"))
+                    k.camScale(k.camScale().add(k.vec2(k.dt())));
             });
 
             k.onKeyDown("down", () => {
-                k.camScale(k.camScale().sub(k.vec2(k.dt())));
+                if (k.isKeyDown("shift"))
+                    k.camScale(k.camScale().sub(k.vec2(k.dt())));
+            });
+
+            k.onKeyPress("left", () => {
+                previousAction();
+            });
+
+            k.onKeyPress("right", () => {
+                nextAction();
             });
         });
     });

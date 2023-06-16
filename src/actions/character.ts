@@ -1,3 +1,4 @@
+import type * as KA from "kaboom";
 import type { MandarinaPlugin } from "../types";
 import { getData } from "../main";
 import { createAction } from "../game";
@@ -10,13 +11,20 @@ export function showCharacter(
 ) {
     const data = getData();
     const k = data.k;
+    let ch: KA.GameObj;
 
     return createAction<"visual">({
         id: "show_character",
         type: "visual",
         autoskip: true,
         fade: false,
-        start: () => {
+        start() {
+            const comps: KA.Comp[] = [];
+
+            if (this.fade) {
+                comps.push(k.opacity(0), k.fadeIn(1));
+            }
+
             const character = data.characters.get(characterId);
             if (!character)
                 throw new Error(
@@ -35,13 +43,22 @@ export function showCharacter(
                 right: [ k.pos(k.width(), k.height()), k.anchor("botright") ],
             };
 
-            k.add([
+            ch = k.add([
                 ...alignments[align],
                 k.layer("characters"),
                 k.sprite(expressionSprite),
                 k.opacity(1),
+                ...comps,
                 "character_" + characterId,
             ]);
+        },
+        back() {
+            if (!ch) return;
+
+            ch.destroy();
+        },
+        skip() {
+            return;
         },
         fadeIn() {
             this.fade = true;
@@ -58,6 +75,12 @@ export function hideCharacter(this: MandarinaPlugin, characterId: string) {
         type: "normal",
         start: () => {
             k.get("character_" + characterId, { recursive: true })[0].destroy();
+        },
+        skip() {
+            return;
+        },
+        back() {
+            this.showCharacter(characterId, "default", "center");
         },
     });
 }

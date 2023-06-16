@@ -103,7 +103,6 @@ export type MandarinaOpt = KA.KaboomOpt & {
 // #endregion
 
 // #region Actions
-// TODO: An action controller?
 export type ActionType = "normal" | "visual" | "audio";
 
 export interface BaseAction {
@@ -113,11 +112,12 @@ export interface BaseAction {
     type: ActionType;
     /** If action won't wait for an user interaction to continue to the next one. */
     autoskip?: boolean;
-    /** Action type */
-    /** Action's execution function. */
+    /** Runs when action starts */
     start(): void | Promise<void>;
+    /** Runs when action is backed. */
+    back(): void | Promise<void>;
     /** Action's skipped function. */
-    skip?(): void | Promise<void>;
+    skip(): void | Promise<void>;
 }
 
 export interface NormalAction extends BaseAction {
@@ -146,9 +146,10 @@ type ActionByType<T> = T extends "normal"
     ? VisualAction
     : T extends "audio"
     ? AudioAction
-    : never;
+    : BaseAction;
 
-export type Action<T extends ActionType = any> = ActionByType<T>;
+export type Action<T extends ActionType | undefined = undefined> =
+    ActionByType<T>;
 
 // #endregion
 
@@ -196,7 +197,7 @@ export interface TextboxComp extends KA.Comp {
     /** Hides the textbox. */
     hide(this: Textbox): void;
     /** Change the namebox's text */
-    changeName(this: Textbox, text: string): void;
+    changeName(this: Textbox, text: string, color?: KA.Color): void;
 }
 
 export type TextboxOpt = {

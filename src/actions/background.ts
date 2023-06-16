@@ -8,6 +8,7 @@ export function showBackground(
     background: string | KA.Color,
 ) {
     const k = getData().k;
+    let bg: KA.GameObj;
 
     return createAction<"visual">({
         id: "showBackground",
@@ -25,27 +26,33 @@ export function showBackground(
                 try {
                     const color = k.Color.fromHex(background);
 
-                    k.add([
+                    bg = k.add([
                         k.layer("backgrounds"),
                         k.rect(k.width(), k.height()),
                         k.color(color),
                         ...comps,
                     ]);
                 } catch {
-                    k.add([
+                    bg = k.add([
                         k.layer("backgrounds"),
                         k.sprite(background),
                         ...comps,
                     ]);
                 }
             } else {
-                k.add([
+                bg = k.add([
                     k.layer("backgrounds"),
                     k.rect(k.width(), k.height()),
                     k.color(background),
                     ...comps,
                 ]);
             }
+        },
+        skip() {
+            return;
+        },
+        back() {
+            bg.destroy();
         },
         fadeIn() {
             this.fade = true;

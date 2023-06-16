@@ -13,10 +13,12 @@ import { showBackground } from "./actions/background";
 import { playSound } from "./actions/audio";
 
 let mandarinaPluginCtx: MandarinaPlugin;
+let mandarinaOpt: MandarinaOpt;
 
 export type Data = {
     k: KaboomCtx & LayerPlugin;
     m: MandarinaPlugin;
+    opt: MandarinaOpt;
     chapters: Map<string, Action[]>;
     characters: Map<string, CharacterData>;
     current: {
@@ -40,7 +42,7 @@ export const data = {
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
     // Exported to Kaboom's Context
     mandarinaPluginCtx = {
-        // TODO: `as` usage
+        // TODO: `as` usage | Maybe a PR in Kaboom?
         k: k as KaboomCtx & LayerPlugin,
         pronouns: "none",
 
@@ -69,6 +71,8 @@ export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
 
 // The Mandaarina function creates a Kaboom game and add the plugin.
 export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
+    mandarinaOpt = opt;
+
     const k = kaboom({
         ...opt,
         plugins: [ mandarinaPlugin, layerPlugin ],
@@ -88,6 +92,7 @@ export function getData(): Data {
     return {
         m: mandarinaPluginCtx,
         k: mandarinaPluginCtx.k,
+        opt: mandarinaOpt,
         ...data,
     };
 }

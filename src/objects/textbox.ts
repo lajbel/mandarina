@@ -4,7 +4,8 @@ import type { Textbox, TextboxComp, TextboxOpt } from "../types";
 import { getData } from "../main";
 
 function textboxComp(): TextboxComp {
-    const k = getData().k;
+    const data = getData();
+    const k = data.k;
     let textbox: KA.GameObj;
     let namebox: KA.GameObj;
 
@@ -21,7 +22,6 @@ function textboxComp(): TextboxComp {
         },
 
         write(text) {
-            // TODO: Make wait time modifiable.
             return new Promise<void>((resolve) => {
                 textbox.text = "";
                 this.curChar = 0;
@@ -39,7 +39,8 @@ function textboxComp(): TextboxComp {
                     textbox.text += text[this.curChar];
 
                     // If character is a comma, wait some seconds.
-                    if (text[this.curChar] == ",") await k.wait(0.5);
+                    if (text[this.curChar] == ",")
+                        await k.wait(data.opt.writeCommaWait ?? 0.5);
 
                     this.curChar++;
 
@@ -50,7 +51,7 @@ function textboxComp(): TextboxComp {
                         return;
                     }
 
-                    await k.wait(0.05);
+                    await k.wait(data.opt.writeVel ?? 0.05);
                     write();
                 };
 
@@ -90,8 +91,17 @@ function textboxComp(): TextboxComp {
             );
         },
 
-        changeName(text) {
+        changeName(text, color) {
             namebox.text = text;
+            namebox.use(
+                k.color(
+                    color
+                        ? color
+                        : k.Color.fromHex(
+                            data.opt.textbox?.textColor || "#000000",
+                        ),
+                ),
+            );
         },
     };
 }
