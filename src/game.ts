@@ -82,7 +82,7 @@ function skipAction() {
     const action = getCurrentAction();
     if (!action) return;
 
-    action.skip();
+    action.skip?.();
 }
 
 // Characters are the actors

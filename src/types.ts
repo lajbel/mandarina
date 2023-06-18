@@ -117,7 +117,7 @@ export interface BaseAction {
     /** Runs when action is backed. */
     back(): void | Promise<void>;
     /** Action's skipped function. */
-    skip(): void | Promise<void>;
+    skip?(): void | Promise<void>;
 }
 
 export interface NormalAction extends BaseAction {
