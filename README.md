@@ -1,6 +1,8 @@
 # Mandarina: A web visual novel engine
 
-Mandarina is an engine based in kaboom.js, made for make visual novels.
+Mandarina is an engine based in kaboom.js, made for make visual **novels**.
+
+[Documentation](/src/types.ts)
 
 ## Example code
 
@@ -39,3 +41,13 @@ m.start();
 ```
 
 Full [`example`](example/)
+
+## Installation
+
+### NPM
+
+The mandarina package is not already inside npmjs service, so you can install trough npm with
+
+```
+npm i github:lajbel/mandarina@master
+```
