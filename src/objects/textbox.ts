@@ -1,10 +1,10 @@
 // The textbox object.
 import type * as KA from "kaboom";
 import type { Textbox, TextboxComp, TextboxOpt } from "../types";
-import { getData } from "../main";
+import { getGameData } from "../main";
 
 function textboxComp(): TextboxComp {
-    const data = getData();
+    const data = getGameData();
     const k = data.k;
     let textbox: KA.GameObj;
     let namebox: KA.GameObj;
@@ -107,7 +107,7 @@ function textboxComp(): TextboxComp {
 }
 
 export function addTextbox(opt?: TextboxOpt): Textbox {
-    const k = getData().k;
+    const k = getGameData().k;
 
     const options = {
         width: opt?.width ?? k.width() - k.width() / 16,

@@ -136,35 +136,6 @@ function buildTypes() {
         }
 
         types[stmt.name].push(stmt);
-
-        if (stmt.name === "KaboomCtx") {
-            if (stmt.kind !== "InterfaceDeclaration") {
-                throw new Error("KaboomCtx must be an interface.");
-            }
-
-            for (const name in stmt.members) {
-                const mem = stmt.members[name];
-                const tags = mem[0].jsDoc?.tags ?? {};
-
-                if (tags["section"]) {
-                    const name = tags["section"][0];
-                    const docPath = path.resolve(`doc/sections/${name}.md`);
-                    sections.push({
-                        name: name,
-                        entries: [],
-                        doc: fs.existsSync(docPath)
-                            ? fs.readFileSync(docPath, "utf8")
-                            : null,
-                    });
-                }
-
-                const curSection = sections[sections.length - 1];
-
-                if (name && !curSection.entries.includes(name)) {
-                    curSection.entries.push(name);
-                }
-            }
-        }
     }
 
     writeFile(

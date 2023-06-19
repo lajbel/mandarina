@@ -1,6 +1,6 @@
 import type * as KA from "kaboom";
 import type { MandarinaPlugin } from "../types";
-import { getData } from "../main";
+import { getGameData } from "../main";
 import { createAction } from "../game";
 
 export function showCharacter(
@@ -9,7 +9,7 @@ export function showCharacter(
     expression = "default",
     align = "center",
 ) {
-    const data = getData();
+    const data = getGameData();
     const k = data.k;
     let ch: KA.GameObj;
 

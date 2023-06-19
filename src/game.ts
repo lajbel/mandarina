@@ -6,7 +6,7 @@ import type {
     CharacterDataOpt,
 } from "./types";
 import { addTextbox } from "./objects/textbox";
-import { getData } from "./main";
+import { getGameData } from "./main";
 
 // Some constants
 const LAYERS = [
@@ -22,7 +22,7 @@ export function addChapter<T extends ActionType>(
     name: string,
     actions: () => Action<T>[],
 ) {
-    getData().chapters.set(name, actions());
+    getGameData().chapters.set(name, actions());
 }
 
 // In a chapter, there are actions, which are the things that happen in the story.
@@ -33,7 +33,7 @@ export function createAction<T extends ActionType>(opt: Action<T>): Action<T> {
 
 // Process actions info in game
 function getCurrentAction() {
-    const data = getData();
+    const data = getGameData();
 
     const chapter = data.chapters.get(data.current.chapter);
     if (!chapter) return;
@@ -42,7 +42,7 @@ function getCurrentAction() {
 }
 
 async function processAction() {
-    const data = getData();
+    const data = getGameData();
     const action = getCurrentAction();
     if (!action) return;
 
@@ -62,14 +62,14 @@ async function processAction() {
 }
 
 function nextAction() {
-    const data = getData();
+    const data = getGameData();
     data.current.action++;
 
     processAction();
 }
 
 function previousAction() {
-    const data = getData();
+    const data = getGameData();
     const action = getCurrentAction();
 
     action?.back();
@@ -91,7 +91,7 @@ export function addCharacter(
     name: string,
     opt: CharacterDataOpt,
 ): void {
-    const data = getData();
+    const data = getGameData();
 
     if (data.characters.has(id))
         throw new Error(`Character with id "${id}" already exists.`);
@@ -105,7 +105,7 @@ export function addCharacter(
 
 // The kaboom scene that starts the novel
 export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
-    const k = getData().k;
+    const k = getGameData().k;
 
     k.scene("mandarina", () => {
         k.onLoad(() => {

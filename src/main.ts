@@ -15,7 +15,7 @@ import { playSound } from "./actions/audio";
 let mandarinaPluginCtx: MandarinaPlugin;
 let mandarinaOpt: MandarinaOpt;
 
-export type Data = {
+export type GameData = {
     k: KaboomCtx & LayerPlugin;
     m: MandarinaPlugin;
     opt: MandarinaOpt;
@@ -38,9 +38,7 @@ export const data = {
     },
 };
 
-// The plugin loaded to Kaboom
 export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
-    // Exported to Kaboom's Context
     mandarinaPluginCtx = {
         // TODO: `as` usage | Maybe a PR in Kaboom?
         k: k as KaboomCtx & LayerPlugin,
@@ -87,8 +85,7 @@ export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
     return mandarinaCtx;
 }
 
-// Get data
-export function getData(): Data {
+export function getGameData(): GameData {
     return {
         m: mandarinaPluginCtx,
         k: mandarinaPluginCtx.k,
