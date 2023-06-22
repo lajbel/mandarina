@@ -4,7 +4,10 @@
 
 ## Visual
 
--   added `showBackground()` for add image/color backgrounds.
+-   added `bg()` for add image/color backgrounds.
+-   added `start()` for automatically load the novel scene.
+-   added `VisualAction` with the methods:
+    - `fadeIn()` for fade when it appears.
 
 ## Technical and misc
 
