@@ -1,0 +1,9 @@
+on:
+  push:
+    branches:
+    - master
+    
+jobs:
+  todo-to-issue:
+    name: TODO to Issue
+    uses: alstr/todo-to-issue-action@v4
