@@ -1,10 +1,11 @@
-import kaboom, { KaboomCtx } from "kaboom";
+import type * as KA from "kaboom";
 import type {
     Action,
     MandarinaOpt,
     MandarinaPlugin,
     CharacterData,
 } from "./types";
+import kaboom from "kaboom";
 import { startNovel, addChapter, addCharacter } from "./game";
 import { changeChapter, say } from "./actions/narration";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
@@ -13,7 +14,7 @@ import { showBackground } from "./actions/background";
 import { playSound } from "./actions/audio";
 
 type GameData = {
-    k: KaboomCtx & LayerPlugin;
+    k: KA.KaboomCtx & LayerPlugin;
     m: MandarinaPlugin;
     opt: MandarinaOpt;
     chapters: Map<string, Action[]>;
@@ -22,6 +23,7 @@ type GameData = {
         chapter: string;
         action: number;
         runningAction: boolean;
+        playingAudios: Map<string, KA.AudioPlay[]>;
     };
 };
 
@@ -35,14 +37,15 @@ export const data = {
         chapter: "start",
         action: 0,
         runningAction: false,
+        playingAudios: new Map(),
     },
 };
 
-export function mandarinaPlugin(k: KaboomCtx): MandarinaPlugin {
+export function mandarinaPlugin(k: KA.KaboomCtx): MandarinaPlugin {
     mandarinaPluginCtx = {
         // TODO: `as` usage | Maybe a PR in Kaboom?
-        k: k as KaboomCtx & LayerPlugin,
-        pronouns: "none",
+        k: k as KA.KaboomCtx & LayerPlugin,
+        pronoun: "none",
 
         /** Configuration and setup */
         loadImage: k.loadSprite,

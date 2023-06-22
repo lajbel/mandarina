@@ -22,6 +22,7 @@ function textboxComp(): TextboxComp {
         },
 
         write(this: KA.GameObj, text) {
+            // TODO: Pronous replacement support
             const writePromise = new Promise<void>((resolve) => {
                 textbox.text = "";
                 this.curChar = 0;

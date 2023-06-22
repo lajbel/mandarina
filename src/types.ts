@@ -12,7 +12,7 @@ export type MandarinaPlugin = {
     /** The textbox object, if there's one */
     _textbox?: Textbox;
     /** In-game pronous */
-    pronouns: string;
+    pronoun: string;
 
     // #region Configuration and setup
     loadImage: KA.KaboomCtx["loadSprite"];
