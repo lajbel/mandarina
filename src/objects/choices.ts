@@ -1,11 +1,5 @@
-import type { Action } from "../types";
+import type { Choice } from "../types";
 import { getGameData } from "../main";
-
-// TODO: move to types.ts
-type Choice = {
-    text: string;
-    actions: () => Action[];
-};
 
 export function addChoices(choices: Choice[]) {
     const k = getGameData().k;

@@ -169,6 +169,13 @@ export type CharacterDataOpt = {
 };
 // #endregion
 
+// #region Choices
+export type Choice = {
+    text: string;
+    actions: () => Action[];
+};
+// #endregion
+
 // #region Textbox
 export type Textbox = KA.GameObj<
     KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
