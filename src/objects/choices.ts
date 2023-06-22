@@ -1,5 +1,5 @@
 import type { Action } from "../types";
-import { getData } from "../main";
+import { getGameData } from "../main";
 
 // TODO: move to types.ts
 type Choice = {
@@ -8,7 +8,7 @@ type Choice = {
 };
 
 export function addChoices(choices: Choice[]) {
-    const k = getData().k;
+    const k = getGameData().k;
 
     const choicesBox = k.make([
         k.pos(k.width() / 2, k.height() / 2),

@@ -168,6 +168,8 @@ export type CharacterDataOpt = {
     expressions?: Record<string, string>;
     /** Character's name colour. */
     color?: string;
+    /** Character's text voice. */
+    voice?: string;
 };
 // #endregion
 

@@ -10,6 +10,7 @@ export function showCharacter(
     align = "center",
 ) {
     const data = getGameData();
+    const textbox = data.m._textbox;
     const k = data.k;
     let ch: KA.GameObj;
 
@@ -51,6 +52,13 @@ export function showCharacter(
                 ...comps,
                 "character_" + characterId,
             ]);
+
+            // TODO: Better type checking in this place
+            if (textbox && character.opt?.voice) {
+                textbox.on("writeCharacter", () => {
+                    k.play(character.opt?.voice ?? "");
+                });
+            }
         },
         back() {
             if (!ch) return;
