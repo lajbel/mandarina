@@ -1,10 +1,8 @@
 import type * as KA from "kaboom";
-import type { MandarinaPlugin } from "../types";
 import { getGameData } from "../main";
 import { createAction } from "../game";
 
 export function showCharacter(
-    this: MandarinaPlugin,
     characterId: string,
     expression = "default",
     align = "center",
@@ -44,7 +42,6 @@ export function showCharacter(
                 right: [ k.pos(k.width(), k.height()), k.anchor("botright") ],
             };
 
-            // TODO TEST TODO
             ch = k.add([
                 ...alignments[align],
                 k.layer("characters"),
@@ -54,7 +51,6 @@ export function showCharacter(
                 "character_" + characterId,
             ]);
 
-            // TODO Better type checking in this place
             if (textbox && character.opt?.voice) {
                 textbox.on("writeCharacter", () => {
                     k.play(character.opt?.voice ?? "");
@@ -76,8 +72,8 @@ export function showCharacter(
     });
 }
 
-export function hideCharacter(this: MandarinaPlugin, characterId: string) {
-    const k = this.k;
+export function hideCharacter(characterId: string) {
+    const { k } = getGameData();
 
     return createAction<"normal">({
         id: "hide_character",

@@ -1,11 +1,11 @@
 // All audio related actions
 import type * as KA from "kaboom";
-import type { MandarinaPlugin } from "../types";
 import { getGameData } from "../main";
 import { createAction } from "../game";
 
-export function playSound(this: MandarinaPlugin, audio: string) {
-    const k = getGameData().k;
+// TODO: Maybe instead of use playSound and playMusic use play(channel)
+export function playSound(audio: string) {
+    const { k } = getGameData();
     let audioPlay: KA.AudioPlay;
 
     // TODO: Accept an audio options object

@@ -8,7 +8,7 @@ import type {
 import { addTextbox } from "./objects/textbox";
 import { getGameData } from "./main";
 
-// Some constants
+// Constants
 const LAYERS = [
     "backgrounds",
     "characters",
@@ -17,7 +17,6 @@ const LAYERS = [
     "choices",
 ];
 
-// Chapters are how Mandarina novels are organized.
 export function addChapter<T extends ActionType>(
     name: string,
     actions: () => Action<T>[],
@@ -25,13 +24,27 @@ export function addChapter<T extends ActionType>(
     getGameData().chapters.set(name, actions());
 }
 
-// In a chapter, there are actions, which are the things that happen in the story.
-// Actions are functions that are executed in order.
+export function addCharacter(
+    id: string,
+    name: string,
+    opt: CharacterDataOpt,
+): void {
+    const data = getGameData();
+
+    if (data.characters.has(id))
+        throw new Error(`Character with id "${id}" already exists.`);
+
+    data.characters.set(id, {
+        id,
+        name,
+        opt,
+    });
+}
+
 export function createAction<T extends ActionType>(opt: Action<T>): Action<T> {
     return opt;
 }
 
-// Process actions info in game
 function getCurrentAction() {
     const data = getGameData();
 
@@ -85,36 +98,15 @@ function skipAction() {
     action.skip?.();
 }
 
-// Characters are the actors
-export function addCharacter(
-    id: string,
-    name: string,
-    opt: CharacterDataOpt,
-): void {
-    const data = getGameData();
-
-    if (data.characters.has(id))
-        throw new Error(`Character with id "${id}" already exists.`);
-
-    data.characters.set(id, {
-        id,
-        name,
-        opt,
-    });
-}
-
-// The kaboom scene that starts the novel
 export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
     const k = getGameData().k;
 
     k.scene("mandarina", () => {
         k.onLoad(() => {
-            // Layers
             k.layers(LAYERS, "textbox");
 
             m._textbox = addTextbox(opt.textbox);
 
-            // Process the first game action.
             processAction();
 
             // Input

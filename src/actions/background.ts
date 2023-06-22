@@ -1,13 +1,9 @@
 import type * as KA from "kaboom";
-import type { MandarinaPlugin } from "../types";
 import { getGameData } from "../main";
 import { createAction } from "../game";
 
-export function showBackground(
-    this: MandarinaPlugin,
-    background: string | KA.Color,
-) {
-    const k = getGameData().k;
+export function showBackground(background: string | KA.Color) {
+    const { k } = getGameData();
     let bg: KA.GameObj;
 
     return createAction<"visual">({
@@ -25,7 +21,6 @@ export function showBackground(
             if (typeof background == "string") {
                 try {
                     const color = k.Color.fromHex(background);
-
                     bg = k.add([
                         k.layer("backgrounds"),
                         k.rect(k.width(), k.height()),

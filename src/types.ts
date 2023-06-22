@@ -62,11 +62,7 @@ export type MandarinaPlugin = {
      * @param expression Character's expression.
      * @param align Character's alignment.
      */
-    show(
-        characterId: string,
-        expression: string,
-        align?: string
-    ): Action<"visual">;
+    show(characterId: string, expression: string, align?: string): VisualAction;
     /**
      * Hides a character in the screen.
      * @param characterId Character's id.
