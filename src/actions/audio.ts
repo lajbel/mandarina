@@ -8,7 +8,7 @@ export function playSound(this: MandarinaPlugin, audio: string) {
     const k = getGameData().k;
     let audioPlay: KA.AudioPlay;
 
-    // TODO: Accept options here
+    // TODO: Accept an audio options object
     return createAction<"audio">({
         id: "play_sound",
         type: "audio",
