@@ -12,10 +12,7 @@ import { showCharacter, hideCharacter } from "./actions/character";
 import { showBackground } from "./actions/background";
 import { playSound } from "./actions/audio";
 
-let mandarinaPluginCtx: MandarinaPlugin;
-let mandarinaOpt: MandarinaOpt;
-
-export type GameData = {
+type GameData = {
     k: KaboomCtx & LayerPlugin;
     m: MandarinaPlugin;
     opt: MandarinaOpt;
@@ -27,6 +24,9 @@ export type GameData = {
         runningAction: boolean;
     };
 };
+
+let mandarinaPluginCtx: MandarinaPlugin;
+let mandarinaOpt: MandarinaOpt;
 
 export const data = {
     chapters: new Map<string, Action[]>(),
