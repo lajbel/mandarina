@@ -21,42 +21,45 @@ function textboxComp(): TextboxComp {
             namebox = this.name;
         },
 
-        write(text) {
-            return new Promise<void>((resolve) => {
+        write(this: KA.GameObj, text) {
+            const writePromise = new Promise<void>((resolve) => {
                 textbox.text = "";
                 this.curChar = 0;
 
-                const write = async () => {
+                const writeCharacter = async () => {
+                    const characterToWrite = text[this.curChar];
+
                     if (this.skipped) {
                         this.skipped = false;
-                        textbox.text = text;
                         this.curChar = 0;
-
-                        resolve();
-                        return;
+                        textbox.text = text;
+                        return resolve();
                     }
 
-                    textbox.text += text[this.curChar];
+                    textbox.text += characterToWrite;
+                    this.trigger("writeCharacter", text[this.curChar]);
 
-                    // If character is a comma, wait some seconds.
-                    if (text[this.curChar] == ",")
+                    if (characterToWrite == ",")
                         await k.wait(data.opt.writeCommaWait ?? 0.5);
 
                     this.curChar++;
-
                     if (this.curChar == text.length) {
-                        this.curChar = 0;
-
                         resolve();
-                        return;
+                    } else {
+                        await k.wait(data.opt.writeVel ?? 0.05);
+                        writeCharacter();
                     }
-
-                    await k.wait(data.opt.writeVel ?? 0.05);
-                    write();
                 };
 
-                write();
+                writePromise.then(() => {
+                    this.curChar = 0;
+                    this.trigger("writeEnd");
+                });
+
+                writeCharacter();
             });
+
+            return writePromise;
         },
 
         clear() {
