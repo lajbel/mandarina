@@ -28,6 +28,10 @@ export function playSound(audio: string) {
             this.volume = vol;
             return this;
         },
+        stopAt(time) {
+            k.wait(time, () => (audioPlay.paused = true));
+            return this;
+        },
     });
 }
 
@@ -61,6 +65,10 @@ function playAudio(channel: string, audio: string) {
         },
         withVolume(vol: number) {
             this.volume = vol;
+            return this;
+        },
+        stopAt(time) {
+            k.wait(time, () => (audioPlay.paused = true));
             return this;
         },
     });

@@ -130,10 +130,13 @@ export interface VisualAction extends BaseAction {
 
 export interface AudioAction extends BaseAction {
     type: "audio";
+    /** AudioPlay volume */
     volume: number;
 
     /** Plays the audio with a different volumen */
     withVolume(volume: number): AudioAction;
+    /** Stop the audio in a specific seocond */
+    stopAt(time: number): AudioAction;
 }
 
 type ActionByType<T> = T extends "normal"
