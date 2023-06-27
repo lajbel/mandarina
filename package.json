@@ -22,7 +22,7 @@
         "README.md"
     ],
     "dependencies": {
-        "kaboom": "^3000.0.5"
+        "kaboom": "^3000.0.12"
     },
     "devDependencies": {
         "@types/node": "^18.14.0",
