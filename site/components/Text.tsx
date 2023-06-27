@@ -1,10 +1,8 @@
 import * as React from "react";
 
-type FontSize = "small" | "normal" | "big" | "huge";
-
 type TextProps = {
     color?: number | string;
-    size?: FontSize;
+    size?: string;
     bold?: boolean;
     italic?: boolean;
     noselect?: boolean;
@@ -14,13 +12,6 @@ type TextProps = {
 
 type Props = TextProps &
     Omit<React.HTMLProps<HTMLSpanElement>, keyof TextProps>;
-
-const fontSizes = {
-    small: "text-sm",
-    normal: "text-lg",
-    big: "text-1xl",
-    huge: "text-4xl",
-};
 
 const Text: React.FC<Props> = ({
     color,
@@ -35,7 +26,7 @@ const Text: React.FC<Props> = ({
     <span
         className={`
     ${color ? `text-${color}` : ""}
-    ${size ? fontSizes[size] : fontSizes["normal"]}
+    ${size ? `text-${size}` : ""}
     ${bold ? "font-bold" : ""}
     ${italic ? "italic" : ""}
     ${noselect ? "noselect" : ""}

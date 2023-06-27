@@ -1,5 +1,5 @@
-import Text from "../components/Text";
-import Nav from "../components/Nav";
+import Text from "components/Text";
+import Nav from "components/Nav";
 
 export default function Home() {
     return (
@@ -20,7 +20,7 @@ export default function Home() {
                         links={{
                             Home: "/",
                             Documentation: "/doc",
-                            Example: "/example",
+                            Example: "/example/index.html",
                         }}
                     ></Nav>
                 </div>

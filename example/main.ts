@@ -15,9 +15,9 @@ const m = mandarina({
 });
 
 // Load images (assets)
-m.loadImage("nerune", "assets/nerune.png");
-m.loadImage("ruby", "assets/ruby.png");
-m.loadImage("dsimui_textbox", "assets/textbox.png");
+m.loadImage("nerune", "./assets/nerune.png");
+m.loadImage("ruby", "./assets/ruby.png");
+m.loadImage("dsimui_textbox", "./assets/textbox.png");
 
 // We define characters
 m.character("t", "Deffy", {
