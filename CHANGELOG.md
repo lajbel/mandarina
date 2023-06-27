@@ -11,6 +11,8 @@
     -   `fadeIn()` for fade when it appears.
 -   added `AudioAction` with the methods:
     -   `withVolume(volume: number)`
+-   **(break)** remove `showBackground()` and `showBackgroundColor()` in favour of `bg()`.
+-   **(break)** remove `playMusic()` and `playSound()` in favour of `playAudio()`.
 
 ## Technical and misc
 
