@@ -12,8 +12,8 @@
         "dev": "nodemon --watch ./src --watch ./example --exec \"npm run build && npm run example\" --ext \"ts\"",
         "build": "node scripts/build.js",
         "watch": "nodemon --watch ./src --exec \"npm run build\" --ext \"ts\"",
-        "example": "esbuild example/main.ts --bundle --outfile=example/game.js --servedir=./example/",
-        "examplewatch": "esbuild example/main.ts --bundle --outfile=example/game.js --watch --servedir=./example/",
+        "dev:example": "esbuild example/main.ts --bundle --outfile=example/game.js --servedir=./example/",
+        "watch:example": "esbuild example/main.ts --bundle --outfile=example/game.js --watch --servedir=./example/",
         "fmt": "eslint --fix src/"
     },
     "files": [

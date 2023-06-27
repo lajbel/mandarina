@@ -11,7 +11,7 @@ import { changeChapter, say } from "./actions/narration";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
 import { showCharacter, hideCharacter } from "./actions/character";
 import { showBackground } from "./actions/background";
-import { playSound } from "./actions/audio";
+import { playAudio } from "./actions/audio";
 
 type GameData = {
     k: KA.KaboomCtx & LayerPlugin;
@@ -49,7 +49,7 @@ export function mandarinaPlugin(k: KA.KaboomCtx): MandarinaPlugin {
 
         /** Configuration and setup */
         loadImage: k.loadSprite,
-        loadSound: k.loadSound,
+        loadAudio: k.loadSound,
 
         character: addCharacter,
         chapter: addChapter,
@@ -64,7 +64,7 @@ export function mandarinaPlugin(k: KA.KaboomCtx): MandarinaPlugin {
         show: showCharacter,
         hide: hideCharacter,
         bg: showBackground,
-        sound: playSound,
+        playAudio: playAudio,
     };
 
     return mandarinaPluginCtx;
@@ -79,13 +79,23 @@ export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
         plugins: [ mandarinaPlugin, layerPlugin ],
     });
 
-    const mandarinaCtx: MandarinaPlugin = {
-        ...mandarinaPlugin(k),
-    };
+    const extractedPluginCtx: Partial<MandarinaPlugin> = {};
 
-    startNovel(mandarinaCtx, opt);
+    // get plugin context
+    Object.keys(k).forEach((key) => {
+        if (Object.keys(mandarinaPluginCtx).includes(key)) {
+            extractedPluginCtx[key] = k[key];
+        }
+    });
 
-    return mandarinaCtx;
+    if (!extractedPluginCtx) throw new Error("Mandarina plugin not found");
+
+    // TODO: As `MandarinaPlugin` use in mandarina() method
+    mandarinaPluginCtx = extractedPluginCtx as MandarinaPlugin;
+
+    startNovel(mandarinaPluginCtx, opt);
+
+    return extractedPluginCtx as MandarinaPlugin;
 }
 
 export function getGameData(): GameData {

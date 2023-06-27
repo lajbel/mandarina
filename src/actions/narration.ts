@@ -4,12 +4,13 @@ import { createAction } from "../game";
 
 export function say(...args: string[]) {
     const { m, k } = getGameData();
-    const textbox = m._textbox;
 
     return createAction<"normal">({
         id: "say",
         type: "normal",
         async start() {
+            const textbox = m._textbox;
+
             if (!textbox) throw new Error("Textbox not found.");
 
             if (args.length > 1) {

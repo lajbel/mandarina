@@ -52,12 +52,12 @@ function textboxComp(): TextboxComp {
                     }
                 };
 
-                writePromise.then(() => {
-                    this.curChar = 0;
-                    this.trigger("writeEnd");
-                });
-
                 writeCharacter();
+            });
+
+            writePromise.then(() => {
+                this.curChar = 0;
+                this.trigger("writeEnd");
             });
 
             return writePromise;

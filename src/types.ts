@@ -16,13 +16,13 @@ export type MandarinaPlugin = {
 
     // #region Configuration and setup
     loadImage: KA.KaboomCtx["loadSprite"];
-    loadSound: KA.KaboomCtx["loadSound"];
+    loadAudio: KA.KaboomCtx["loadSound"];
 
     /**
      * Add a character to the game.
      * @param id Character's id, will be used to refer the character in all game code.
      * @param name Character's name, will be displayed in the game.
-     * @param opt Character's extra options.
+     * @param opt Character's extra options. (optional)
      */
     character(id: string, name: string, opt?: CharacterDataOpt): void;
 
@@ -83,8 +83,14 @@ export type MandarinaPlugin = {
     bg(color: KA.Color): VisualAction;
     /**
      * Plays a sound.
+     * @param channel Sound's channel.
+     * @param sound Sound's asset.
      */
-    sound(sound: string): AudioAction;
+    playAudio(
+        channel: string,
+        sound: string,
+        opt?: KA.AudioPlayOpt
+    ): AudioAction;
     // #endregion
 };
 

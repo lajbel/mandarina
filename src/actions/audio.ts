@@ -3,39 +3,11 @@ import type * as KA from "kaboom";
 import { getGameData } from "../main";
 import { createAction } from "../game";
 
-// TODO: Maybe instead of use playSound and playMusic use play(channel)
-export function playSound(audio: string) {
-    const { k } = getGameData();
-    let audioPlay: KA.AudioPlay;
-
-    // TODO: Accept an audio options object
-    return createAction<"audio">({
-        id: "play_sound",
-        type: "audio",
-        volume: 0.5,
-        autoskip: true,
-        start() {
-            audioPlay = k.play(audio, { volume: this.volume });
-        },
-        skip() {
-            return;
-        },
-        back() {
-            if (!audioPlay) return;
-            audioPlay.paused = true;
-        },
-        withVolume(vol: number) {
-            this.volume = vol;
-            return this;
-        },
-        stopAt(time) {
-            k.wait(time, () => (audioPlay.paused = true));
-            return this;
-        },
-    });
-}
-
-function playAudio(channel: string, audio: string) {
+export function playAudio(
+    channel: string,
+    audio: string,
+    opt: Exclude<KA.AudioPlayOpt, "volume">,
+) {
     const { k, current } = getGameData();
     const playingAudios = current.playingAudios;
 
@@ -47,7 +19,10 @@ function playAudio(channel: string, audio: string) {
         volume: 0.5,
         autoskip: true,
         start() {
-            audioPlay = k.play(audio, { volume: this.volume, loop: true });
+            audioPlay = k.play(audio, {
+                volume: this.volume,
+                ...opt,
+            });
             audioPlay.paused = true;
 
             if (playingAudios.has(channel)) {
