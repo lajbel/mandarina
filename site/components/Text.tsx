@@ -1,8 +1,9 @@
 import * as React from "react";
+import { FontSize, fontSizes } from "lib/ui";
 
 type TextProps = {
-    color?: number | string;
-    size?: string;
+    color?: string;
+    size?: FontSize;
     bold?: boolean;
     italic?: boolean;
     noselect?: boolean;
@@ -24,9 +25,11 @@ const Text: React.FC<Props> = ({
     underline,
 }) => (
     <span
+        css={{
+            color: color ? color : "var(--color-fg1)",
+            fontSize: size ? fontSizes[size] : "inherit",
+        }}
         className={`
-    ${color ? `text-${color}` : ""}
-    ${size ? `text-${size}` : ""}
     ${bold ? "font-bold" : ""}
     ${italic ? "italic" : ""}
     ${noselect ? "noselect" : ""}

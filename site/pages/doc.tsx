@@ -7,15 +7,11 @@ export default function Home() {
             <div className="flex flex-row w-full h-full p-2 bg-[#ffffff] rounded-lg">
                 <div className="inline-flex w-1/2 h-auto flex-col p-2 mt-2">
                     <Text size="huge" color="slate-900" bold>
-                        Mandarina
-                    </Text>
-
-                    <Text size="normal" color="slate-900">
-                        Mandarina is a visual novel engine for the web.
+                        Docs
                     </Text>
                 </div>
 
-                <div className="inline-flex w-full h-auto flex-col p-2 mt-2">
+                <div className="inline-flex w-full h-auto items-end flex-col p-2 mt-2">
                     <Nav
                         links={{
                             Home: "/",
