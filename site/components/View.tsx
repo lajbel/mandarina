@@ -1,3 +1,4 @@
+import type { Property } from "csstype";
 import * as React from "react";
 import { space as spaceUnit } from "lib/ui";
 
@@ -39,8 +40,6 @@ const toJustify = (j: Justify) => {
 };
 
 export interface ViewProps {
-    name?: string;
-    desc?: string;
     dir?: StackDir;
     gap?: number;
     reverse?: boolean;
@@ -68,12 +67,9 @@ type Props = React.PropsWithChildren<
 
 export type ViewPropsAnd<T> = T & Omit<Props, keyof T>;
 
-// TODO: put tooltip / inspect logic to a useInspect()?
 const View = React.forwardRef<HTMLDivElement, Props>(
     (
         {
-            name,
-            desc,
             dir,
             gap,
             reverse,
@@ -121,8 +117,8 @@ const View = React.forwardRef<HTMLDivElement, Props>(
                 tabIndex={focusable ? 0 : undefined}
                 css={{
                     display: "flex",
-                    flexDirection:
-                        (dir ?? "column") + (reverse ? "-reverse" : ""),
+                    flexDirection: ((dir ?? "column") +
+                        (reverse ? "-reverse" : "")) as Property.FlexDirection,
                     alignItems: toAlign(align ?? "start"),
                     justifyContent: toJustify(justify ?? "start"),
                     flexWrap: wrap ? "wrap" : "nowrap",

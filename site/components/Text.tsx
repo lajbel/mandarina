@@ -28,14 +28,12 @@ const Text: React.FC<Props> = ({
         css={{
             color: color ? color : "var(--color-fg1)",
             fontSize: size ? fontSizes[size] : "inherit",
+            fontWeight: bold ? "bold" : "inherit",
+            italic: italic ? italic : "inherit",
+            noselect: noselect ? noselect : "inherit",
+            code: code ? code : "inherit",
+            underline: underline ? underline : "inherit",
         }}
-        className={`
-    ${bold ? "font-bold" : ""}
-    ${italic ? "italic" : ""}
-    ${noselect ? "noselect" : ""}
-    ${code ? "code" : ""}
-    ${underline ? "underline" : ""}
-`}
     >
         {children}
     </span>
