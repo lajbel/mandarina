@@ -7,9 +7,7 @@ export function showCharacter(
     expression = "default",
     align = "center",
 ) {
-    const data = getGameData();
-    const textbox = data.m._textbox;
-    const k = data.k;
+    const { m, k, characters } = getGameData();
     let ch: KA.GameObj;
 
     return createAction<"visual">({
@@ -18,13 +16,14 @@ export function showCharacter(
         autoskip: true,
         fade: false,
         start() {
+            const textbox = m._textbox;
             const comps: KA.Comp[] = [];
 
             if (this.fade) {
                 comps.push(k.opacity(0), k.fadeIn(1));
             }
 
-            const character = data.characters.get(characterId);
+            const character = characters.get(characterId);
             if (!character)
                 throw new Error(
                     `Character with id "${characterId}" does not exist.`,

@@ -72,15 +72,15 @@ export type MandarinaPlugin = {
      * Shows a background in the screen.
      * @param sprite Background's sprite.
      */
-    bg(sprite: string): VisualAction;
+    showBackground(sprite: string): VisualAction;
     /**
      * Shows a color background (hex) in the screen.
      */
-    bg(color: string): VisualAction;
+    showBackground(color: string): VisualAction;
     /**
      * Shows a color background (k.rgb()) in the screen.
      */
-    bg(color: KA.Color): VisualAction;
+    showBackground(color: KA.Color): VisualAction;
     /**
      * Plays a sound.
      * @param channel Sound's channel.
@@ -91,6 +91,14 @@ export type MandarinaPlugin = {
         sound: string,
         opt?: KA.AudioPlayOpt
     ): AudioAction;
+    /**
+     * Shows the textbox.
+     */
+    showTextbox(): NormalAction;
+    /**
+     * Hides the textbox.
+     */
+    hideTextbox(): NormalAction;
     // #endregion
 };
 

@@ -4,14 +4,14 @@
 
 ## Visual
 
--   added `bg()` for add image/color backgrounds.
+-   added `showBackground()` for add image/color backgrounds.
 -   added `start()` for automatically load the novel scene.
 -   added `playAudio(channel, audio)` for play audios in different channels
 -   added `VisualAction` with the methods:
     -   `fadeIn()` for fade when it appears.
 -   added `AudioAction` with the methods:
     -   `withVolume(volume: number)`
--   **(break)** remove `showBackground()` and `showBackgroundColor()` in favour of `bg()`.
+-   **(break)** remove `showBackground()` and `showBackgroundColor()` in favour of only `showBackground()`.
 -   **(break)** remove `playMusic()` and `playSound()` in favour of `playAudio()`.
 
 ## Technical and misc

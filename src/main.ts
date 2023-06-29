@@ -7,11 +7,12 @@ import type {
 } from "./types";
 import kaboom from "kaboom";
 import { startNovel, addChapter, addCharacter } from "./game";
-import { changeChapter, say } from "./actions/narration";
+import { changeChapter } from "./actions/narration";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
 import { showCharacter, hideCharacter } from "./actions/character";
 import { showBackground } from "./actions/background";
 import { playAudio } from "./actions/audio";
+import { say, showTextbox, hideTextbox } from "./actions/textbox";
 
 type GameData = {
     k: KA.KaboomCtx & LayerPlugin;
@@ -63,8 +64,10 @@ export function mandarinaPlugin(k: KA.KaboomCtx): MandarinaPlugin {
         say,
         show: showCharacter,
         hide: hideCharacter,
-        bg: showBackground,
+        showBackground: showBackground,
         playAudio: playAudio,
+        showTextbox: showTextbox,
+        hideTextbox: hideTextbox,
     };
 
     return mandarinaPluginCtx;
