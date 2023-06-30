@@ -12,8 +12,7 @@ export function playAudio(
     audio: string,
     opt: Exclude<KA.AudioPlayOpt, "volume">,
 ) {
-    const { k, current } = getGameData();
-    const playingAudios = current.playingAudios;
+    const { k, playingAudios } = getGameData();
 
     let audioPlay: KA.AudioPlay;
 

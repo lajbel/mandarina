@@ -7,15 +7,15 @@ export function changeChapter(this: MandarinaPlugin, name: string) {
         id: "change_chapter",
         type: "normal",
         start() {
-            getGameData().current.chapter = name;
-            getGameData().current.action = -1;
+            getGameData().currentChapter = name;
+            getGameData().currentAction = 0;
         },
         skip() {
             return;
         },
         back() {
-            getGameData().current.chapter = name;
-            getGameData().current.action = -1;
+            getGameData().currentChapter = name;
+            getGameData().currentAction = 0;
         },
     });
 }

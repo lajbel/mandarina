@@ -20,27 +20,32 @@ type GameData = {
     opt: MandarinaOpt;
     chapters: Map<string, Action[]>;
     characters: Map<string, CharacterData>;
-    current: {
-        chapter: string;
-        action: number;
-        runningAction: boolean;
-        playingAudios: Map<string, KA.AudioPlay[]>;
-    };
+    currentChapter: string;
+    currentAction: number;
+    processingAction: boolean;
+    playingAudios: Map<string, KA.AudioPlay[]>;
+
+    isProcessingAction(): boolean;
 };
 
 let mandarinaPluginCtx: MandarinaPlugin;
-let mandarinaOpt: MandarinaOpt;
 
-export const data = {
+export const data: Partial<GameData> = {
     chapters: new Map<string, Action[]>(),
     characters: new Map(),
-    current: {
-        chapter: "start",
-        action: 0,
-        runningAction: false,
-        playingAudios: new Map(),
+    currentChapter: "start",
+    currentAction: 0,
+    processingAction: false,
+    playingAudios: new Map(),
+
+    isProcessingAction(this: GameData) {
+        return data.processingAction as boolean;
     },
 };
+
+function hasContextStarted(d: typeof data): d is GameData {
+    return "m" in data;
+}
 
 export function mandarinaPlugin(k: KA.KaboomCtx): MandarinaPlugin {
     mandarinaPluginCtx = {
@@ -70,13 +75,13 @@ export function mandarinaPlugin(k: KA.KaboomCtx): MandarinaPlugin {
         hideTextbox: hideTextbox,
     };
 
+    data.m = mandarinaPluginCtx;
+
     return mandarinaPluginCtx;
 }
 
 // The Mandaarina function creates a Kaboom game and add the plugin.
 export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
-    mandarinaOpt = opt;
-
     const k = kaboom({
         ...opt,
         plugins: [ mandarinaPlugin, layerPlugin ],
@@ -95,17 +100,18 @@ export default function mandarina(opt: MandarinaOpt): MandarinaPlugin {
 
     // TODO: As `MandarinaPlugin` use in mandarina() method
     mandarinaPluginCtx = extractedPluginCtx as MandarinaPlugin;
+    data.k = k;
+    data.opt = opt;
 
-    startNovel(mandarinaPluginCtx, opt);
+    startNovel();
 
     return extractedPluginCtx as MandarinaPlugin;
 }
 
 export function getGameData(): GameData {
-    return {
-        m: mandarinaPluginCtx,
-        k: mandarinaPluginCtx.k,
-        opt: mandarinaOpt,
-        ...data,
-    };
+    if (hasContextStarted(data)) {
+        return data;
+    } else {
+        throw new Error("Mandarina context not started");
+    }
 }

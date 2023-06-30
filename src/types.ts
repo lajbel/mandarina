@@ -11,7 +11,7 @@ export type MandarinaPlugin = {
 
     /** The textbox object, if there's one */
     _textbox?: Textbox;
-    /** In-game pronous */
+    /** In-game pronoun */
     pronoun: string;
 
     // #region Configuration and setup
@@ -74,11 +74,13 @@ export type MandarinaPlugin = {
      */
     showBackground(sprite: string): VisualAction;
     /**
-     * Shows a color background (hex) in the screen.
+     * Shows a color background (hex) in the screen.'
+     * @param color Background's color.
      */
     showBackground(color: string): VisualAction;
     /**
      * Shows a color background (k.rgb()) in the screen.
+     * @param color Background's color.
      */
     showBackground(color: KA.Color): VisualAction;
     /**
@@ -91,17 +93,14 @@ export type MandarinaPlugin = {
         sound: string,
         opt?: KA.AudioPlayOpt
     ): AudioAction;
-    /**
-     * Shows the textbox.
-     */
+    /** Shows the textbox. */
     showTextbox(): NormalAction;
-    /**
-     * Hides the textbox.
-     */
+    /** Hides the textbox. */
     hideTextbox(): NormalAction;
     // #endregion
 };
 
+/** Mandarina plugin options. */
 export type MandarinaOpt = KA.KaboomOpt & {
     /** Default textbox options. */
     textbox?: TextboxOpt;
@@ -115,6 +114,7 @@ export type MandarinaOpt = KA.KaboomOpt & {
 // #region Actions
 export type ActionType = "normal" | "visual" | "audio";
 
+// #region The base of all actions.
 export interface BaseAction {
     /** Action's id. */
     id: string;
@@ -147,9 +147,9 @@ export interface AudioAction extends BaseAction {
     /** AudioPlay volume */
     volume: number;
 
-    /** Plays the audio with a different volumen */
+    /** Plays the audio with a different volume */
     withVolume(volume: number): AudioAction;
-    /** Stop the audio in a specific seocond */
+    /** Stop the audio in a specific second */
     stopAt(time: number): AudioAction;
 }
 
@@ -166,6 +166,9 @@ export type Action<T extends ActionType | undefined = undefined> =
 
 // #endregion
 
+// unused
+export type VisualEffect = "Fade" | "Zoom";
+
 // #region Characters
 export type CharacterData = {
     /** Character's id, will be used to refer the character in all game code. */
@@ -179,7 +182,7 @@ export type CharacterData = {
 export type CharacterDataOpt = {
     /** Character's set of expressions. */
     expressions?: Record<string, string>;
-    /** Character's name colour. */
+    /** Character's name color. */
     color?: string;
     /** Character's text voice. */
     voice?: string;

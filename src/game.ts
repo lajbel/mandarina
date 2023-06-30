@@ -6,7 +6,7 @@ import type {
     CharacterDataOpt,
 } from "./types";
 import { addTextbox } from "./objects/textbox";
-import { getGameData } from "./main";
+import { data, getGameData } from "./main";
 
 // Constants
 const LAYERS = [
@@ -42,64 +42,71 @@ export function addCharacter(
 }
 
 export function createAction<T extends ActionType>(opt: Action<T>): Action<T> {
-    return opt;
+    const action = { ...opt };
+
+    return action;
 }
 
 function getCurrentAction() {
     const data = getGameData();
 
-    const chapter = data.chapters.get(data.current.chapter);
-    if (!chapter) return;
+    const chapter = data.chapters.get(data.currentChapter);
+    if (!chapter)
+        throw new Error(`Chapter "${data.currentChapter}" not found.`);
 
-    return chapter[data.current.action];
+    return chapter[data.currentAction];
 }
 
-async function processAction() {
+function getPreviousAction() {
+    const data = getGameData();
+    const chapter = data.chapters.get(data.currentChapter);
+
+    if (!chapter)
+        throw new Error(`Chapter "${data.currentChapter}" not found.`);
+
+    return chapter[data.currentAction - 1];
+}
+
+// New game functions
+async function nextAction() {
     const data = getGameData();
     const action = getCurrentAction();
-    if (!action) return;
 
-    if (data.current.runningAction) skipAction();
+    data.processingAction = true;
 
-    data.current.runningAction = true;
-
-    // Run action
     await action.start();
 
-    data.current.runningAction = false;
+    // If it not stopped by another process, continue
+    if (data.processingAction) {
+        if (action.autoskip) {
+            data.currentAction++;
+            nextAction();
+        }
 
-    if (action.autoskip) {
-        skipAction();
-        nextAction();
+        data.processingAction = false;
+        data.currentAction++;
     }
-}
-
-function nextAction() {
-    const data = getGameData();
-    data.current.action++;
-
-    processAction();
 }
 
 function previousAction() {
     const data = getGameData();
-    const action = getCurrentAction();
 
-    action?.back();
-    data.current.action--;
+    data.processingAction = true;
 
-    processAction();
+    getCurrentAction().back?.();
+    getPreviousAction().start();
+
+    data.currentAction--;
+    data.processingAction = false;
 }
 
 function skipAction() {
-    const action = getCurrentAction();
-    if (!action) return;
-
-    action.skip?.();
+    getCurrentAction().skip?.();
+    getGameData().processingAction = false;
 }
 
-export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
-    const k = getGameData().k;
+export function startNovel() {
+    const { k, m, opt, isProcessingAction } = getGameData();
 
     k.scene("mandarina", () => {
         k.onLoad(() => {
@@ -107,35 +114,23 @@ export function startNovel(m: MandarinaPlugin, opt: MandarinaOpt) {
 
             m._textbox = addTextbox(opt.textbox);
 
-            processAction();
+            nextAction();
 
-            // Input
+            // User input
+            // TODO: Add support for customize keys
             k.onUpdate(() => {
                 if (
                     k.isKeyPressed("space") ||
                     k.isKeyPressed("right") ||
                     k.isMousePressed()
                 ) {
-                    nextAction();
+                    if (!isProcessingAction()) nextAction();
+                    else skipAction();
                 }
-            });
 
-            k.onKeyDown("up", () => {
-                if (k.isKeyDown("shift"))
-                    k.camScale(k.camScale().add(k.vec2(k.dt())));
-            });
-
-            k.onKeyDown("down", () => {
-                if (k.isKeyDown("shift"))
-                    k.camScale(k.camScale().sub(k.vec2(k.dt())));
-            });
-
-            k.onKeyPress("left", () => {
-                previousAction();
-            });
-
-            k.onKeyPress("right", () => {
-                nextAction();
+                if (k.isKeyPressed("left")) {
+                    previousAction();
+                }
             });
         });
     });
