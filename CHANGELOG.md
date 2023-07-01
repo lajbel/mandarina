@@ -9,6 +9,7 @@
 -   added `playAudio(channel, audio)` for play audios in different channels
 -   added `VisualAction` with the methods:
     -   `fadeIn()` for fade when it appears.
+    -   `appearFrom(side)` for appear from a side (left or right)
 -   added `AudioAction` with the methods:
     -   `withVolume(volume: number)`
 -   **(break)** remove `showBackground()` and `showBackgroundColor()` in favour of only `showBackground()`.
