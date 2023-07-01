@@ -1,5 +1,4 @@
-import { getGameData } from "../main";
-import { createAction } from "../game";
+import { createAction, getGameData } from "../game";
 
 export function showTextbox() {
     const { m } = getGameData();

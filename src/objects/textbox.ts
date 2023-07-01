@@ -1,7 +1,7 @@
 // The textbox object.
 import type * as KA from "kaboom";
 import type { Textbox, TextboxComp, TextboxOpt } from "../types";
-import { getGameData } from "../main";
+import { getGameData } from "../game";
 
 function textboxComp(): TextboxComp {
     const data = getGameData();
@@ -22,7 +22,7 @@ function textboxComp(): TextboxComp {
         },
 
         write(this: KA.GameObj, text) {
-            // TODO: Pronous replacement support
+            // TODO: Pronouns replacement support
             const writePromise = new Promise<void>((resolve) => {
                 textbox.text = "";
                 this.curChar = 0;

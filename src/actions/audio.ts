@@ -1,7 +1,5 @@
-// All audio related actions
 import type * as KA from "kaboom";
-import { getGameData } from "../main";
-import { createAction } from "../game";
+import { createAction, getGameData } from "../game";
 
 // TODO: Is necessary an stopAudio()?
 // Maybe when user define channels, the user can define if audio must stop when another

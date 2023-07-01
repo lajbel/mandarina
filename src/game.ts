@@ -1,12 +1,5 @@
-import type {
-    MandarinaPlugin,
-    MandarinaOpt,
-    Action,
-    ActionType,
-    CharacterDataOpt,
-} from "./types";
+import type { Action, ActionType, CharacterDataOpt, GameData } from "./types";
 import { addTextbox } from "./objects/textbox";
-import { data, getGameData } from "./main";
 
 // Constants
 const LAYERS = [
@@ -16,6 +9,32 @@ const LAYERS = [
     "textbox_name",
     "choices",
 ];
+
+export const data: Partial<GameData> = {
+    chapters: new Map<string, Action[]>(),
+    characters: new Map(),
+    currentChapter: "start",
+    currentAction: 0,
+    processingAction: false,
+    playingAudios: new Map(),
+
+    isProcessingAction(this: GameData) {
+        return data.processingAction as boolean;
+    },
+};
+
+// Data functions
+function hasContextStarted(d: typeof data): d is GameData {
+    return "m" in data;
+}
+
+export function getGameData(): GameData {
+    if (hasContextStarted(data)) {
+        return data;
+    } else {
+        throw new Error("Mandarina context not started");
+    }
+}
 
 export function addChapter<T extends ActionType>(
     name: string,

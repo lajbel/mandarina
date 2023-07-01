@@ -1,3 +1,4 @@
 node_modules
 dist
 example/game.js
+example/game.js.map

@@ -2,22 +2,39 @@ import type * as KA from "kaboom";
 import type { LayerPlugin } from "./plugins/layer";
 
 // #region Main function
-declare function mandarina(opt?: MandarinaOpt): MandarinaPlugin;
+declare function mandarina(opt?: MandarinaOpt & KA.KaboomOpt): MandarinaPlugin;
 // #endregion
+
+type KaboomPlugins = LayerPlugin;
+
+export type GameData = {
+    k: KA.KaboomCtx & KaboomPlugins;
+    m: MandarinaPlugin;
+    opt: MandarinaOpt;
+    chapters: Map<string, Action[]>;
+    characters: Map<string, CharacterData>;
+    currentChapter: string;
+    currentAction: number;
+    processingAction: boolean;
+    playingAudios: Map<string, KA.AudioPlay[]>;
+
+    isProcessingAction(): boolean;
+};
 
 // #region Mandarina Plugin
 export type MandarinaPlugin = {
+    /** The kaboom.js's context. */
     k: KA.KaboomCtx & LayerPlugin;
-
-    /** The textbox object, if there's one */
+    /** The textbox object, if there's one. */
     _textbox?: Textbox;
-    /** In-game pronoun */
+    /** In-game pronoun. */
     pronoun: string;
-
-    // #region Configuration and setup
+    // #region Configuration and setup.
     loadImage: KA.KaboomCtx["loadSprite"];
     loadAudio: KA.KaboomCtx["loadSound"];
 
+    /** Get the Mandarina Context. */
+    getMandarinaContext(): MandarinaPlugin;
     /**
      * Add a character to the game.
      * @param id Character's id, will be used to refer the character in all game code.
@@ -25,20 +42,17 @@ export type MandarinaPlugin = {
      * @param opt Character's extra options. (optional)
      */
     character(id: string, name: string, opt?: CharacterDataOpt): void;
-
     /**
      * Add a chapter to the game.
      * @param id Chapter's id, will be used to refer the chapter in all game code.
      * @param actions Chapter's actions.
      */
     chapter<T extends ActionType>(id: string, actions: () => Action<T>[]): void;
-
     /**
      * Starts the game.
      */
     start(): void;
     // #endregion
-
     // #region Actions
     /**
      * Changes the current chapter.
@@ -101,7 +115,7 @@ export type MandarinaPlugin = {
 };
 
 /** Mandarina plugin options. */
-export type MandarinaOpt = KA.KaboomOpt & {
+export type MandarinaOpt = {
     /** Default textbox options. */
     textbox?: TextboxOpt;
     /** Default text writes velocity. Default 0.05. */

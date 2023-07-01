@@ -1,6 +1,5 @@
 import type * as KA from "kaboom";
-import { getGameData } from "../main";
-import { createAction } from "../game";
+import { createAction, getGameData } from "../game";
 
 export function showCharacter(
     characterId: string,

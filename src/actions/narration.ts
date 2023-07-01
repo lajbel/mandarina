@@ -1,8 +1,6 @@
-import type { MandarinaPlugin } from "../types";
-import { getGameData } from "../main";
-import { createAction } from "../game";
+import { createAction, getGameData } from "../game";
 
-export function changeChapter(this: MandarinaPlugin, name: string) {
+export function changeChapter(name: string) {
     return createAction<"normal">({
         id: "change_chapter",
         type: "normal",

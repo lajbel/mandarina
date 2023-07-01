@@ -23,7 +23,7 @@
         "README.md"
     ],
     "dependencies": {
-        "kaboom": "^3000.0.12"
+        "kaboom": "github:replit/kaboom"
     },
     "devDependencies": {
         "@types/node": "^18.14.0",
