@@ -1,4 +1,12 @@
-import type { Action, ActionType, CharacterDataOpt, GameData } from "./types";
+import type * as KA from "kaboom";
+import type {
+    Action,
+    ActionType,
+    CharacterDataOpt,
+    GameData,
+    LoadImageOpt,
+    SpriteData,
+} from "./types";
 import { addTextbox } from "./objects/textbox";
 
 // Constants
@@ -17,6 +25,7 @@ export const data: Partial<GameData> = {
     currentAction: 0,
     processingAction: false,
     playingAudios: new Map(),
+    loadedImages: new Map<string, SpriteData>(),
 
     isProcessingAction(this: GameData) {
         return data.processingAction as boolean;
@@ -34,6 +43,20 @@ export function getGameData(): GameData {
     } else {
         throw new Error("Mandarina context not started");
     }
+}
+
+export function loadImage(
+    name: string,
+    path: string,
+    opt: LoadImageOpt & KA.LoadSpriteOpt = {},
+) {
+    const { k, loadedImages } = getGameData();
+    const sprite = k.loadSprite(name, path, opt);
+    sprite.onLoad((data) => {
+        loadedImages.set(name, { ...data, scale: opt.scale ?? 1 });
+    });
+
+    return sprite;
 }
 
 export function addChapter<T extends ActionType>(
@@ -86,10 +109,10 @@ function getPreviousAction() {
     return chapter[data.currentAction - 1];
 }
 
-// New game functions
 async function nextAction() {
     const data = getGameData();
     const action = getCurrentAction();
+    if (!action) return;
 
     data.processingAction = true;
 
@@ -97,13 +120,10 @@ async function nextAction() {
 
     // If it not stopped by another process, continue
     if (data.processingAction) {
-        if (action.autoskip) {
-            data.currentAction++;
-            nextAction();
-        }
-
         data.processingAction = false;
         data.currentAction++;
+
+        if (action.autoskip) nextAction();
     }
 }
 
@@ -122,6 +142,7 @@ function previousAction() {
 function skipAction() {
     getCurrentAction().skip?.();
     getGameData().processingAction = false;
+    getGameData().currentAction++;
 }
 
 export function startNovel() {
@@ -130,14 +151,13 @@ export function startNovel() {
     k.scene("mandarina", () => {
         k.onLoad(() => {
             k.layers(LAYERS, "textbox");
-
             m._textbox = addTextbox(opt.textbox);
-
             nextAction();
 
             // User input
             // TODO: Add support for customize keys
             k.onUpdate(() => {
+                console.log(isProcessingAction());
                 if (
                     k.isKeyPressed("space") ||
                     k.isKeyPressed("right") ||

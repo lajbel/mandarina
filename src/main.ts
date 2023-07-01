@@ -1,7 +1,7 @@
 import type * as KA from "kaboom";
 import type { MandarinaOpt, MandarinaPlugin } from "./types";
 import kaboom from "kaboom";
-import { startNovel, addChapter, addCharacter, data } from "./game";
+import { startNovel, addChapter, addCharacter, data, loadImage } from "./game";
 import { changeChapter } from "./actions/narration";
 import { LayerPlugin, layerPlugin } from "./plugins/layer";
 import { showCharacter, hideCharacter } from "./actions/character";
@@ -25,7 +25,7 @@ export function mandarinaPlugin(
             },
 
             /** Configuration and setup */
-            loadImage: k.loadSprite,
+            loadImage,
             loadAudio: k.loadSound,
             character: addCharacter,
             chapter: addChapter,

@@ -5,6 +5,9 @@
     "editor.formatOnType": false,
     "editor.formatOnSaveMode": "file",
     "files.eol": "\n",
+    "codesnap.showWindowControls": false,
+    "codesnap.containerPadding": "0",
+    "codesnap.transparentBackground": true,
     "cSpell.words": [
         "autoskip",
         "botleft",
@@ -27,6 +30,9 @@
         "outfile",
         "replit",
         "taglist",
-        "textbox"
+        "textbox",
+        "truecenter",
+        "trueleft",
+        "trueright"
     ]
 }

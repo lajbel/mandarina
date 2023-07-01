@@ -17,6 +17,7 @@ export type GameData = {
     currentAction: number;
     processingAction: boolean;
     playingAudios: Map<string, KA.AudioPlay[]>;
+    loadedImages: Map<string, SpriteData>;
 
     isProcessingAction(): boolean;
 };
@@ -30,7 +31,11 @@ export type MandarinaPlugin = {
     /** In-game pronoun. */
     pronoun: string;
     // #region Configuration and setup.
-    loadImage: KA.KaboomCtx["loadSprite"];
+    loadImage(
+        name: string,
+        path: string,
+        opt?: LoadImageOpt
+    ): KA.Asset<KA.SpriteData>;
     loadAudio: KA.KaboomCtx["loadSound"];
 
     /** Get the Mandarina Context. */
@@ -76,7 +81,11 @@ export type MandarinaPlugin = {
      * @param expression Character's expression.
      * @param align Character's alignment.
      */
-    show(characterId: string, expression: string, align?: string): VisualAction;
+    show(
+        characterId: string,
+        expression: string,
+        align?: VisualAlign
+    ): VisualAction;
     /**
      * Hides a character in the screen.
      * @param characterId Character's id.
@@ -123,6 +132,16 @@ export type MandarinaOpt = {
     /** Default text writes waiting before a comma. Default 0.5. */
     writeCommaWait?: number;
 };
+
+export type LoadImageOpt = {
+    /** Scale image to. */
+    scale?: number;
+};
+
+export type SpriteData = KA.SpriteData & {
+    /** Sprite's scale. */
+    scale: number;
+};
 // #endregion
 
 // #region Actions
@@ -148,12 +167,24 @@ export interface NormalAction extends BaseAction {
     type: "normal";
 }
 
+export type VisualAlign =
+    | "left"
+    | "right"
+    | "center"
+    | "truecenter"
+    | "trueleft"
+    | "trueright";
+
 export interface VisualAction extends BaseAction {
     type: "visual";
     /** If the visual will fadeIn. */
     fade: boolean;
-    /** fadeIn visual. */
-    fadeIn(): Action<"visual">;
+    /** */
+    side?: "left" | "right";
+    /** Fade the visual at start. */
+    fadeIn(): VisualAction;
+    /** Appear from a side */
+    appearFrom(side: "left" | "right"): VisualAction;
 }
 
 export interface AudioAction extends BaseAction {
@@ -242,28 +273,22 @@ export interface TextboxComp extends KA.Comp {
 export type TextboxOpt = {
     /** Kaboom loaded sprite for use in textbox. */
     sprite?: string;
-
     /** Textbox's position. */
-    pos?: KA.Vec2;
-
+    pos?: [number, number];
+    /** Textbox's offset. */
+    offset?: [number, number];
     /** Textbox's width. */
     width?: number;
-
     /** Textbox's height. */
     height?: number;
-
     /** Textbox's text align */
     textAlign?: "left" | "center" | "right";
-
     /** Textbox's text size. */
     textSize?: number;
-
     /** Textbox's text font. */
     textFont?: string;
-
     /** Textbox's text color. */
     textColor?: string;
-
     /** Textbox's text offset */
     textOffset?: [number, number];
 };

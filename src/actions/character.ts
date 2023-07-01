@@ -1,12 +1,23 @@
 import type * as KA from "kaboom";
+import type { VisualAlign } from "../types";
 import { createAction, getGameData } from "../game";
+
+function getSpriteDimensions(sprite: string): KA.Vec2 {
+    const { k } = getGameData();
+
+    const spr = k.add([
+        k.sprite(sprite),
+        k.pos(-k.width() * 10, -k.height() * 10),
+    ]);
+    return k.vec2(spr.width, spr.height);
+}
 
 export function showCharacter(
     characterId: string,
     expression = "default",
-    align = "center",
+    align: VisualAlign = "center",
 ) {
-    const { m, k, characters } = getGameData();
+    const { m, k, characters, loadedImages } = getGameData();
     let ch: KA.GameObj;
 
     return createAction<"visual">({
@@ -32,19 +43,55 @@ export function showCharacter(
             if (!expressionSprite)
                 throw Error(`Expression "${expression}" does not exist.`);
 
-            // k.debug.log(`Showing character "${characterId}" with expression "${expression}" aligned to "${align}".`);
+            const spriteScale = loadedImages.get(expressionSprite)?.scale ?? 1;
+            const spriteDimensions =
+                getSpriteDimensions(expressionSprite).scale(spriteScale);
+            const sprW = spriteDimensions.x;
+            const sprH = spriteDimensions.y;
 
-            const alignments = {
-                left: [ k.pos(0, k.height()), k.anchor("botleft") ],
-                center: [ k.pos(k.center().x, k.height()), k.anchor("bot") ],
-                right: [ k.pos(k.width(), k.height()), k.anchor("botright") ],
+            const alignments: Record<VisualAlign, KA.Vec2> = {
+                left: k.vec2(sprW / 2, k.height() - sprH / 2),
+                center: k.vec2(k.center().x, k.height() - sprH / 2),
+                right: k.vec2(k.width() - sprW / 2, k.height() - sprH / 2),
+                truecenter: k.vec2(k.center().x, k.center().y),
+                trueleft: k.vec2(sprW / 2, k.center().y),
+                trueright: k.vec2(k.width() - sprW / 2, k.center().y),
             };
 
+            if (this.side) {
+                const moveTweenComp = () => {
+                    return {
+                        add() {
+                            k.tween(
+                                this.pos.x,
+                                alignments[align].x,
+                                1,
+                                (v) => {
+                                    this.pos.x = v;
+                                },
+                                k.easings.easeInOutQuad,
+                            );
+                        },
+                    };
+                };
+
+                comps.push(
+                    k.pos(
+                        this.side === "left" ? -sprW / 2 : k.width() + sprW / 2,
+                        alignments[align].y,
+                    ),
+                    moveTweenComp(),
+                );
+            } else {
+                comps.push(k.pos(alignments[align]));
+            }
+
             ch = k.add([
-                ...alignments[align],
+                k.scale(spriteScale),
                 k.layer("characters"),
                 k.sprite(expressionSprite),
                 k.opacity(1),
+                k.anchor("center"),
                 ...comps,
                 "character_" + characterId,
             ]);
@@ -65,6 +112,10 @@ export function showCharacter(
         },
         fadeIn() {
             this.fade = true;
+            return this;
+        },
+        appearFrom(side) {
+            this.side = side;
             return this;
         },
     });

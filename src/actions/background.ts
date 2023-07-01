@@ -52,5 +52,8 @@ export function showBackground(background: string | KA.Color) {
             this.fade = true;
             return this;
         },
+        appearFrom() {
+            return this;
+        },
     });
 }

@@ -116,7 +116,8 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
     const options = {
         width: opt?.width ?? k.width() - k.width() / 16,
         height: opt?.height ?? 200,
-        pos: opt?.pos ?? k.vec2(k.center().x, k.height()),
+        pos: opt?.pos ? k.vec2(...opt.pos) : k.vec2(k.center().x, k.height()),
+        offset: opt?.offset ? k.vec2(...opt.offset) : k.vec2(0),
         sprite: opt?.sprite ?? undefined,
         textAlign: opt?.textAlign ?? "left",
         textSize: opt?.textSize ?? 16,
@@ -144,7 +145,7 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
 
     // The textbox parent object.
     const textbox: Textbox = k.make([
-        k.pos(options.pos),
+        k.pos(options.pos.add(options.offset)),
         k.layer("textbox"),
         k.anchor("bot"),
         k.opacity(1),
