@@ -13,7 +13,6 @@ export interface LayerPlugin {
 export function layerPlugin(k: KaboomCtx): LayerPlugin {
     let userLayers: string[] = [];
     let defLayer = "";
-
     return {
         layers(layersArr, def) {
             userLayers = layersArr;
@@ -25,7 +24,6 @@ export function layerPlugin(k: KaboomCtx): LayerPlugin {
                 obj.use(this.layer(defLayer));
             });
         },
-
         layer(name: string) {
             return {
                 id: "layer",
@@ -44,7 +42,6 @@ export function layerPlugin(k: KaboomCtx): LayerPlugin {
                 },
             };
         },
-
         z(z) {
             return {
                 id: "z",

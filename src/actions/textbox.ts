@@ -8,14 +8,14 @@ export function showTextbox() {
         type: "normal",
         start() {
             const textbox = m._textbox;
-
             textbox?.show();
         },
         skip() {
             return;
         },
         back() {
-            // Not implemented
+            const textbox = m._textbox;
+            textbox?.hide();
         },
     });
 }
@@ -28,14 +28,14 @@ export function hideTextbox() {
         type: "normal",
         start() {
             const textbox = m._textbox;
-
             textbox?.hide();
         },
         skip() {
             return;
         },
         back() {
-            // Not implemented
+            const textbox = m._textbox;
+            textbox?.show();
         },
     });
 }

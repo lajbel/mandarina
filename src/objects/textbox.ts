@@ -12,7 +12,6 @@ function textboxComp(): TextboxComp {
     return {
         id: "mandarina_textbox",
         require: [],
-
         skipped: false,
         curChar: 0,
 
@@ -20,7 +19,6 @@ function textboxComp(): TextboxComp {
             textbox = this.text;
             namebox = this.name;
         },
-
         write(this: KA.GameObj, text) {
             // TODO: Pronouns replacement support
             const writePromise = new Promise<void>((resolve) => {
@@ -62,15 +60,12 @@ function textboxComp(): TextboxComp {
 
             return writePromise;
         },
-
         clear() {
             textbox.text = "";
         },
-
         skip() {
             if (!this.skipped) this.skipped = true;
         },
-
         show() {
             k.tween(
                 0,
@@ -82,7 +77,6 @@ function textboxComp(): TextboxComp {
                 k.easings.linear,
             );
         },
-
         hide() {
             k.tween(
                 1,
@@ -94,7 +88,6 @@ function textboxComp(): TextboxComp {
                 k.easings.linear,
             );
         },
-
         changeName(text, color) {
             namebox.text = text;
             namebox.use(

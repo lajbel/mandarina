@@ -45,6 +45,7 @@ export function getGameData(): GameData {
     }
 }
 
+// Loaders
 export function loadImage(
     name: string,
     path: string,
@@ -59,6 +60,7 @@ export function loadImage(
     return sprite;
 }
 
+// Chapters
 export function addChapter<T extends ActionType>(
     name: string,
     actions: () => Action<T>[],
