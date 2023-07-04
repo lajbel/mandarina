@@ -6,6 +6,7 @@ import type {
     GameData,
     LoadImageOpt,
     SpriteData,
+    ActionOpt,
 } from "./types";
 import { addTextbox } from "./objects/textbox";
 
@@ -85,7 +86,9 @@ export function addCharacter(
     });
 }
 
-export function createAction<T extends ActionType>(opt: Action<T>): Action<T> {
+export function createAction<T extends ActionType>(
+    opt: ActionOpt<T>,
+): Action<T> {
     const action = { ...opt };
 
     return action;

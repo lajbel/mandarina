@@ -14,7 +14,7 @@ export function playAudio(
 
     let audioPlay: KA.AudioPlay;
 
-    return createAction<"audio">({
+    return createAction({
         id: "play_audio",
         type: "audio",
         volume: 0.5,

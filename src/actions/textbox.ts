@@ -1,9 +1,10 @@
+import type { Choice } from "../types";
 import { createAction, getGameData } from "../game";
 
 export function showTextbox() {
     const { m } = getGameData();
 
-    return createAction<"normal">({
+    return createAction({
         id: "show_textbox",
         type: "normal",
         start() {
@@ -23,7 +24,7 @@ export function showTextbox() {
 export function hideTextbox() {
     const { m } = getGameData();
 
-    return createAction<"normal">({
+    const a = createAction({
         id: "hide_textbox",
         type: "normal",
         start() {
@@ -38,12 +39,14 @@ export function hideTextbox() {
             textbox?.show();
         },
     });
+
+    return a;
 }
 
 export function say(...args: string[]) {
     const { m, k } = getGameData();
 
-    return createAction<"normal">({
+    return createAction({
         id: "say",
         type: "normal",
         async start() {
@@ -77,4 +80,9 @@ export function say(...args: string[]) {
             m._textbox?.skip();
         },
     });
+}
+
+// TODO: Implement choices
+export function choice() {
+    //
 }

@@ -11,7 +11,7 @@ export function showCharacter(
     const { m, k, characters, loadedImages } = getGameData();
     let ch: KA.GameObj;
 
-    return createAction<"visual">({
+    return createAction({
         id: "show_character",
         type: "visual",
         autoskip: true,
@@ -115,7 +115,7 @@ export function showCharacter(
 export function hideCharacter(characterId: string) {
     const { k } = getGameData();
 
-    return createAction<"normal">({
+    return createAction({
         id: "hide_character",
         type: "normal",
         start: () => {

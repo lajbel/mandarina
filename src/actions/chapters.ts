@@ -1,8 +1,8 @@
 import { createAction, getGameData } from "../game";
 
-export function changeChapter(name: string) {
+export function jump(name: string) {
     return createAction<"normal">({
-        id: "change_chapter",
+        id: "jump",
         type: "normal",
         autoskip: true,
         start() {

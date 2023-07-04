@@ -198,6 +198,10 @@ export interface AudioAction extends BaseAction {
     stopAt(time: number): AudioAction;
 }
 
+export type ActionOpt<T extends ActionType = "normal"> = {
+    type: T;
+} & ActionByType<T>;
+
 type ActionByType<T> = T extends "normal"
     ? NormalAction
     : T extends "visual"

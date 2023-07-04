@@ -5,7 +5,7 @@ export function showBackground(background: string | KA.Color) {
     const { k } = getGameData();
     let bg: KA.GameObj;
 
-    return createAction<"visual">({
+    return createAction({
         id: "showBackground",
         type: "visual",
         autoskip: true,
