@@ -1,5 +1,5 @@
 import type * as KA from "kaboom";
-import type { UnionToIntersection } from "type-fest";
+import type { UnionToIntersection } from "../types";
 import { getGameData } from "../game";
 import { onAddObj } from "../util";
 

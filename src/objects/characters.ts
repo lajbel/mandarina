@@ -2,6 +2,7 @@ import type * as KA from "kaboom";
 import type { VisualAlign } from "../types";
 import { getGameData } from "../game";
 import { getSpriteDimensions } from "../util";
+import { visual } from "../components/visual";
 
 export function makeCharacter(
     characterId: string,

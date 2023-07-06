@@ -9,6 +9,7 @@ export interface LayerPlugin {
 export function layerPlugin(k: KaboomCtx): LayerPlugin {
     let userLayers: string[] = [];
     let defLayer = "";
+
     return {
         layers(layersArr, def) {
             userLayers = layersArr;

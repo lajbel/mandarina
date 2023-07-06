@@ -7,6 +7,7 @@ import type {
     LoadImageOpt,
     SpriteData,
     ActionOpt,
+    BaseAction,
 } from "./types";
 import { addTextbox } from "./objects/textbox";
 
@@ -20,7 +21,7 @@ const LAYERS = [
 ];
 
 export const data: Partial<GameData> = {
-    chapters: new Map<string, Action[]>(),
+    chapters: new Map<string, BaseAction[]>(),
     characters: new Map(),
     currentChapter: "start",
     currentAction: 0,
@@ -64,7 +65,7 @@ export function loadImage(
 // Chapters
 export function addChapter<T extends ActionType>(
     name: string,
-    actions: () => Action<T>[],
+    actions: () => BaseAction[],
 ) {
     getGameData().chapters.set(name, actions());
 }

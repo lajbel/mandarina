@@ -1,8 +1,17 @@
 import type * as KA from "kaboom";
 import type { LayerPlugin } from "./plugins/layer";
+export type { LayerPlugin };
 
 // #region Main function
 declare function mandarina(opt?: MandarinaOpt & KA.KaboomOpt): MandarinaPlugin;
+// #endregion
+
+// #region Type helpers
+export type UnionToIntersection<U> = (
+    U extends any ? (k: U) => void : never
+) extends (k: infer I) => void
+    ? I
+    : never;
 // #endregion
 
 type KaboomPlugins = LayerPlugin;
@@ -11,7 +20,7 @@ export type GameData = {
     k: KA.KaboomCtx & KaboomPlugins;
     m: MandarinaPlugin;
     opt: MandarinaOpt;
-    chapters: Map<string, Action[]>;
+    chapters: Map<string, BaseAction[]>;
     characters: Map<string, CharacterData>;
     currentChapter: string;
     currentAction: number;
