@@ -50,6 +50,7 @@ m.chapter("start", () => [
     m.say("t", "Hi human, object, or whatever you are!"),
     m.say("t", "Welcome to this Mandarina test!"),
     m.say("t", "This engine are in development, so it's not ready yet."),
+    m.say("t", "Are you ready to see some cool stuff?"),
     // Jump to another chapter.
     m.jump("ch1"),
 ]);

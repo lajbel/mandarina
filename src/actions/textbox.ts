@@ -1,5 +1,6 @@
 import type { Choice } from "../types";
 import { createAction, getGameData } from "../game";
+import { addChoices } from "../objects/choices";
 
 export function showTextbox() {
     const { m } = getGameData();
@@ -83,6 +84,18 @@ export function say(...args: string[]) {
 }
 
 // TODO: Implement choices
-export function choice() {
-    //
+export function choice(choices: Choice[]) {
+    return createAction({
+        id: "choice",
+        type: "normal",
+        start() {
+            addChoices(choices);
+        },
+        skip() {
+            return;
+        },
+        back() {
+            return;
+        },
+    });
 }

@@ -7,11 +7,12 @@ import { LayerPlugin, layerPlugin } from "./plugins/layer";
 import { showCharacter, hideCharacter } from "./actions/character";
 import { showBackground } from "./actions/background";
 import { playAudio } from "./actions/audio";
-import { say, showTextbox, hideTextbox } from "./actions/textbox";
+import { say, showTextbox, hideTextbox, choice } from "./actions/textbox";
 
 export function mandarinaPlugin(
     opt: MandarinaOpt,
 ): KA.KaboomPlugin<MandarinaPlugin> {
+    // @ts-ignore
     return (k: KA.KaboomCtx) => {
         data.k = k as KA.KaboomCtx & LayerPlugin;
         data.opt = opt;
@@ -43,6 +44,8 @@ export function mandarinaPlugin(
             playAudio,
             showTextbox,
             hideTextbox,
+            // @ts-ignore
+            choice,
         };
 
         return data.m;

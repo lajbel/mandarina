@@ -162,7 +162,6 @@ export function startNovel() {
             // User input
             // TODO: Add support for customize keys
             k.onUpdate(() => {
-                console.log(isProcessingAction());
                 if (
                     k.isKeyPressed("space") ||
                     k.isKeyPressed("right") ||

@@ -22,6 +22,15 @@ export type GameData = {
     isProcessingAction(): boolean;
 };
 
+type Inputs = "pc" | "gamepad" | "touch";
+type GameActions = "next" | "screenshoot";
+
+export type GameInputs = {
+    [key in Inputs]: {
+        [key in GameActions]: KA.Key;
+    };
+};
+
 // #region Mandarina Plugin
 export type MandarinaPlugin = {
     /** The kaboom.js's context. */
@@ -120,6 +129,10 @@ export type MandarinaPlugin = {
     showTextbox(): NormalAction;
     /** Hides the textbox. */
     hideTextbox(): NormalAction;
+    /** Display a set of choices. */
+    choice(text: string, choices: Choice[]): NormalAction;
+    /** Display a set of choices. */
+    choice(text: string, character: string, choices: Choice[]): NormalAction;
     // #endregion
 };
 
