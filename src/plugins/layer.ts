@@ -1,12 +1,8 @@
-import type { KaboomCtx } from "kaboom";
+import type { EmptyComp, KaboomCtx } from "kaboom";
 
 export interface LayerPlugin {
     layers: (layersArr: string[], def?: string) => void;
-    layer: (name: string) => {
-        id: string;
-        add: () => void;
-        inspect: () => string;
-    };
+    layer: (name: string) => EmptyComp;
     z: (z: number) => { id: string; userZ: number };
 }
 
