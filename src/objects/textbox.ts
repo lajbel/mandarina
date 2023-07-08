@@ -16,8 +16,8 @@ function textboxComp(): TextboxComp {
         curChar: 0,
 
         add() {
-            textbox = this.text;
-            namebox = this.name;
+            textbox = this.text!;
+            namebox = this.name!;
         },
         write(this: KA.GameObj, text) {
             // TODO: Pronouns replacement support

@@ -1,5 +1,6 @@
 import type * as KA from "kaboom";
-import { createAction, getGameData } from "../game";
+import type { VisualAction } from "types";
+import { createAction, getGameData } from "game";
 
 export function showBackground(background: string | KA.Color) {
     const { k } = getGameData();
@@ -48,7 +49,7 @@ export function showBackground(background: string | KA.Color) {
         back() {
             bg.destroy();
         },
-        fadeIn() {
+        fadeIn(this: VisualAction) {
             this.fade = true;
             return this;
         },

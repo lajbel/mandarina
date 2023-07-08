@@ -1,5 +1,5 @@
-import type { Choice } from "../types";
-import { getGameData } from "../game";
+import type { Choice } from "types";
+import { getGameData } from "game";
 
 export function makeChoice(choice: Choice) {
     const { k } = getGameData();

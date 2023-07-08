@@ -1,4 +1,4 @@
-import { createAction, getGameData } from "../game";
+import { createAction, getGameData } from "game";
 
 export function jump(name: string) {
     return createAction({

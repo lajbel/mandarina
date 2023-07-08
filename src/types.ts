@@ -1,7 +1,16 @@
 import type * as KA from "kaboom";
-import type { LayerPlugin } from "./plugins/layer";
-export type * from "./components/visual";
-export type { LayerPlugin };
+import type { LayerPlugin } from "plugins/layer";
+import type { Choice } from "actions/textbox";
+export type {
+    VisualComp,
+    VisuaLEffectsOpt,
+    VisualCompOpt,
+    VisualEffect,
+    OptByEffects,
+    FadeEffectOpt,
+    AppearFromEffectOpt,
+} from "./components/visual";
+export type { LayerPlugin, Choice };
 
 // #region Main function
 declare function mandarina(opt?: MandarinaOpt & KA.KaboomOpt): MandarinaPlugin;
@@ -247,13 +256,6 @@ export type CharacterDataOpt = {
     color?: string;
     /** Character's text voice. */
     voice?: string;
-};
-// #endregion
-
-// #region Choices
-export type Choice = {
-    text: string;
-    actions: () => Action[];
 };
 // #endregion
 

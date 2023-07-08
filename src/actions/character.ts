@@ -1,5 +1,5 @@
 import type * as KA from "kaboom";
-import type { VisualAlign } from "../types";
+import type { VisualAction, VisualAlign } from "../types";
 import type { VisuaLEffectsOpt } from "../components/visual";
 import { createAction, getGameData } from "../game";
 import { getSpriteDimensions } from "../util";
@@ -18,7 +18,7 @@ export function showCharacter(
         type: "visual",
         autoskip: true,
         fade: false,
-        start() {
+        start(this: VisualAction) {
             const textbox = m._textbox;
             const comps: KA.Comp[] = [];
 
@@ -54,7 +54,7 @@ export function showCharacter(
             if (this.side) {
                 const moveTweenComp = () => {
                     return {
-                        add() {
+                        add(this: KA.GameObj<any>) {
                             k.tween(
                                 this.pos.x,
                                 alignments[align].x,
@@ -134,7 +134,7 @@ export function hideCharacter(characterId: string) {
             return;
         },
         back() {
-            this.showCharacter(characterId, "default", "center");
+            showCharacter(characterId, "default", "center");
         },
     });
 }

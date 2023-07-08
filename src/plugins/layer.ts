@@ -1,4 +1,4 @@
-import type { EmptyComp, KaboomCtx } from "kaboom";
+import type { EmptyComp, KaboomCtx, GameObj } from "kaboom";
 
 export interface LayerPlugin {
     layers: (layersArr: string[], def?: string) => void;
@@ -24,7 +24,7 @@ export function layerPlugin(k: KaboomCtx): LayerPlugin {
         layer(name: string) {
             return {
                 id: "layer",
-                add() {
+                add(this: GameObj<any>) {
                     if (userLayers.indexOf(name) == -1) {
                         throw new Error(`no layer "${name}"`);
                     }

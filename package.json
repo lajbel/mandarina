@@ -6,16 +6,18 @@
     "license": "MIT",
     "main": "./dist/mandarina.js",
     "module": "./dist/mandarina.mjs",
-    "types": "./dist/mandarina.d.ts",
+    "types": "./dist/types.d.ts",
     "type": "module",
     "scripts": {
         "dev": "nodemon --watch ./src --watch ./example --exec \"npm run build && npm run example\" --ext \"ts\"",
-        "build": "node scripts/build.js",
+        "build": "node scripts/build.js && npm run dts",
         "watch": "nodemon --watch ./src --exec \"npm run build\" --ext \"ts\"",
         "build:example": "esbuild example/main.ts --bundle --sourcemap --outfile=example/game.js",
         "dev:example": "esbuild example/main.ts --bundle --outfile=example/game.js --servedir=./example/",
         "watch:example": "esbuild example/main.ts --bundle --outfile=example/game.js --sourcemap --watch --servedir=./example/",
-        "fmt": "eslint --fix src/"
+        "fmt": "eslint --fix src/",
+        "dts": "tsc",
+        "check": "tsc --noEmit"
     },
     "files": [
         "dist/",

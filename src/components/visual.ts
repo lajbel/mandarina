@@ -1,6 +1,6 @@
 import type * as KA from "kaboom";
-import type { UnionToIntersection } from "../types";
-import { getGameData } from "../game";
+import type { UnionToIntersection } from "types";
+import { getGameData } from "game";
 import { onAddObj } from "../util";
 
 export type VisualEffect = "fade" | "appearFrom";

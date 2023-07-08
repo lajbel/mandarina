@@ -1,6 +1,6 @@
 import type * as KA from "kaboom";
-import { getGameData } from "./game";
-import { VisualAlign } from "./types";
+import { getGameData } from "game";
+import { VisualAlign } from "types";
 
 export function getAlignment(
     align: VisualAlign,

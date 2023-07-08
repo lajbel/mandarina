@@ -1,5 +1,5 @@
 import type * as KA from "kaboom";
-import { createAction, getGameData } from "../game";
+import { createAction, getGameData } from "game";
 
 export function playAudio(
     channel: string,

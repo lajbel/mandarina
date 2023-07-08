@@ -144,8 +144,6 @@ function buildTypes() {
             types,
         }),
     );
-
-    writeFile(`${distDir}/mandarina.d.ts`, dts);
 }
 
 buildTypes();

@@ -7,11 +7,8 @@ import type {
     LoadImageOpt,
     SpriteData,
     BaseAction,
-    NormalAction,
-    VisualAction,
-    AudioAction,
-} from "./types";
-import { addTextbox } from "./objects/textbox";
+} from "types";
+import { addTextbox } from "objects/textbox";
 
 // Constants
 const LAYERS = [
