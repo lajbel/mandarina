@@ -3,6 +3,9 @@
         "declaration": true,
         "outDir": "./dist/",
         "declarationMap": true,
-        "emitDeclarationOnly": true
+        "emitDeclarationOnly": true,
+        "skipLibCheck": true,
+        "strict": true,
+        "baseUrl": "./"
     }
 }

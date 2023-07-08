@@ -6,8 +6,10 @@ import type {
     GameData,
     LoadImageOpt,
     SpriteData,
-    ActionOpt,
     BaseAction,
+    NormalAction,
+    VisualAction,
+    AudioAction,
 } from "./types";
 import { addTextbox } from "./objects/textbox";
 
@@ -87,12 +89,10 @@ export function addCharacter(
     });
 }
 
-export function createAction<T extends ActionType>(
-    opt: ActionOpt<T>,
-): Action<T> {
+export function createAction<T extends Action<unknown>>(opt: T): Action<T> {
     const action = { ...opt };
 
-    return action;
+    return action as unknown as Action<T>;
 }
 
 function getCurrentAction() {

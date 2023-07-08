@@ -1,17 +1,12 @@
 import type * as KA from "kaboom";
 import { createAction, getGameData } from "../game";
 
-// TODO: Is necessary an stopAudio()?
-// Maybe when user define channels, the user can define if audio must stop when another
-// audio is played in the same channel.
-// Another options is define some channels by default (music, sounds, voices, etc.).
 export function playAudio(
     channel: string,
     audio: string,
     opt: Exclude<KA.AudioPlayOpt, "volume">,
 ) {
     const { k, playingAudios } = getGameData();
-
     let audioPlay: KA.AudioPlay;
 
     return createAction({
@@ -43,7 +38,7 @@ export function playAudio(
             this.volume = vol;
             return this;
         },
-        stopAt(time) {
+        stopAt(time: number) {
             k.wait(time, () => (audioPlay.paused = true));
             return this;
         },

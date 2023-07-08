@@ -1,5 +1,6 @@
 import type * as KA from "kaboom";
 import type { LayerPlugin } from "./plugins/layer";
+export type * from "./components/visual";
 export type { LayerPlugin };
 
 // #region Main function
@@ -155,6 +156,7 @@ export type MandarinaOpt = {
     writeCommaWait?: number;
 };
 
+/** `loadImage()` options. */
 export type LoadImageOpt = {
     /** Scale image to. */
     scale?: number;
@@ -169,7 +171,6 @@ export type SpriteData = KA.SpriteData & {
 // #region Actions
 export type ActionType = "normal" | "visual" | "audio";
 
-// #region The base of all actions.
 export interface BaseAction {
     /** Action's id. */
     id: string;
@@ -220,25 +221,14 @@ export interface AudioAction extends BaseAction {
     stopAt(time: number): AudioAction;
 }
 
-export type ActionOpt<T extends ActionType = "normal"> = {
-    type: T;
-} & ActionByType<T>;
-
-type ActionByType<T> = T extends "normal"
+export type Action<T = Action<any> | undefined> = T extends NormalAction
     ? NormalAction
-    : T extends "visual"
+    : T extends VisualAction
     ? VisualAction
-    : T extends "audio"
+    : T extends AudioAction
     ? AudioAction
-    : BaseAction;
-
-export type Action<T extends ActionType | undefined = undefined> =
-    ActionByType<T>;
-
+    : NormalAction | VisualAction | AudioAction;
 // #endregion
-
-// unused
-export type VisualEffect = "Fade" | "Zoom";
 
 // #region Characters
 export type CharacterData = {

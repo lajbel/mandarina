@@ -1,7 +1,7 @@
 import { createAction, getGameData } from "../game";
 
 export function jump(name: string) {
-    return createAction<"normal">({
+    return createAction({
         id: "jump",
         type: "normal",
         autoskip: true,
