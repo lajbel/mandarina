@@ -1,9 +1,59 @@
 // The textbox object.
 import type * as KA from "kaboom";
-import type { Textbox, TextboxComp, TextboxOpt } from "../types";
 import { getGameData } from "../game";
 
-function textboxComp(): TextboxComp {
+export type Textbox = KA.GameObj<
+    KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
+>;
+
+export interface TextboxComp extends KA.Comp {
+    /** If the textbox is in skip. */
+    skipped: boolean;
+    /** Current character of the writing text. */
+    curChar: number;
+    /** The textbox's text. */
+    text?: KA.GameObj<KA.TextComp>;
+    /** The textbox's name. */
+    name?: KA.GameObj<KA.TextComp>;
+
+    /** Writes a text in the textbox. */
+    write(this: Textbox, text: string): Promise<void>;
+    /** Clears the textbox. */
+    clear(this: Textbox): void;
+    /** Skips the current text. */
+    skip(this: Textbox): void;
+    /** Shows the textbox. */
+    show(this: Textbox): void;
+    /** Hides the textbox. */
+    hide(this: Textbox): void;
+    /** Change the namebox's text */
+    changeName(this: Textbox, text: string, color?: KA.Color): void;
+}
+
+export type TextboxOpt = {
+    /** Kaboom loaded sprite for use in textbox. */
+    sprite?: string;
+    /** Textbox's position. */
+    pos?: [number, number];
+    /** Textbox's offset. */
+    offset?: [number, number];
+    /** Textbox's width. */
+    width?: number;
+    /** Textbox's height. */
+    height?: number;
+    /** Textbox's text align */
+    textAlign?: "left" | "center" | "right";
+    /** Textbox's text size. */
+    textSize?: number;
+    /** Textbox's text font. */
+    textFont?: string;
+    /** Textbox's text color. */
+    textColor?: string;
+    /** Textbox's text offset */
+    textOffset?: [number, number];
+};
+
+function textbox(): TextboxComp {
     const data = getGameData();
     const k = data.k;
     let textbox: KA.GameObj;
@@ -137,16 +187,16 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
     const textboxHeight = boxDimensions.y;
 
     // The textbox parent object.
-    const textbox: Textbox = k.make([
+    const textboxParent: Textbox = k.make([
         k.pos(options.pos.add(options.offset)),
         k.layer("textbox"),
         k.anchor("bot"),
         k.opacity(1),
-        textboxComp(),
+        textbox(),
     ]);
 
     // The textbox's background.
-    textbox.add([
+    textboxParent.add([
         k.layer("textbox"),
         k.anchor("bot"),
         options.sprite
@@ -155,7 +205,7 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
     ]);
 
     // The textbox's text.
-    textbox.text = textbox.add([
+    textboxParent.text = textboxParent.add([
         k.pos(
             -textboxWidth / 2 + options.textOffset.x,
             -textboxHeight + options.textOffset.y,
@@ -171,7 +221,7 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
     ]);
 
     // The textbox's name.
-    textbox.name = textbox.add([
+    textboxParent.name = textboxParent.add([
         k.pos(-textboxWidth / 2, -textboxHeight),
         k.layer("textbox_name"),
         k.anchor("botleft"),
@@ -179,6 +229,6 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
         k.color(k.Color.fromHex(options.textColor)),
     ]);
 
-    k.add(textbox);
-    return textbox;
+    k.add(textboxParent);
+    return textboxParent;
 }

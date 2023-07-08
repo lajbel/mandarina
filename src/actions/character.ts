@@ -80,7 +80,7 @@ export function showCharacter(
             effects.appearFrom = {
                 side,
                 appearDuration: 1,
-                appearTo: 1,
+                appearTo: 100,
             };
             return this;
         },

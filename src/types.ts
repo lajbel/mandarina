@@ -2,6 +2,7 @@ import type * as KA from "kaboom";
 import type { LayerPlugin } from "plugins/layer";
 import type { Choice } from "actions/textbox";
 import type { VisualAlign } from "./components/visual";
+import type { Textbox, TextboxOpt } from "./objects/textbox";
 export type {
     VisualComp,
     VisuaLEffectsOpt,
@@ -12,6 +13,7 @@ export type {
     AppearFromEffectOpt,
     VisualAlign,
 } from "./components/visual";
+export type { Textbox, TextboxComp, TextboxOpt } from "./objects/textbox";
 export type { LayerPlugin, Choice };
 
 // #region Main function
@@ -250,59 +252,6 @@ export type CharacterDataOpt = {
     color?: string;
     /** Character's text voice. */
     voice?: string;
-};
-// #endregion
-
-// #region Textbox
-export type Textbox = KA.GameObj<
-    KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
->;
-
-export interface TextboxComp extends KA.Comp {
-    /** If the textbox is in skip. */
-    skipped: boolean;
-    /** Current character of the writing text. */
-    curChar: number;
-    /** The textbox's text. */
-    text?: KA.GameObj<KA.TextComp>;
-    /** The textbox's name. */
-    name?: KA.GameObj<KA.TextComp>;
-
-    /** Writes a text in the textbox. */
-    write(this: Textbox, text: string): Promise<void>;
-    /** Clears the textbox. */
-    clear(this: Textbox): void;
-    /** Skips the current text. */
-    skip(this: Textbox): void;
-    /** Shows the textbox. */
-    show(this: Textbox): void;
-    /** Hides the textbox. */
-    hide(this: Textbox): void;
-    /** Change the namebox's text */
-    changeName(this: Textbox, text: string, color?: KA.Color): void;
-}
-
-export type TextboxOpt = {
-    /** Kaboom loaded sprite for use in textbox. */
-    sprite?: string;
-    /** Textbox's position. */
-    pos?: [number, number];
-    /** Textbox's offset. */
-    offset?: [number, number];
-    /** Textbox's width. */
-    width?: number;
-    /** Textbox's height. */
-    height?: number;
-    /** Textbox's text align */
-    textAlign?: "left" | "center" | "right";
-    /** Textbox's text size. */
-    textSize?: number;
-    /** Textbox's text font. */
-    textFont?: string;
-    /** Textbox's text color. */
-    textColor?: string;
-    /** Textbox's text offset */
-    textOffset?: [number, number];
 };
 // #endregion
 
