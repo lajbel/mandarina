@@ -17,7 +17,7 @@
         "watch:example": "esbuild example/main.ts --bundle --outfile=example/game.js --sourcemap --watch --servedir=./example/",
         "fmt": "eslint --fix src/",
         "dts": "tsc",
-        "check": "tsc --noEmit"
+        "check": "tsc"
     },
     "files": [
         "dist/",

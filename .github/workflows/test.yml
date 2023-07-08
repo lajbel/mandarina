@@ -1,5 +1,5 @@
 on: [push]
-name: test
+name: "Check TypeScript"
 jobs:
     test:
         runs-on: ubuntu-latest
