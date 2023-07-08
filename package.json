@@ -10,7 +10,7 @@
     "type": "module",
     "scripts": {
         "dev": "nodemon --watch ./src --watch ./example --exec \"npm run build && npm run example\" --ext \"ts\"",
-        "build": "node scripts/build.js && npm run dts",
+        "build": "node scripts/build.js",
         "watch": "nodemon --watch ./src --exec \"npm run build\" --ext \"ts\"",
         "build:example": "esbuild example/main.ts --bundle --sourcemap --outfile=example/game.js",
         "dev:example": "esbuild example/main.ts --bundle --outfile=example/game.js --servedir=./example/",

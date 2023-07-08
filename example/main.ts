@@ -45,7 +45,7 @@ m.chapter("start", () => [
     // Show a background.
     m.showBackground(m.k.rgb(255, 255, 255)),
     // Show our character.
-    m.show("t", "normal").appearFrom("right"),
+    m.show("t", "normal").fadeIn(),
     // Say something.
     m.say("t", "Hi human, object, or whatever you are!"),
     m.say("t", "Welcome to this Mandarina test!"),

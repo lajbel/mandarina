@@ -1,6 +1,6 @@
 import type * as KA from "kaboom";
-import type { VisualAction, VisualAlign } from "../types";
-import type { VisuaLEffectsOpt } from "../components/visual";
+import type { VisualAction, VisualAlign, VisualComp } from "../types";
+import { visual, type VisuaLEffectsOpt } from "../components/visual";
 import { createAction, getGameData } from "../game";
 import { getSpriteDimensions } from "../util";
 
@@ -10,7 +10,7 @@ export function showCharacter(
     align: VisualAlign = "center",
 ) {
     const { m, k, characters, loadedImages } = getGameData();
-    let ch: KA.GameObj;
+    let ch: KA.GameObj<VisualComp>;
     let effects: Partial<VisuaLEffectsOpt> = {};
 
     return createAction({
@@ -20,11 +20,6 @@ export function showCharacter(
         fade: false,
         start(this: VisualAction) {
             const textbox = m._textbox;
-            const comps: KA.Comp[] = [];
-
-            if (this.fade) {
-                comps.push(k.opacity(0), k.fadeIn(1));
-            }
 
             const character = characters.get(characterId);
             if (!character)
@@ -37,56 +32,25 @@ export function showCharacter(
                 throw Error(`Expression "${expression}" does not exist.`);
 
             const spriteScale = loadedImages.get(expressionSprite)?.scale ?? 1;
-            const spriteDimensions =
-                getSpriteDimensions(expressionSprite).scale(spriteScale);
-            const sprW = spriteDimensions.x;
-            const sprH = spriteDimensions.y;
 
-            const alignments: Record<VisualAlign, KA.Vec2> = {
-                left: k.vec2(sprW / 2, k.height() - sprH / 2),
-                center: k.vec2(k.center().x, k.height() - sprH / 2),
-                right: k.vec2(k.width() - sprW / 2, k.height() - sprH / 2),
-                truecenter: k.vec2(k.center().x, k.center().y),
-                trueleft: k.vec2(sprW / 2, k.center().y),
-                trueright: k.vec2(k.width() - sprW / 2, k.center().y),
-            };
-
-            if (this.side) {
-                const moveTweenComp = () => {
-                    return {
-                        add(this: KA.GameObj<any>) {
-                            k.tween(
-                                this.pos.x,
-                                alignments[align].x,
-                                1,
-                                (v) => {
-                                    this.pos.x = v;
-                                },
-                                k.easings.easeInOutQuad,
-                            );
-                        },
-                    };
-                };
-
-                comps.push(
-                    k.pos(
-                        this.side === "left" ? -sprW / 2 : k.width() + sprW / 2,
-                        alignments[align].y,
-                    ),
-                    moveTweenComp(),
-                );
-            } else {
-                comps.push(k.pos(alignments[align]));
-            }
-
-            ch = k.add([
-                k.scale(spriteScale),
+            ch = k.make([
+                `character_${characterId}`,
                 k.layer("characters"),
-                k.sprite(expressionSprite),
                 k.opacity(1),
                 k.anchor("center"),
-                ...comps,
-                "character_" + characterId,
+                k.pos(0),
+                visual({
+                    visualObj: "character_sprite",
+                    startEffects: [ ...Object.keys(effects) ],
+                    ...effects,
+                }),
+            ]);
+
+            ch.add([
+                "character_sprite",
+                k.scale(spriteScale),
+                k.sprite(expressionSprite),
+                k.anchor("center"),
             ]);
 
             if (textbox && character.opt?.voice) {
@@ -94,10 +58,12 @@ export function showCharacter(
                     k.play(character.opt?.voice ?? "");
                 });
             }
+
+            k.add(ch);
+            ch.alignTo(expressionSprite, align);
         },
         back() {
             if (!ch) return;
-
             ch.destroy();
         },
         skip() {

@@ -1,7 +1,15 @@
 import type * as KA from "kaboom";
 import type { UnionToIntersection } from "types";
 import { getGameData } from "game";
-import { onAddObj } from "../util";
+import { onAddObj, getAlignment, getSpriteDimensions } from "../util";
+
+export type VisualAlign =
+    | "left"
+    | "right"
+    | "center"
+    | "truecenter"
+    | "trueleft"
+    | "trueright";
 
 export type VisualEffect = "fade" | "appearFrom";
 
@@ -34,6 +42,7 @@ export interface VisualComp extends KA.Comp {
     visualObj: string;
     fade(opt: FadeEffectOpt): void;
     appearFrom(opt: AppearFromEffectOpt): void;
+    alignTo(sprite: string, align: VisualAlign): void;
 }
 
 export interface VisualCompOpt<TEffect extends VisualEffect[] = any> {
@@ -48,7 +57,7 @@ export interface VisualCompOpt<TEffect extends VisualEffect[] = any> {
 export function visual<T extends VisualEffect[] | undefined = undefined>(
     opt: T extends VisualEffect[]
         ? VisualCompOpt<T> & OptByEffects<T>
-        : VisualComp,
+        : VisualCompOpt,
 ): VisualComp {
     let visualObj: KA.GameObj;
 
@@ -64,15 +73,11 @@ export function visual<T extends VisualEffect[] | undefined = undefined>(
         visualObj: opt.visualObj,
 
         add(this: KA.GameObj) {
-            const { k } = getGameData();
             visualObj = this.get(opt.visualObj, { recursive: true })[0];
 
-            if (optHasEffect(opt, "appearFrom")) {
-                onAddObj(visualObj, () => {
-                    this.fade(opt);
-                });
+            if (optHasEffect(opt, "fade")) {
+                this.fade(opt);
             }
-
             if (optHasEffect(opt, "appearFrom")) {
                 onAddObj(visualObj, () => {
                     this.appearFrom(opt);
@@ -91,6 +96,15 @@ export function visual<T extends VisualEffect[] | undefined = undefined>(
             k.tween(visualObj.pos.x, opt.appearTo, 1, (v) => {
                 visualObj.pos.x = v;
             });
+        },
+
+        alignTo(sprite, align) {
+            const { loadedImages } = getGameData();
+            const scale = loadedImages.get(sprite)?.scale ?? 1;
+            const spriteSize = getSpriteDimensions(sprite).scale(scale);
+            const alignPos = getAlignment(align, spriteSize.x, spriteSize.y);
+
+            visualObj.pos = alignPos;
         },
     };
 }

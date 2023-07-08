@@ -1,6 +1,6 @@
 import type * as KA from "kaboom";
 import { getGameData } from "game";
-import { VisualAlign } from "types";
+import { VisualAlign } from "components/visual";
 
 export function getAlignment(
     align: VisualAlign,
@@ -31,10 +31,11 @@ export function getSpriteDimensions(sprite: string): KA.Vec2 {
     return k.vec2(spr.width, spr.height);
 }
 
-export function onAddObj(obj: KA.GameObj, action: (obj: KA.GameObj) => void) {
+export function onAddObj(obj: KA.GameObj, action: (obj2: KA.GameObj) => void) {
+    console.log(obj);
     const { k } = getGameData();
 
-    k.onAdd((o) => {
+    return k.onAdd((o) => {
         if (o.id === obj.id) {
             action(o);
         }

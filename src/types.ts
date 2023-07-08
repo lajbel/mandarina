@@ -1,6 +1,7 @@
 import type * as KA from "kaboom";
 import type { LayerPlugin } from "plugins/layer";
 import type { Choice } from "actions/textbox";
+import type { VisualAlign } from "./components/visual";
 export type {
     VisualComp,
     VisuaLEffectsOpt,
@@ -9,6 +10,7 @@ export type {
     OptByEffects,
     FadeEffectOpt,
     AppearFromEffectOpt,
+    VisualAlign,
 } from "./components/visual";
 export type { LayerPlugin, Choice };
 
@@ -198,14 +200,6 @@ export interface BaseAction {
 export interface NormalAction extends BaseAction {
     type: "normal";
 }
-
-export type VisualAlign =
-    | "left"
-    | "right"
-    | "center"
-    | "truecenter"
-    | "trueleft"
-    | "trueright";
 
 export interface VisualAction extends BaseAction {
     type: "visual";
