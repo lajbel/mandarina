@@ -1,0 +1,16 @@
+{
+    "english": {
+        "they": ["he", "she", "they"],
+        "them": ["him", "her", "them"],
+        "their": ["his", "her", "their"],
+        "theirs": ["his", "hers", "theirs"],
+        "are": ["is", "is", "are"]
+    },
+    "spanish": {
+        "they": ["él", "ella", "ellos"],
+        "them": ["él", "ella", "ellos"],
+        "their": ["su", "su", "su"],
+        "theirs": ["su", "su", "su"],
+        "are": ["es", "es", "es"]
+    }
+}
