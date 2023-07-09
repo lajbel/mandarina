@@ -6,7 +6,12 @@
         "emitDeclarationOnly": true,
         "skipLibCheck": true,
         "strict": true,
-        "baseUrl": "./src/"
+        "baseUrl": "./src/",
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+        "paths": {
+            "kaboom": ["./node_modules/kaboom/dist/kaboom"]
+        }
     },
     "include": ["./src/*.ts"]
 }

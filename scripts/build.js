@@ -45,7 +45,7 @@ formats.forEach((fmt) => {
 
 // Create d.ts file
 function buildTypes() {
-    let dts = fs.readFileSync(`${srcDir}/types.ts`, "utf-8");
+    let dts = fs.readFileSync(`${distDir}/types.d.ts`, "utf-8");
 
     function writeFile(path, content) {
         fs.writeFileSync(path, content);

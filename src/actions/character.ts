@@ -2,7 +2,7 @@ import type * as KA from "kaboom";
 import type { VisualAction, VisualAlign, VisualComp } from "../types";
 import { visual, type VisuaLEffectsOpt } from "../components/visual";
 import { createAction, getGameData } from "../game";
-import { getSpriteDimensions } from "../util";
+import { getAlignment } from "../util";
 
 export function showCharacter(
     characterId: string,
@@ -42,7 +42,8 @@ export function showCharacter(
                 visual({
                     visualObj: "character_sprite",
                     startEffects: [ ...Object.keys(effects) ],
-                    ...effects,
+                    ...effects.fade,
+                    ...effects.appearFrom,
                 }),
             ]);
 
@@ -80,7 +81,7 @@ export function showCharacter(
             effects.appearFrom = {
                 side,
                 appearDuration: 1,
-                appearTo: 100,
+                appearTo: getAlignment(align, 0, 0).x,
             };
             return this;
         },

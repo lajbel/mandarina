@@ -27,6 +27,7 @@ export const data: Partial<GameData> = {
     processingAction: false,
     playingAudios: new Map(),
     loadedImages: new Map<string, SpriteData>(),
+    variables: {},
 
     isProcessingAction(this: GameData) {
         return data.processingAction as boolean;
@@ -59,6 +60,18 @@ export function loadImage(
     });
 
     return sprite;
+}
+
+// Variables
+export function setVar<T>(name: string, value: T) {
+    const data = getGameData();
+    data.variables[name] = value;
+    return data.variables[name];
+}
+
+export function getVar(name: string): any {
+    const data = getGameData();
+    return data.variables[name];
 }
 
 // Chapters

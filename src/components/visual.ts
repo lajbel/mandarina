@@ -79,9 +79,7 @@ export function visual<T extends VisualEffect[] | undefined = undefined>(
                 this.fade(opt);
             }
             if (optHasEffect(opt, "appearFrom")) {
-                onAddObj(visualObj, () => {
-                    this.appearFrom(opt);
-                });
+                this.appearFrom(opt);
             }
         },
 
@@ -91,20 +89,29 @@ export function visual<T extends VisualEffect[] | undefined = undefined>(
             visualObj.use(k.fadeIn(opt.fadeDuration ?? 1));
         },
 
-        appearFrom(opt) {
+        appearFrom(this: KA.GameObj, opt) {
             const { k } = getGameData();
-            k.tween(visualObj.pos.x, opt.appearTo, 1, (v) => {
-                visualObj.pos.x = v;
-            });
+
+            this.pos.x = opt.side === "left" ? 0 : k.width();
+
+            k.tween(
+                this.pos.x,
+                opt.appearTo,
+                1,
+                (v) => {
+                    this.pos.x = v;
+                },
+                k.easings.linear,
+            );
         },
 
-        alignTo(sprite, align) {
+        alignTo(this: KA.GameObj, sprite, align) {
             const { loadedImages } = getGameData();
             const scale = loadedImages.get(sprite)?.scale ?? 1;
             const spriteSize = getSpriteDimensions(sprite).scale(scale);
             const alignPos = getAlignment(align, spriteSize.x, spriteSize.y);
 
-            visualObj.pos = alignPos;
+            this.pos = alignPos;
         },
     };
 }

@@ -5,9 +5,11 @@
     "editor.formatOnType": false,
     "editor.formatOnSaveMode": "file",
     "files.eol": "\n",
-    "codesnap.showWindowControls": false,
-    "codesnap.containerPadding": "0",
-    "codesnap.transparentBackground": true,
+    "codesnap.showWindowControls": true,
+    "codesnap.containerPadding": "3em",
+    "codesnap.target": "container",
+    "codesnap.transparentBackground": false,
+    "codesnap.showWindowTitle": true,
     "cSpell.words": [
         "aparation",
         "autoskip",
@@ -37,5 +39,9 @@
         "truecenter",
         "trueleft",
         "trueright"
-    ]
+    ],
+    "material-icon-theme.folders.associations": {
+        "actions": "app",
+        "objects": "examples"
+    }
 }

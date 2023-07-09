@@ -13,7 +13,7 @@ export type {
     AppearFromEffectOpt,
     VisualAlign,
 } from "./components/visual";
-export type { Textbox, TextboxComp, TextboxOpt } from "./objects/textbox";
+export type { Textbox, TextboxOpt } from "./objects/textbox";
 export type { LayerPlugin, Choice };
 
 // #region Main function
@@ -41,6 +41,7 @@ export type GameData = {
     processingAction: boolean;
     playingAudios: Map<string, KA.AudioPlay[]>;
     loadedImages: Map<string, SpriteData>;
+    variables: Record<string, any>;
 
     isProcessingAction(): boolean;
 };
@@ -61,7 +62,7 @@ export type MandarinaPlugin = {
     /** The textbox object, if there's one. */
     _textbox?: Textbox;
     /** In-game pronoun. */
-    pronoun: string;
+    pronoun: number;
     // #region Configuration and setup.
     loadImage(
         name: string,
@@ -89,6 +90,12 @@ export type MandarinaPlugin = {
      * Starts the game.
      */
     start(): void;
+    /**
+     * Set game variable.
+     * @param name Variable's name.
+     * @param value Variable's value.
+     */
+    setVar<T>(name: string, value: T): void;
     // #endregion
     // #region Actions
     /**
@@ -167,6 +174,8 @@ export type MandarinaOpt = {
     writeVel?: number;
     /** Default text writes waiting before a comma. Default 0.5. */
     writeCommaWait?: number;
+    /** Visual Novel language (used for set pronouns languages). */
+    language?: "english" | "spanish";
 };
 
 /** `loadImage()` options. */

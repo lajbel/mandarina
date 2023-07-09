@@ -24,10 +24,8 @@ export function getAlignment(
 export function getSpriteDimensions(sprite: string): KA.Vec2 {
     const { k } = getGameData();
 
-    const spr = k.add([
-        k.sprite(sprite),
-        k.pos(-k.width() * 10, -k.height() * 10),
-    ]);
+    const spr = k.add([ k.sprite(sprite), k.opacity(0) ]);
+    k.destroy(spr);
     return k.vec2(spr.width, spr.height);
 }
 

@@ -24,6 +24,9 @@ m.loadImage("code1", "./assets/characters/code/code1.png", {
     scale: 0.4,
 });
 
+// Some variables
+m.setVar("name", "PlayerUnknown");
+
 // We define our characters.
 m.character("t", "Deffy", {
     // The name color.
@@ -45,23 +48,12 @@ m.chapter("start", () => [
     // Show a background.
     m.showBackground(m.k.rgb(255, 255, 255)),
     // Show our character.
-    m.show("t", "normal").fadeIn(),
+    m.show("t", "normal").fadeIn().appearFrom("left"),
     // Say something.
-    m.say("t", "Hi human, object, or whatever you are!"),
-    m.say("t", "Welcome to this Mandarina test!"),
-    m.say("t", "This engine are in development, so it's not ready yet."),
-    m.say("t", "Are you ready to see some cool stuff?"),
-    // Jump to another chapter.
-    m.jump("ch1"),
-]);
-
-m.chapter("ch1", () => [
-    m.say("t", "Now, will see a simple explanation of how Mandarina works."),
-    m.show("code", "1", "trueleft").appearFrom("left"),
-    m.say(
-        "t",
-        "There's the mandarina() function, with it, you start the novel context.",
-    ),
+    m.say("t", "Hi, I'm Deffy!"),
+    // TODO: Variables
+    m.say("t", "What's your name?"),
+    m.say("t", "Oh, cool name [name]"),
 ]);
 
 m.start();
