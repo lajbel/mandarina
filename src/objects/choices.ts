@@ -1,45 +1,102 @@
-import type { Choice } from "types";
+import type * as KA from "kaboom";
+import type { Action } from "types";
+import { visual } from "components/visual";
+import { choice } from "components/choice";
 import { getGameData } from "game";
 
-export function makeChoice(choice: Choice) {
+export type Choice = KA.GameObj;
+
+export type ChoiceOpt = {
+    /** Choice's sprite. */
+    sprite?: string;
+    /** Choice's alignment. */
+    pos?: [number, number];
+    /** Choice's offset. */
+    offset?: [number, number];
+    /** Choice's width. */
+    width?: number;
+    /** Choice's height. */
+    height?: number;
+    /** Choice's text align */
+    textAlign?: "left" | "center" | "right";
+    /** Choice's text size. */
+    textSize?: number;
+    /** Choice's text font. */
+    textFont?: string;
+    /** Choice's text color. */
+    textColor?: string;
+    /** Choice's text offset */
+    textOffset?: [number, number];
+};
+
+export function makeChoice(
+    text: string,
+    actions: () => Action[],
+    opt?: ChoiceOpt,
+): Choice {
     const { k } = getGameData();
 
-    const choiceBox = k.make([
-        k.pos(0),
+    const options = {
+        width: opt?.width ?? k.width() - k.width() / 16,
+        height: opt?.height ?? 40,
+        pos: opt?.pos ? k.vec2(...opt.pos) : k.vec2(k.center().x, k.height()),
+        offset: opt?.offset ? k.vec2(...opt.offset) : k.vec2(0),
+        sprite: opt?.sprite ?? undefined,
+        textAlign: opt?.textAlign ?? "left",
+        textSize: opt?.textSize ?? 16,
+        textFont: opt?.textFont ?? "sans-serif",
+        textColor: opt?.textColor ?? "#000000",
+        textOffset: opt?.textOffset ? k.vec2(...opt.textOffset) : k.vec2(0),
+    };
+
+    const choiceParent = k.make([
+        k.pos(k.center()),
         k.layer("choices"),
-        k.rect(100, 40),
-        k.anchor("center"),
+        k.area({
+            shape: new k.Rect(
+                k.vec2(-options.width / 2, -options.height / 2),
+                options.width,
+                options.height,
+            ),
+        }),
+        visual({
+            visualObj: "choice_box",
+        }),
+        choice(actions),
+    ]);
+
+    choiceParent.add([
         "choice_box",
-    ]);
-
-    const choiceText = k.make([
-        k.pos(0, 0),
-        k.anchor("center"),
+        k.pos(0),
+        k.z(0),
         k.layer("choices"),
-        k.text(choice.text),
-        k.color(0, 0, 0),
-        "choice_text",
+        k.rect(options.width, options.height),
+        k.anchor("center"),
     ]);
 
-    const choiceParent = k.make([]);
-    choiceParent.add(choiceBox);
-    choiceParent.add(choiceText);
+    choiceParent.add([
+        "choice_text",
+        k.pos(0, 0),
+        k.z(1),
+        k.layer("choices"),
+        k.anchor("center"),
+        k.text(text, { size: options.textSize, font: options.textFont }),
+        k.color(0, 0, 0),
+    ]);
 
     return choiceParent;
 }
 
-export function addChoices(choices: Choice[]) {
-    const k = getGameData().k;
+export function addChoices(choices: Record<string, () => Action[]>) {
+    const { k } = getGameData();
 
-    const choicesBox = k.make([
-        k.pos(k.width() / 2, k.height() / 2),
-        k.layer("choices"),
-    ]);
+    const choicesBox = k.make([ k.layer("choices") ]);
 
-    choices.forEach((choice) => {
-        const ch = makeChoice(choice);
+    Object.keys(choices).forEach((choiceName) => {
+        const ch = makeChoice(choiceName, choices[choiceName], {});
         choicesBox.add(ch);
     });
 
+    k.add(choicesBox);
     return choicesBox;
 }

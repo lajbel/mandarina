@@ -8,6 +8,7 @@ import {
     data,
     loadImage,
     setVar,
+    getVar,
 } from "game";
 import { jump } from "actions/chapters";
 import { LayerPlugin, layerPlugin } from "plugins/layer";
@@ -26,7 +27,6 @@ export function mandarinaPlugin(
         data.m = {
             // TODO: `as` usage | Maybe a PR in Kaboom?
             k: k as KA.KaboomCtx & LayerPlugin,
-            pronoun: 2,
 
             getMandarinaContext(this: MandarinaPlugin) {
                 return this;
@@ -38,6 +38,7 @@ export function mandarinaPlugin(
             character: addCharacter,
             chapter: addChapter,
             setVar,
+            getVar,
             start() {
                 k.go("mandarina");
             },

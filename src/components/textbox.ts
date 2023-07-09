@@ -29,7 +29,7 @@ export interface TextboxComp extends KA.Comp {
 
 function formatText(text: string) {
     const { m, opt, variables } = getGameData();
-    const { pronoun } = m;
+    const pronoun = m.getVar("pronoun") as number;
     const pronounData = pronouns[opt.language ?? "english"];
 
     let formattedText = text

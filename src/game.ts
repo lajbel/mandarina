@@ -125,6 +125,16 @@ function getPreviousAction() {
     return chapter[data.currentAction - 1];
 }
 
+export function insertActions(actions: Action[]) {
+    const data = getGameData();
+    const chapter = data.chapters.get(data.currentChapter);
+
+    if (!chapter)
+        throw new Error(`Chapter "${data.currentChapter}" not found.`);
+
+    chapter.splice(data.currentAction, 0, ...actions);
+}
+
 async function nextAction() {
     const data = getGameData();
     const action = getCurrentAction();
@@ -163,6 +173,9 @@ function skipAction() {
 
 export function startNovel() {
     const { k, m, opt, isProcessingAction } = getGameData();
+
+    // pronouns variables
+    m.setVar("pronoun", 2);
 
     k.scene("mandarina", () => {
         k.onLoad(() => {

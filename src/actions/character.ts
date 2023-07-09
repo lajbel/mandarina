@@ -1,8 +1,13 @@
 import type * as KA from "kaboom";
-import type { VisualAction, VisualAlign, VisualComp } from "../types";
-import { visual, type VisuaLEffectsOpt } from "../components/visual";
+import type { VisualAction } from "../types";
+import type {
+    VisuaLEffectsOpt,
+    VisualAlign,
+    VisualComp,
+} from "../components/visual";
 import { createAction, getGameData } from "../game";
 import { getAlignment } from "../util";
+import { visual } from "../components/visual";
 
 export function showCharacter(
     characterId: string,
@@ -40,6 +45,7 @@ export function showCharacter(
                 k.anchor("center"),
                 k.pos(0),
                 visual({
+                    sprite: expressionSprite,
                     visualObj: "character_sprite",
                     startEffects: [ ...Object.keys(effects) ],
                     ...effects.fade,

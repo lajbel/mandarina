@@ -13,5 +13,5 @@
             "kaboom": ["./node_modules/kaboom/dist/kaboom"]
         }
     },
-    "include": ["./src/*.ts"]
+    "include": ["./src/*.ts", "src/classes/ActionManager.ts"]
 }

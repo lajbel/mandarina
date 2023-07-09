@@ -54,6 +54,12 @@ m.chapter("start", () => [
     // TODO: Variables
     m.say("t", "What's your name?"),
     m.say("t", "Oh, cool name [name]"),
+    m.say("t", "And what's your pronoun?"),
+    m.choice({
+        "he/him": () => [ m.say("t", "Hi!") ],
+        "she/her": () => [ m.say("t", "Hi!") ],
+        "they/them": () => [ m.say("t", "Hi!") ],
+    }),
 ]);
 
 m.start();

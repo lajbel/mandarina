@@ -4,38 +4,30 @@ import { VisualAlign } from "components/visual";
 
 export function getAlignment(
     align: VisualAlign,
-    sprW: number,
-    sprH: number,
+    w: number = 0,
+    h: number = 0,
 ): KA.Vec2 {
     const { k } = getGameData();
 
     const alignments: Record<VisualAlign, KA.Vec2> = {
-        left: k.vec2(sprW / 2, k.height() - sprH / 2),
-        center: k.vec2(k.center().x, k.height() - sprH / 2),
-        right: k.vec2(k.width() - sprW / 2, k.height() - sprH / 2),
+        left: k.vec2(w / 2, k.height() - h / 2),
+        center: k.vec2(k.center().x, k.height() - h / 2),
+        right: k.vec2(k.width() - w / 2, k.height() - h / 2),
         truecenter: k.vec2(k.center().x, k.center().y),
-        trueleft: k.vec2(sprW / 2, k.center().y),
-        trueright: k.vec2(k.width() - sprW / 2, k.center().y),
+        trueleft: k.vec2(w / 2, k.center().y),
+        trueright: k.vec2(k.width() - w / 2, k.center().y),
     };
 
     return alignments[align];
 }
 
 export function getSpriteDimensions(sprite: string): KA.Vec2 {
-    const { k } = getGameData();
+    const { k, loadedImages } = getGameData();
+    const spr = loadedImages.get(sprite);
+    if (!spr) throw new Error(`Sprite ${sprite} not found!`);
 
-    const spr = k.add([ k.sprite(sprite), k.opacity(0) ]);
-    k.destroy(spr);
-    return k.vec2(spr.width, spr.height);
-}
+    const sprW = spr.tex.width * spr.frames[0].w;
+    const sprH = spr.tex.height * spr.frames[0].h;
 
-export function onAddObj(obj: KA.GameObj, action: (obj2: KA.GameObj) => void) {
-    console.log(obj);
-    const { k } = getGameData();
-
-    return k.onAdd((o) => {
-        if (o.id === obj.id) {
-            action(o);
-        }
-    });
+    return k.vec2(sprW, sprH);
 }

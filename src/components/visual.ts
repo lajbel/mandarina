@@ -1,7 +1,7 @@
 import type * as KA from "kaboom";
 import type { UnionToIntersection } from "types";
 import { getGameData } from "game";
-import { onAddObj, getAlignment, getSpriteDimensions } from "../util";
+import { getAlignment, getSpriteDimensions } from "../util";
 
 export type VisualAlign =
     | "left"
@@ -43,9 +43,12 @@ export interface VisualComp extends KA.Comp {
     fade(opt: FadeEffectOpt): void;
     appearFrom(opt: AppearFromEffectOpt): void;
     alignTo(sprite: string, align: VisualAlign): void;
+    getDimensions(): KA.Vec2;
 }
 
 export interface VisualCompOpt<TEffect extends VisualEffect[] = any> {
+    /** Sprite to attach to the visual obj. */
+    sprite?: string;
     /** Tag of the visual children attached to this game object. */
     visualObj: string;
     /** Appear effect. */
@@ -65,7 +68,7 @@ export function visual<T extends VisualEffect[] | undefined = undefined>(
         opt: VisualCompOpt<any>,
         effect: T2,
     ): opt is VisualCompOpt & OptByEffects<[T2]> {
-        return opt.startEffects.includes(effect);
+        return opt.startEffects?.includes(effect);
     }
 
     return {
@@ -73,7 +76,9 @@ export function visual<T extends VisualEffect[] | undefined = undefined>(
         visualObj: opt.visualObj,
 
         add(this: KA.GameObj) {
+            const { k } = getGameData();
             visualObj = this.get(opt.visualObj, { recursive: true })[0];
+            if (opt.sprite) visualObj.use(k.sprite(opt.sprite));
 
             if (optHasEffect(opt, "fade")) {
                 this.fade(opt);
@@ -112,6 +117,19 @@ export function visual<T extends VisualEffect[] | undefined = undefined>(
             const alignPos = getAlignment(align, spriteSize.x, spriteSize.y);
 
             this.pos = alignPos;
+        },
+
+        getDimensions(this: KA.GameObj) {
+            const { k } = getGameData();
+            let dimensions: KA.Vec2;
+
+            if (visualObj.width == 0 && opt.sprite) {
+                dimensions = getSpriteDimensions(opt.sprite);
+            } else {
+                dimensions = k.vec2(visualObj.width, visualObj.height);
+            }
+
+            return dimensions;
         },
     };
 }

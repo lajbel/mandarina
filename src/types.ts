@@ -1,20 +1,8 @@
 import type * as KA from "kaboom";
 import type { LayerPlugin } from "plugins/layer";
-import type { Choice } from "actions/textbox";
 import type { VisualAlign } from "./components/visual";
 import type { Textbox, TextboxOpt } from "./objects/textbox";
-export type {
-    VisualComp,
-    VisuaLEffectsOpt,
-    VisualCompOpt,
-    VisualEffect,
-    OptByEffects,
-    FadeEffectOpt,
-    AppearFromEffectOpt,
-    VisualAlign,
-} from "./components/visual";
-export type { Textbox, TextboxOpt } from "./objects/textbox";
-export type { LayerPlugin, Choice };
+import type { Choice, ChoiceOpt } from "objects/choices";
 
 // #region Main function
 declare function mandarina(opt?: MandarinaOpt & KA.KaboomOpt): MandarinaPlugin;
@@ -61,8 +49,6 @@ export type MandarinaPlugin = {
     k: KA.KaboomCtx & LayerPlugin;
     /** The textbox object, if there's one. */
     _textbox?: Textbox;
-    /** In-game pronoun. */
-    pronoun: number;
     // #region Configuration and setup.
     loadImage(
         name: string,
@@ -96,6 +82,11 @@ export type MandarinaPlugin = {
      * @param value Variable's value.
      */
     setVar<T>(name: string, value: T): void;
+    /**
+     * Get game variable.
+     * @param name Variable's name.
+     */
+    getVar<T>(name: string): T;
     // #endregion
     // #region Actions
     /**
@@ -160,9 +151,7 @@ export type MandarinaPlugin = {
     /** Hides the textbox. */
     hideTextbox(): NormalAction;
     /** Display a set of choices. */
-    choice(text: string, choices: Choice[]): NormalAction;
-    /** Display a set of choices. */
-    choice(text: string, character: string, choices: Choice[]): NormalAction;
+    choice(choices: Record<string, () => Action[]>): NormalAction;
     // #endregion
 };
 
@@ -170,6 +159,8 @@ export type MandarinaPlugin = {
 export type MandarinaOpt = {
     /** Default textbox options. */
     textbox?: TextboxOpt;
+    /** Default choice options. */
+    choice?: ChoiceOpt;
     /** Default text writes velocity. Default 0.05. */
     writeVel?: number;
     /** Default text writes waiting before a comma. Default 0.5. */

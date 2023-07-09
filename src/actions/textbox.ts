@@ -1,4 +1,5 @@
-import type { Action } from "../types";
+import type { Choice } from "../objects/choices";
+import type { Action } from "types";
 import { createAction, getGameData } from "../game";
 import { addChoices } from "../objects/choices";
 
@@ -83,13 +84,7 @@ export function say(...args: string[]) {
     });
 }
 
-// TODO: Implement choices
-export type Choice = {
-    text: string;
-    actions: () => Action[];
-};
-
-export function choice(choices: Choice[]) {
+export function choice(choices: Record<string, () => Action[]>) {
     return createAction({
         id: "choice",
         type: "normal",
