@@ -102,7 +102,6 @@ export function addChoices(choices: Record<string, () => Action[]>) {
     k.add(choicesBox);
 
     choicesBox.onUpdate(() => {
-        let h = 0;
         const choices = choicesBox.get("mandarina_choice");
         const choiceLength = choices.length;
         const choiceHeight = choices[0].getDimensions().y;
