@@ -5,7 +5,7 @@ const types = docJson.types;
 
 // Write a markdown file with types json.
 let head = "---\nlayout: default\ntitle: Type Reference \nnav_order: 2\n---\n";
-let markdown = "# Mandarina";
+let markdown = "# Mandarina Type Reference";
 let mandarinaFunctions = "## Functions";
 let mandarinaProperties = "";
 
@@ -57,6 +57,6 @@ for (const type of Object.keys(types)) {
     const data = types[type][0];
 }
 
-markdown += `\n\n ${mandarinaFunctions}`;
+markdown += `\n\n${mandarinaFunctions}`;
 
 fs.writeFileSync("docs/types.md", head + markdown);

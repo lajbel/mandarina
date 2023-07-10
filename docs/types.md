@@ -3,9 +3,9 @@ layout: default
 title: Type Reference 
 nav_order: 2
 ---
-# Mandarina
+# Mandarina Type Reference
 
- ## Functions
+## Functions
 
 ### `loadImage`() => undefined 
  No doc found.
