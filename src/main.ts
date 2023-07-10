@@ -20,12 +20,10 @@ import { say, showTextbox, hideTextbox, choice } from "actions/textbox";
 export function mandarinaPlugin(
     opt: MandarinaOpt,
 ): KA.KaboomPlugin<MandarinaPlugin> {
-    // @ts-ignore
     return (k: KA.KaboomCtx) => {
         data.k = k as KA.KaboomCtx & LayerPlugin;
         data.opt = opt;
         data.m = {
-            // TODO: `as` usage | Maybe a PR in Kaboom?
             k: k as KA.KaboomCtx & LayerPlugin,
 
             getMandarinaContext(this: MandarinaPlugin) {
@@ -51,7 +49,6 @@ export function mandarinaPlugin(
             playAudio,
             showTextbox,
             hideTextbox,
-            // @ts-ignore
             choice,
         };
 
