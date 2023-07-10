@@ -41,7 +41,7 @@ export function makeChoice(
         height: opt?.height ?? 40,
         pos: opt?.pos ? k.vec2(...opt.pos) : k.vec2(k.center().x, k.height()),
         offset: opt?.offset ? k.vec2(...opt.offset) : k.vec2(0),
-        sprite: opt?.sprite ?? undefined,
+        sprite: opt?.sprite,
         textAlign: opt?.textAlign ?? "left",
         textSize: opt?.textSize ?? 16,
         textFont: opt?.textFont ?? "sans-serif",
@@ -70,7 +70,9 @@ export function makeChoice(
         k.pos(0),
         k.z(0),
         k.layer("choices"),
-        k.rect(options.width, options.height),
+        options.sprite
+            ? k.sprite(options.sprite)
+            : k.rect(options.width, options.height),
         k.anchor("center"),
     ]);
 
@@ -88,15 +90,29 @@ export function makeChoice(
 }
 
 export function addChoices(choices: Record<string, () => Action[]>) {
-    const { k } = getGameData();
+    const { k, opt } = getGameData();
 
     const choicesBox = k.make([ k.layer("choices") ]);
 
     Object.keys(choices).forEach((choiceName) => {
-        const ch = makeChoice(choiceName, choices[choiceName], {});
+        const ch = makeChoice(choiceName, choices[choiceName], opt.choice);
         choicesBox.add(ch);
     });
 
     k.add(choicesBox);
+
+    choicesBox.onUpdate(() => {
+        let h = 0;
+        const choices = choicesBox.get("mandarina_choice");
+        const choiceLength = choices.length;
+        const choiceHeight = choices[0].getDimensions().y;
+        choices[0].pos.y = k.center().y - choiceHeight * (choiceLength / 2);
+
+        choices.forEach((choice, i) => {
+            if (i === 0) return;
+            choice.pos.y = choices[i - 1].pos.y + choiceHeight + 20;
+        });
+    });
+
     return choicesBox;
 }
