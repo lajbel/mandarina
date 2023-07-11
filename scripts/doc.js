@@ -6,14 +6,15 @@ const types = docJson.types;
 // Write a markdown file with types json.
 let head = "---\nlayout: default\ntitle: Type Reference \nnav_order: 2\n---\n";
 let markdown = "# Mandarina Type Reference";
-let mandarinaFunctions = "## Functions";
-let mandarinaProperties = "";
+let mandarinaFunctions = "# Functions";
+let mandarinaProperties = "# Props";
 
 // Functions
-function fixValue(type) {
-    if (type?.typeName) return `[${type.typeName}](###${type.typeName})`;
+function fixValue(dataType) {
+    if (dataType?.typeName)
+        return `[${dataType.typeName}](#${dataType.typeName})`;
 
-    switch (type?.kind) {
+    switch (dataType?.kind) {
     case "NumberKeyword":
         return "`number`";
     case "StringKeyword":
@@ -28,13 +29,13 @@ function fixValue(type) {
         return "`void`";
 
     case "FunctionType":
-        return funcType(type);
+        return funcType(dataType);
     case "ArrayKeyword":
         return "`[]`";
     case "ArrayType":
-        return arrType(type);
+        return arrType(dataType);
     case "LiteralType":
-        return litType(type);
+        return litType(dataType);
     }
 }
 
@@ -46,7 +47,7 @@ for (const member of Object.keys(types["MandarinaPlugin"][0].type.members)) {
     const data = types["MandarinaPlugin"][0].type.members[member][0];
 
     if (data.kind === "MethodSignature") {
-        mandarinaFunctions += `\n\n### \`${data.name}\`${funcType(
+        mandarinaFunctions += `\n\n## \`${data.name}\`${funcType(
             data.type,
         )} \n ${data.jsDoc?.doc ?? "No doc found."}`;
     }
@@ -55,6 +56,8 @@ for (const member of Object.keys(types["MandarinaPlugin"][0].type.members)) {
 for (const type of Object.keys(types)) {
     if (type === "MandarinaPlugin" || type === "undefined") continue;
     const data = types[type][0];
+
+    fixValue(data);
 }
 
 markdown += `\n\n${mandarinaFunctions}`;
