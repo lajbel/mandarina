@@ -25,12 +25,10 @@ export function mandarinaPlugin(
         data.opt = opt;
         data.m = {
             k: k as KA.KaboomCtx & LayerPlugin,
-
             getMandarinaContext(this: MandarinaPlugin) {
                 return this;
             },
-
-            /** Configuration and setup */
+            // Configuration and setup.
             loadImage,
             loadAudio: k.loadSound,
             character: addCharacter,
@@ -40,7 +38,7 @@ export function mandarinaPlugin(
             start() {
                 k.go("mandarina");
             },
-            /** Actions */
+            // Actions
             jump,
             say,
             show: showCharacter,
@@ -63,8 +61,6 @@ export default function mandarina(
         ...opt,
         plugins: [ mandarinaPlugin(opt), layerPlugin ],
     });
-
     startNovel();
-
     return k.getMandarinaContext();
 }

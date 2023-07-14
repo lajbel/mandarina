@@ -75,10 +75,7 @@ export function getVar(name: string): any {
 }
 
 // Chapters
-export function addChapter<T extends ActionType>(
-    name: string,
-    actions: () => BaseAction[],
-) {
+export function addChapter(name: string, actions: () => Action<any>[]) {
     getGameData().chapters.set(name, actions());
 }
 
@@ -174,7 +171,7 @@ function skipAction() {
 export function startNovel() {
     const { k, m, opt, isProcessingAction } = getGameData();
 
-    // pronouns variables
+    // some variables
     m.setVar("pronoun", 2);
 
     k.scene("mandarina", () => {
