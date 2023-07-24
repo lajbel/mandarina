@@ -6,60 +6,71 @@ const types = docJson.types;
 // Write a markdown file with types json.
 let head = "---\nlayout: default\ntitle: Type Reference \nnav_order: 2\n---\n";
 let markdown = "# Mandarina Type Reference";
-let mandarinaFunctions = "# Functions";
+let mandarinaFunctions = "# Methods";
 let mandarinaProperties = "# Props";
+let mandarinaTypes = "# Types";
 
-// Functions
-function fixValue(dataType) {
-    if (dataType?.typeName)
-        return `[${dataType.typeName}](#${dataType.typeName})`;
+const kindAlias = {
+    InterfaceDeclaration: "object",
+    TypeAliasDeclaration: "type",
+    StringKeyword: "string",
+    NumberKeyword: "number",
+    BooleanKeyword: "boolean",
+    ArrayType: "array",
+    TypeLiteral: "object",
+    UnionType: "union",
+};
 
-    switch (dataType?.kind) {
-    case "NumberKeyword":
-        return "`number`";
-    case "StringKeyword":
-        return "`string`";
-    case "BooleanKeyword":
-        return "`boolean`";
-    case "AnyKeyword":
-        return "`any`";
-    case "NullKeyword":
-        return "`null`";
-    case "VoidKeyword":
-        return "`void`";
+function getTypeKind(type) {
+    if (!type) return "";
+    if (type.kind === "TypeReference") {
+        return type.typeName;
+    } else if (type.kind === "UnionType") {
+        return type.types.map(getTypeKind).join(" | ");
+    } else if (type.kind === "LiteralType") {
+        return type.literal.text;
+    } else return kindAlias[type.kind];
+}
 
-    case "FunctionType":
-        return funcType(dataType);
-    case "ArrayKeyword":
-        return "`[]`";
-    case "ArrayType":
-        return arrType(dataType);
-    case "LiteralType":
-        return litType(dataType);
+function writeTypes(level, type) {
+    let str = "";
+    for (const t of type) {
+        str += writeType(level, t);
     }
+    return str;
 }
 
-function funcType(type) {
-    return `() => ${fixValue(type)}`;
-}
-
-for (const member of Object.keys(types["MandarinaPlugin"][0].type.members)) {
-    const data = types["MandarinaPlugin"][0].type.members[member][0];
-
-    if (data.kind === "MethodSignature") {
-        mandarinaFunctions += `\n\n## \`${data.name}\`${funcType(
-            data.type,
-        )} \n ${data.jsDoc?.doc ?? "No doc found."}`;
+function writeMembers(level, members) {
+    let str = "";
+    for (const member of Object.values(members)) {
+        str += `\n${writeTypes(level, member)}`;
     }
+    return str;
 }
 
+function writeType(level, type) {
+    let str = "";
+    str += `${"#".repeat(level)} \`${type.name}${
+        type.questionToken ? "?" : ""
+    }\``;
+
+    if (type?.type?.members) {
+        str += writeMembers(level + 1, type.type.members);
+    } else {
+        str += `: ${getTypeKind(type.type)}\n`;
+    }
+
+    return str;
+}
+
+// Write documentation
 for (const type of Object.keys(types)) {
-    if (type === "MandarinaPlugin" || type === "undefined") continue;
-    const data = types[type][0];
+    if (type === "undefined") continue;
 
-    fixValue(data);
+    mandarinaTypes += "\n" + writeTypes(2, types[type]);
 }
 
-markdown += `\n\n${mandarinaFunctions}`;
+markdown += `\n\n${mandarinaFunctions}\n\n${mandarinaTypes}`;
 
 fs.writeFileSync("docs/types.md", head + markdown);
+fs.writeFileSync("../mandarina.wiki/Types.md", markdown);

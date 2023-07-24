@@ -5,52 +5,173 @@ nav_order: 2
 ---
 # Mandarina Type Reference
 
-## Functions
+# Methods
 
-### `loadImage`() => undefined 
- No doc found.
+# Types
+## `LayerPlugin`: 
 
-### `getMandarinaContext`() => [MandarinaPlugin](###MandarinaPlugin) 
- Get the Mandarina Context.
+## `VisualAlign`: left | right | center | truecenter | trueleft | trueright
 
-### `character`() => `void` 
- Add a character to the game.
+## `TextboxComp`: 
 
-### `chapter`() => `void` 
- Add a chapter to the game.
+## `Textbox`: undefined
 
-### `start`() => `void` 
- Starts the game.
+## `TextboxOpt`
+### `sprite?`: string
 
-### `setVar`() => `void` 
- Set game variable.
+### `pos?`: undefined
 
-### `getVar`() => [T](###T) 
- Get game variable.
+### `offset?`: undefined
 
-### `jump`() => [NormalAction](###NormalAction) 
- Changes the current chapter.
+### `width?`: number
 
-### `say`() => [NormalAction](###NormalAction) 
- Writes a text in the textbox as a character.
+### `height?`: number
 
-### `show`() => [VisualAction](###VisualAction) 
- Shows a character in the screen.
+### `textAlign?`: left | center | right
 
-### `hide`() => [NormalAction](###NormalAction) 
- Hides a character in the screen.
+### `textSize?`: number
 
-### `showBackground`() => [VisualAction](###VisualAction) 
- Shows a background in the screen.
+### `textFont?`: string
 
-### `playAudio`() => [AudioAction](###AudioAction) 
- Plays a sound.
+### `textColor?`: string
 
-### `showTextbox`() => [NormalAction](###NormalAction) 
- Shows the textbox.
+### `textOffset?`: undefined
 
-### `hideTextbox`() => [NormalAction](###NormalAction) 
- Hides the textbox.
+## `ChoiceOpt`
+### `sprite?`: string
 
-### `choice`() => [NormalAction](###NormalAction) 
- Display a set of choices.
+### `pos?`: undefined
+
+### `offset?`: undefined
+
+### `width?`: number
+
+### `height?`: number
+
+### `textAlign?`: left | center | right
+
+### `textSize?`: number
+
+### `textFont?`: string
+
+### `textColor?`: string
+
+### `textOffset?`: undefined
+
+## `mandarina`: MandarinaPlugin
+
+## `UnionToIntersection`: undefined
+
+## `KaboomPlugins`: LayerPlugin
+
+## `GameData`
+### `k`: undefined
+
+### `m`: MandarinaPlugin
+
+### `opt`: MandarinaOpt
+
+### `chapters`: Map
+
+### `characters`: Map
+
+### `currentChapter`: string
+
+### `currentAction`: number
+
+### `processingAction`: boolean
+
+### `playingAudios`: Map
+
+### `loadedImages`: Map
+
+### `variables`: Record
+
+### `isProcessingAction`: boolean
+
+## `Inputs`: pc | gamepad | touch
+
+## `GameActions`: next | screenshoot
+
+## `GameInputs`
+## `MandarinaPlugin`
+### `k`: undefined
+
+### `_textbox?`: Textbox
+
+### `loadImage`: undefined
+
+### `loadAudio`: undefined
+
+### `getMandarinaContext`: MandarinaPlugin
+
+### `character`: undefined
+
+### `chapter`: undefined
+
+### `start`: undefined
+
+### `setVar`: undefined
+
+### `getVar`: T
+
+### `jump`: NormalAction
+
+### `say`: NormalAction
+### `say`: NormalAction
+
+### `show`: VisualAction
+
+### `hide`: NormalAction
+
+### `showBackground`: VisualAction
+### `showBackground`: VisualAction
+### `showBackground`: VisualAction
+
+### `playAudio`: AudioAction
+
+### `showTextbox`: NormalAction
+
+### `hideTextbox`: NormalAction
+
+### `choice`: NormalAction
+
+## `MandarinaOpt`
+### `textbox?`: TextboxOpt
+
+### `choice?`: ChoiceOpt
+
+### `writeVel?`: number
+
+### `writeCommaWait?`: number
+
+### `language?`: english | spanish
+
+## `LoadImageOpt`
+### `scale?`: number
+
+## `SpriteData`: undefined
+
+## `ActionType`: normal | visual | audio
+
+## `BaseAction`: 
+
+## `NormalAction`: 
+
+## `VisualAction`: 
+
+## `AudioAction`: 
+
+## `Action`: undefined
+
+## `CharacterData`
+### `id`: string
+
+### `opt?`: CharacterDataOpt
+
+## `CharacterDataOpt`
+### `expressions?`: Record
+
+### `color?`: string
+
+### `voice?`: string
