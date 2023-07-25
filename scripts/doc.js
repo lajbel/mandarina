@@ -68,5 +68,13 @@ for (const type of Object.keys(types)) {
 
 markdown += `\n\n${mandarinaFunctions}\n\n${mandarinaTypes}`;
 
+// Create the type reference docs
 fs.writeFileSync("docs/types.md", head + markdown);
 fs.writeFileSync("../mandarina.wiki/Type Reference.md", markdown);
+
+// Copy wiki in docs
+for (const file of fs.readdirSync("../mandarina.wiki/")) {
+    if (!file.endsWith(".md")) continue;
+    if (file === "Home.md") continue;
+    fs.copyFileSync("../mandarina.wiki/" + file, "docs/" + file);
+}

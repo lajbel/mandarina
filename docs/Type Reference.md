@@ -1,8 +1,3 @@
----
-layout: default
-title: Type Reference 
-nav_order: 2
----
 # Mandarina Type Reference 
  This is an automatically generated documentation of the types used in Mandarina. See it in [GitHub](https://github.com/lajbel/mandarina/wiki/Types)
 
@@ -122,6 +117,8 @@ nav_order: 2
 ### `say`: NormalAction
 
 ### `show`: VisualAction
+
+### `input`: NormalAction
 
 ### `hide`: NormalAction
 
