@@ -78,3 +78,5 @@ for (const file of fs.readdirSync("../mandarina.wiki/")) {
     if (file === "Home.md") continue;
     fs.copyFileSync("../mandarina.wiki/" + file, "docs/" + file);
 }
+
+fs.copyFileSync("../mandarina.wiki/Home.md", "docs/index.md");
