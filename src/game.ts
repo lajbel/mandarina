@@ -163,6 +163,7 @@ function previousAction() {
 }
 
 function skipAction() {
+    if (getCurrentAction().canSkip === false) return;
     getCurrentAction().skip?.();
     getGameData().processingAction = false;
     getGameData().currentAction++;

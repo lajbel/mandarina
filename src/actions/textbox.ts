@@ -99,3 +99,24 @@ export function choice(choices: Record<string, () => Action[]>) {
         },
     });
 }
+
+export function input(v: string) {
+    const { m } = getGameData();
+
+    return createAction({
+        id: "input",
+        type: "normal",
+        canSkip: false,
+        async start() {
+            const textbox = m._textbox;
+            const inputText = await textbox?.getInput();
+            m.setVar(v, inputText);
+        },
+        skip() {
+            return;
+        },
+        back() {
+            return;
+        },
+    });
+}

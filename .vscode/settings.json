@@ -43,5 +43,8 @@
     "material-icon-theme.folders.associations": {
         "actions": "app",
         "objects": "examples"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
     }
 }

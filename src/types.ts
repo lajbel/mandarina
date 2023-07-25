@@ -117,6 +117,11 @@ export type MandarinaPlugin = {
         align?: VisualAlign
     ): VisualAction;
     /**
+     * Receives user input in the textbox.
+     * @param variable Variable's name.
+     */
+    input(variable: string): NormalAction;
+    /**
      * Hides a character in the screen.
      * @param characterId Character's id.
      */
@@ -191,6 +196,8 @@ export interface BaseAction {
     type: ActionType;
     /** If action won't wait for an user interaction to continue to the next one. */
     autoskip?: boolean;
+    /** If action is skippeable. (default to true) */
+    canSkip?: boolean;
     /** Runs when action starts */
     start(): void | Promise<void>;
     /** Runs when action is backed. */

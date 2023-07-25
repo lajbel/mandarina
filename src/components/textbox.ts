@@ -4,6 +4,8 @@ import { getGameData } from "../game";
 import pronouns from "../data/pronouns.json";
 
 export interface TextboxComp extends KA.Comp {
+    /** If is in input mode. */
+    inInput: boolean;
     /** If the textbox is in skip. */
     skipped: boolean;
     /** Current character of the writing text. */
@@ -23,8 +25,10 @@ export interface TextboxComp extends KA.Comp {
     show(this: Textbox): void;
     /** Hides the textbox. */
     hide(this: Textbox): void;
-    /** Change the namebox's text */
+    /** Change the namebox's text. */
     changeName(this: Textbox, text: string, color?: KA.Color): void;
+    /** Get user input in textbox. */
+    getInput(this: Textbox): Promise<string>;
 }
 
 function formatText(text: string) {
@@ -58,6 +62,7 @@ export function textbox(): TextboxComp {
     return {
         id: "mandarina_textbox",
         require: [],
+        inInput: false,
         skipped: false,
         curChar: 0,
 
@@ -146,6 +151,44 @@ export function textbox(): TextboxComp {
                         ),
                 ),
             );
+        },
+        getInput() {
+            const events: KA.EventController[] = [];
+            this.clear();
+
+            const inputPromise = new Promise<string>((resolve) => {
+                const enterPressEvent = k.onKeyPress("enter", () => {
+                    resolve(textbox.text);
+                });
+
+                const charInputEvent = k.onCharInput((ch) => {
+                    textbox.text += ch;
+                });
+
+                const backspacePressEvent = k.onKeyPressRepeat(
+                    "backspace",
+                    () => {
+                        textbox.text = textbox.text.substring(
+                            0,
+                            textbox.text.length - 1,
+                        );
+                    },
+                );
+
+                events.push(
+                    enterPressEvent,
+                    charInputEvent,
+                    backspacePressEvent,
+                );
+            });
+
+            inputPromise.then(() => {
+                events.forEach((e) => {
+                    e.cancel();
+                });
+            });
+
+            return inputPromise;
         },
     };
 }

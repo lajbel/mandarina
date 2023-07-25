@@ -3,7 +3,8 @@ layout: default
 title: Type Reference 
 nav_order: 2
 ---
-# Mandarina Type Reference
+# Mandarina Type Reference 
+ This is an automatically generated documentation of the types used in Mandarina. See it in [GitHub](https://github.com/lajbel/mandarina/wiki/Types)
 
 # Methods
 

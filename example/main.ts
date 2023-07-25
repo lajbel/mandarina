@@ -7,10 +7,10 @@ const m = mandarina({
     height: 540,
     textbox: {
         sprite: "textbox",
-        offset: [ 0, 4 ],
+        offset: [0, 4],
         textFont: "sans-serif",
         textSize: 24,
-        textOffset: [ 3, 3 ],
+        textOffset: [3, 3],
     },
     choice: {
         sprite: "choice",
@@ -55,14 +55,15 @@ m.chapter("start", () => [
     m.show("t", "normal").fadeIn().appearFrom("left"),
     // Say something.
     m.say("t", "Hi, I'm Deffy!"),
-
     m.say("t", "What's your name?"),
+    m.input("name"),
+
     m.say("t", "Oh, cool name [name]"),
     m.say("t", "And what's your pronoun?"),
     m.choice({
-        "he/him": () => [ m.say("t", "Okay, he") ],
-        "she/her": () => [ m.say("t", "Okay, she") ],
-        "they/them": () => [ m.say("t", "Okay, they") ],
+        "he/him": () => [m.say("t", "Okay, he")],
+        "she/her": () => [m.say("t", "Okay, she")],
+        "they/them": () => [m.say("t", "Okay, they")],
     }),
 ]);
 

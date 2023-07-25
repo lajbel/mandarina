@@ -5,20 +5,16 @@ const types = docJson.types;
 
 // Write a markdown file with types json.
 let head = "---\nlayout: default\ntitle: Type Reference \nnav_order: 2\n---\n";
-let markdown = "# Mandarina Type Reference";
+let markdown =
+    "# Mandarina Type Reference \n This is an automatically generated documentation of the types used in Mandarina. See it in [GitHub](https://github.com/lajbel/mandarina/wiki/Types)";
 let mandarinaFunctions = "# Methods";
-let mandarinaProperties = "# Props";
+let mandarinaProperties = "# Properties";
 let mandarinaTypes = "# Types";
 
 const kindAlias = {
-    InterfaceDeclaration: "object",
-    TypeAliasDeclaration: "type",
     StringKeyword: "string",
     NumberKeyword: "number",
     BooleanKeyword: "boolean",
-    ArrayType: "array",
-    TypeLiteral: "object",
-    UnionType: "union",
 };
 
 function getTypeKind(type) {
@@ -73,4 +69,4 @@ for (const type of Object.keys(types)) {
 markdown += `\n\n${mandarinaFunctions}\n\n${mandarinaTypes}`;
 
 fs.writeFileSync("docs/types.md", head + markdown);
-fs.writeFileSync("../mandarina.wiki/Types.md", markdown);
+fs.writeFileSync("../mandarina.wiki/Type Reference.md", markdown);

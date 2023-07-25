@@ -15,7 +15,7 @@ import { LayerPlugin, layerPlugin } from "plugins/layer";
 import { showCharacter, hideCharacter } from "actions/character";
 import { showBackground } from "actions/background";
 import { playAudio } from "actions/audio";
-import { say, showTextbox, hideTextbox, choice } from "actions/textbox";
+import { say, showTextbox, hideTextbox, choice, input } from "actions/textbox";
 
 export function mandarinaPlugin(
     opt: MandarinaOpt,
@@ -41,6 +41,7 @@ export function mandarinaPlugin(
             // Actions
             jump,
             say,
+            input,
             show: showCharacter,
             hide: hideCharacter,
             showBackground,
