@@ -1,14 +1,13 @@
 import type * as KA from "kaboom";
 import type {
     Action,
-    ActionType,
     CharacterDataOpt,
     GameData,
     LoadImageOpt,
     SpriteData,
     BaseAction,
-} from "types";
-import { addTextbox } from "objects/textbox";
+} from "./types.ts";
+import { addTextbox } from "./objects/textbox.ts";
 
 // Constants
 const LAYERS = [
@@ -36,7 +35,7 @@ export const data: Partial<GameData> = {
 
 // Data functions
 function hasContextStarted(d: typeof data): d is GameData {
-    return "m" in data;
+    return "m" in d;
 }
 
 export function getGameData(): GameData {

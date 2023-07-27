@@ -1,0 +1,14 @@
+{
+    "imports": {
+        "kaboom": "https://esm.sh/kaboom@3000.0.15"
+    },
+    "lint": {
+        "rules": {
+            "exclude": ["no-explicit-any"]
+        }
+    },
+    "tasks": {
+        "build": "deno run -qA scripts/build.ts",
+        "watch:example": "npx esbuild example/main.ts --bundle --outfile=example/game.js --sourcemap --watch --servedir=./example/"
+    }
+}

@@ -1,13 +1,13 @@
 import type * as KA from "kaboom";
-import type { VisualAction } from "../types";
+import type { VisualAction } from "../types.ts";
 import type {
     VisuaLEffectsOpt,
     VisualAlign,
     VisualComp,
-} from "../components/visual";
-import { createAction, getGameData } from "../game";
-import { getAlignment } from "../util";
-import { visual } from "../components/visual";
+} from "../components/visual.ts";
+import { createAction, getGameData } from "../game.ts";
+import { getAlignment } from "../util.ts";
+import { visual } from "../components/visual.ts";
 
 export function showCharacter(
     characterId: string,
@@ -15,8 +15,8 @@ export function showCharacter(
     align: VisualAlign = "center",
 ) {
     const { m, k, characters, loadedImages } = getGameData();
+    const effects: Partial<VisuaLEffectsOpt> = {};
     let ch: KA.GameObj<VisualComp>;
-    let effects: Partial<VisuaLEffectsOpt> = {};
 
     return createAction({
         id: "show_character",

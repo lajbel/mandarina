@@ -1,12 +1,8 @@
 import type * as KA from "kaboom";
-import { getGameData } from "game";
-import { VisualAlign } from "components/visual";
+import { getGameData } from "./game.ts";
+import { VisualAlign } from "./components/visual.ts";
 
-export function getAlignment(
-    align: VisualAlign,
-    w: number = 0,
-    h: number = 0,
-): KA.Vec2 {
+export function getAlignment(align: VisualAlign, w = 0, h = 0): KA.Vec2 {
     const { k } = getGameData();
 
     const alignments: Record<VisualAlign, KA.Vec2> = {

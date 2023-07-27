@@ -1,6 +1,6 @@
 import type * as KA from "kaboom";
-import type { VisualAction } from "types";
-import { createAction, getGameData } from "game";
+import type { VisualAction } from "../types.ts";
+import { createAction, getGameData } from "../game.ts";
 
 export function showBackground(background: string | KA.Color) {
     const { k } = getGameData();
