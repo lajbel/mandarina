@@ -139,7 +139,7 @@ function buildTypes() {
     }
 
     writeFile(
-        "site/public/doc.json",
+        "doc.json",
         JSON.stringify({
             types,
         }),
