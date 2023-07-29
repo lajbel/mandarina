@@ -1,7 +1,7 @@
 import type * as KA from "kaboom";
-import type { Textbox } from "../objects/textbox";
-import { getGameData } from "../game";
-import pronouns from "../data/pronouns.json";
+import type { Textbox } from "../objects/textbox.ts";
+import { getGameData } from "../game.ts";
+import pronouns from "../data/pronouns.json" assert { type: "json" };
 
 export interface TextboxComp extends KA.Comp {
     /** If is in input mode. */
@@ -123,7 +123,7 @@ export function textbox(): TextboxComp {
                 0,
                 1,
                 0.5,
-                (v) => {
+                (v: number) => {
                     this.opacity = v;
                 },
                 k.easings.linear,
@@ -161,7 +161,7 @@ export function textbox(): TextboxComp {
                     resolve(textbox.text);
                 });
 
-                const charInputEvent = k.onCharInput((ch) => {
+                const charInputEvent = k.onCharInput((ch: string) => {
                     textbox.text += ch;
                 });
 

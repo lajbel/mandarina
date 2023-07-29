@@ -1,0 +1,28 @@
+{
+    "imports": {
+        "kaboom": "https://esm.sh/kaboom@3000.0.15"
+    },
+    "lint": {
+        "exclude": [
+            "./example/**",
+            "./dist/**",
+            "./scripts/**",
+            "./node_modules/**",
+            "./site/**"
+        ],
+        "rules": {
+            "exclude": ["no-explicit-any"]
+        }
+    },
+    "tasks": {
+        "dev": "npx nodemon --watch ./src --watch ./example --exec \"npm run build && npm run example\" --ext \"ts\"",
+        "build": "deno run -qA scripts/build.ts",
+        "watch": "npx nodemon --watch ./src --exec \"npm run build\" --ext \"ts\"",
+        "build:example": "npx esbuild example/main.ts --bundle --outfile=example/game.js --sourcemap --servedir=./example/",
+        "watch:example": "npx esbuild example/main.ts --bundle --outfile=example/game.js --sourcemap --watch --servedir=./example/",
+        "dts": "npx dts-bundle-generator -o dist/types.d.ts src/types.ts",
+        "fmt": "deno fmt",
+        "lint": "deno lint",
+        "check": "deno lint"
+    }
+}

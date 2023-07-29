@@ -1,14 +1,14 @@
-import fs from "fs";
 import docJson from "../site/public/doc.json" assert { type: "json" };
 
 const types = docJson.types;
 
 // Write a markdown file with types json.
-let head = "---\nlayout: default\ntitle: Type Reference \nnav_order: 2\n---\n";
+const _head =
+    "---\nlayout: default\ntitle: Type Reference \nnav_order: 2\n---\n";
 let markdown =
     "# Mandarina Type Reference \n This is an automatically generated documentation of the types used in Mandarina. See it in [GitHub](https://github.com/lajbel/mandarina/wiki/Types)";
-let mandarinaFunctions = "# Methods";
-let mandarinaProperties = "# Properties";
+const mandarinaFunctions = "# Methods";
+const _mandarinaProperties = "# Properties";
 let mandarinaTypes = "# Types";
 
 const kindAlias = {
@@ -17,7 +17,7 @@ const kindAlias = {
     BooleanKeyword: "boolean",
 };
 
-function getTypeKind(type) {
+function getTypeKind(type: any) {
     if (!type) return "";
     if (type.kind === "TypeReference") {
         return type.typeName;
@@ -25,10 +25,10 @@ function getTypeKind(type) {
         return type.types.map(getTypeKind).join(" | ");
     } else if (type.kind === "LiteralType") {
         return type.literal.text;
-    } else return kindAlias[type.kind];
+    } else return kindAlias[type.kind as keyof typeof kindAlias];
 }
 
-function writeTypes(level, type) {
+function writeTypes(level = 0, type: any) {
     let str = "";
     for (const t of type) {
         str += writeType(level, t);
@@ -36,7 +36,7 @@ function writeTypes(level, type) {
     return str;
 }
 
-function writeMembers(level, members) {
+function writeMembers(level = 0, members: any) {
     let str = "";
     for (const member of Object.values(members)) {
         str += `\n${writeTypes(level, member)}`;
@@ -44,7 +44,7 @@ function writeMembers(level, members) {
     return str;
 }
 
-function writeType(level, type) {
+function writeType(level = 0, type: any) {
     let str = "";
     str += `${"#".repeat(level)} \`${type.name}${
         type.questionToken ? "?" : ""
@@ -63,20 +63,22 @@ function writeType(level, type) {
 for (const type of Object.keys(types)) {
     if (type === "undefined") continue;
 
-    mandarinaTypes += "\n" + writeTypes(2, types[type]);
+    mandarinaTypes += "\n" + writeTypes(2, types[type as keyof typeof types]);
 }
 
 markdown += `\n\n${mandarinaFunctions}\n\n${mandarinaTypes}`;
 
-// Create the type reference docs
-fs.writeFileSync("docs/types.md", head + markdown);
-fs.writeFileSync("../mandarina.wiki/Type Reference.md", markdown);
+// Create the type reference document
+const encoder = new TextEncoder();
+const indexData = encoder.encode(markdown);
 
-// Copy wiki in docs
-for (const file of fs.readdirSync("../mandarina.wiki/")) {
-    if (!file.endsWith(".md")) continue;
-    if (file === "Home.md") continue;
-    fs.copyFileSync("../mandarina.wiki/" + file, "docs/" + file);
+Deno.writeFileSync("../mandarina.wiki/Type Reference.md", indexData);
+
+// Copy mandarina.wiki in docs/
+for (const file of Deno.readDirSync("../mandarina.wiki/")) {
+    if (!file.name.endsWith(".md")) continue;
+    if (file.name == "Home.md") continue;
+    Deno.copyFileSync("../mandarina.wiki/" + file, "docs/" + file);
 }
 
-fs.copyFileSync("../mandarina.wiki/Home.md", "docs/index.md");
+Deno.copyFileSync("../mandarina.wiki/Home.md", "docs/index.md");

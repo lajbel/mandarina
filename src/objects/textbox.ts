@@ -1,8 +1,8 @@
 // The textbox object.
 import type * as KA from "kaboom";
-import type { TextboxComp } from "components/textbox";
-import { getGameData } from "game";
-import { textbox } from "components/textbox";
+import type { TextboxComp } from "../components/textbox.ts";
+import { getGameData } from "../game.ts";
+import { textbox } from "../components/textbox.ts";
 
 export type Textbox = KA.GameObj<
     KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
