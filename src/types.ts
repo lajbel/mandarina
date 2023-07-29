@@ -1,8 +1,8 @@
 import type * as KA from "kaboom";
 import type { LayerPlugin } from "plugins/layer";
-import type { VisualAlign } from "./components/visual";
+import type { VisualAlign } from "components/visual";
 import type { Textbox, TextboxOpt } from "./objects/textbox";
-import type { Choice, ChoiceOpt } from "objects/choices";
+import type { ChoiceOpt } from "objects/choices";
 
 // #region Main function
 declare function mandarina(opt?: MandarinaOpt & KA.KaboomOpt): MandarinaPlugin;
