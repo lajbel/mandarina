@@ -5,46 +5,7 @@
     "editor.formatOnType": false,
     "editor.formatOnSaveMode": "file",
     "files.eol": "\n",
-    "codesnap.showWindowControls": true,
-    "codesnap.containerPadding": "3em",
-    "codesnap.target": "container",
-    "codesnap.transparentBackground": false,
-    "codesnap.showWindowTitle": true,
-    "cSpell.words": [
-        "aparation",
-        "autoskip",
-        "botleft",
-        "botright",
-        "dataurl",
-        "Deffy",
-        "dsimui",
-        "easings",
-        "ellos",
-        "endregion",
-        "glsl",
-        "iife",
-        "lajbel",
-        "linebreak",
-        "Mandaarina",
-        "Mandarina",
-        "mandarinavn",
-        "namebox",
-        "namebox's",
-        "nerune",
-        "outfile",
-        "replit",
-        "screenshoot",
-        "taglist",
-        "textbox",
-        "truecenter",
-        "trueleft",
-        "trueright"
-    ],
-    "material-icon-theme.folders.associations": {
-        "actions": "app",
-        "objects": "examples"
-    },
-    "[typescript]": {
-        "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-    }
+    "deno.enable": true,
+    "deno.config": "./deno.json",
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }

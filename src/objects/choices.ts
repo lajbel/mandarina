@@ -1,8 +1,8 @@
 import type * as KA from "kaboom";
-import type { Action } from "types";
-import { visual } from "components/visual";
-import { choice } from "components/choice";
-import { getGameData } from "game";
+import type { Action } from "../types.ts";
+import { visual } from "../components/visual.ts";
+import { choice } from "../components/choice.ts";
+import { getGameData } from "../game.ts";
 
 export type Choice = KA.GameObj;
 

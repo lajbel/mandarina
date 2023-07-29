@@ -1,7 +1,7 @@
 import type * as KA from "kaboom";
-import type { UnionToIntersection } from "types";
-import { getGameData } from "game";
-import { getAlignment, getSpriteDimensions } from "../util";
+import type { UnionToIntersection } from "../types.ts";
+import { getGameData } from "../game.ts";
+import { getAlignment, getSpriteDimensions } from "../util.ts";
 
 export type VisualAlign =
     | "left"

@@ -1,3 +1,6 @@
+This project is made using npm packages, but it uses deno.
+There's a couple of scripts in `deno.json`.
+
 ## Files
 
 -   [scripts/](./mandarina/scripts) - Scripts for development.

@@ -1,14 +1,12 @@
 // This file builds the project
-import esbuild from "esbuild";
-import fs from "fs";
+import esbuild, { BuildOptions } from "esbuild";
 import ts from "typescript";
 
 const distDir = "dist";
-const srcDir = "src";
 const srcPath = "src/main.ts";
 
 // Build all formats
-const formats = [
+const formats: BuildOptions[] = [
     {
         format: "iife",
         globalName: "mandarina",
@@ -21,16 +19,11 @@ const formats = [
     { format: "esm", outfile: `${distDir}/mandarina.mjs` },
 ];
 
-const config = {
+const config: BuildOptions = {
     bundle: true,
     sourcemap: true,
     minify: true,
     keepNames: true,
-    loader: {
-        ".png": "dataurl",
-        ".glsl": "text",
-        ".mp3": "binary",
-    },
     entryPoints: [ srcPath ],
 };
 
@@ -45,16 +38,25 @@ formats.forEach((fmt) => {
 
 // Create d.ts file
 function buildTypes() {
-    let dts = fs.readFileSync(`${distDir}/types.d.ts`, "utf-8");
+    const dts = Deno.readFileSync(`${distDir}/types.d.ts`);
+    const decoder = new TextDecoder("utf-8");
+    const dtsString = decoder.decode(dts);
 
-    function writeFile(path, content) {
-        fs.writeFileSync(path, content);
+    function writeFile(path: string, content: string) {
+        const encoder = new TextEncoder();
+        const fileContent = encoder.encode(content);
+        Deno.writeFileSync(path, fileContent);
         console.log(`-> ${path}`);
     }
 
-    const f = ts.createSourceFile("ts", dts, ts.ScriptTarget.Latest, true);
+    const f = ts.createSourceFile(
+        "ts",
+        dtsString,
+        ts.ScriptTarget.Latest,
+        true,
+    );
 
-    function transform(o, f) {
+    function transform(o: any, f: any) {
         for (const k in o) {
             if (o[k] == null) {
                 continue;
@@ -73,7 +75,7 @@ function buildTypes() {
     }
 
     // transform and prune typescript ast to a format more meaningful to us
-    const stmts = transform(f.statements, (k, v) => {
+    const stmts = transform(f.statements, (k: string, v: any) => {
         switch (k) {
         case "end":
         case "flags":
@@ -93,7 +95,7 @@ function buildTypes() {
         case "questionToken":
             return true;
         case "members": {
-            const members = {};
+            const members: Record<string, any> = {};
             for (const mem of v) {
                 const name = mem.name?.escapedText;
                 if (!name || name === "toString") {
@@ -109,7 +111,7 @@ function buildTypes() {
         case "jsDoc": {
             const doc = v[0];
             const taglist = doc.tags ?? [];
-            const tags = {};
+            const tags: Record<string, any> = {};
             for (const tag of taglist) {
                 const name = tag.tagName.escapedText;
                 if (!tags[name]) {
@@ -128,7 +130,7 @@ function buildTypes() {
     });
 
     // contain the type data for doc gen
-    const types = {};
+    const types: Record<string, any> = {};
 
     for (const stmt of stmts) {
         if (!types[stmt.name]) {

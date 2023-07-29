@@ -1,7 +1,6 @@
-import type { Choice } from "../objects/choices";
-import type { Action } from "types";
-import { createAction, getGameData } from "../game";
-import { addChoices } from "../objects/choices";
+import type { Action } from "../types.ts";
+import { createAction, getGameData } from "../game.ts";
+import { addChoices } from "../objects/choices.ts";
 
 export function showTextbox() {
     const { m } = getGameData();
