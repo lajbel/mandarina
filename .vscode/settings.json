@@ -6,5 +6,6 @@
     "editor.formatOnSaveMode": "file",
     "files.eol": "\n",
     "deno.enable": true,
-    "deno.config": "./deno.json"
+    "deno.config": "./deno.json",
+    "typescript.tsdk": "node_modules\\typescript\\lib"
 }
