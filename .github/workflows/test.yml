@@ -1,9 +1,11 @@
 on: [push]
 name: "Check TypeScript"
 jobs:
-    test:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - run: npm install
-            - run: npm run check
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.xs
+      - run: npm task check

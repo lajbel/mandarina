@@ -1,12 +1,11 @@
 on: ["push"]
 name: "Run TODO to Issue"
 jobs:
-    build:
-        runs-on: "ubuntu-latest"
-        steps:
-            - uses: "actions/checkout@v3"
-            - name: "TODO to Issue"
-              uses: "alstr/todo-to-issue-action@v4"
-              with:
-                CLOSE_ISSUES: false
-                    
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: "actions/checkout@v3"
+      - name: "TODO to Issue"
+        uses: "alstr/todo-to-issue-action@v4"
+        with:
+          CLOSE_ISSUES: false
