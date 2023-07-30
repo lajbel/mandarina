@@ -18,6 +18,18 @@ export type UnionToIntersection<U> = (
 
 type KaboomPlugins = LayerPlugin;
 
+export type TextOptions = {
+    textAlign?: "left" | "center" | "right";
+    /** Textbox's text size. */
+    textSize?: number;
+    /** Textbox's text font. */
+    textFont?: string;
+    /** Textbox's text color. */
+    textColor?: string;
+    /** Textbox's text offset */
+    textOffset?: KA.Vec2;
+};
+
 export type GameData = {
     k: KA.KaboomCtx & KaboomPlugins;
     m: MandarinaPlugin;

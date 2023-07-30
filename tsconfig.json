@@ -9,9 +9,14 @@
         "baseUrl": "./src/",
         "resolveJsonModule": true,
         "esModuleInterop": true,
+        "moduleResolution": "Bundler",
         "paths": {
             "kaboom": ["./node_modules/kaboom/dist/kaboom"]
         }
     },
-    "include": ["./src/*.ts", "src/classes/ActionManager.ts"]
+    "include": [
+        "./src/*.ts",
+        "src/classes/ActionManager.ts",
+        "src/utils/textWithOptions.ts"
+    ]
 }

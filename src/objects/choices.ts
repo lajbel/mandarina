@@ -3,6 +3,8 @@ import type { Action } from "types";
 import { visual } from "components/visual";
 import { choice } from "components/choice";
 import { getGameData } from "game";
+import { getSpriteDimensions } from "../util";
+import { textWithOptions } from "../utils/textWithOptions";
 
 export type Choice = KA.GameObj;
 
@@ -49,14 +51,20 @@ export function makeChoice(
         textOffset: opt?.textOffset ? k.vec2(...opt.textOffset) : k.vec2(0),
     };
 
+    let boxDimensions = k.vec2(options.width, options.height);
+
+    if (options.sprite) {
+        boxDimensions = getSpriteDimensions(options.sprite);
+    }
+
     const choiceParent = k.make([
         k.pos(k.center()),
         k.layer("choices"),
         k.area({
             shape: new k.Rect(
-                k.vec2(-options.width / 2, -options.height / 2),
-                options.width,
-                options.height,
+                k.vec2(-boxDimensions.x / 2, -boxDimensions.y / 2), // For be in center
+                boxDimensions.x,
+                boxDimensions.y,
             ),
         }),
         visual({
@@ -82,8 +90,7 @@ export function makeChoice(
         k.z(1),
         k.layer("choices"),
         k.anchor("center"),
-        k.text(text, { size: options.textSize, font: options.textFont }),
-        k.color(0, 0, 0),
+        ...textWithOptions(text, options),
     ]);
 
     return choiceParent;

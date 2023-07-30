@@ -36,7 +36,7 @@ export const data: Partial<GameData> = {
 
 // Data functions
 function hasContextStarted(d: typeof data): d is GameData {
-    return "m" in data;
+    return "m" in d;
 }
 
 export function getGameData(): GameData {
@@ -187,6 +187,7 @@ export function startNovel() {
                 if (
                     k.isKeyPressed("space") ||
                     k.isKeyPressed("right") ||
+                    k.isKeyPressed("enter") ||
                     k.isMousePressed()
                 ) {
                     if (!isProcessingAction()) nextAction();
