@@ -9,9 +9,9 @@
         "baseUrl": "./src/",
         "resolveJsonModule": true,
         "esModuleInterop": true,
-        "moduleResolution": "Bundler",
         "paths": {
-            "kaboom": ["./node_modules/kaboom/dist/kaboom"]
+            "kaboom": ["./node_modules/kaboom/dist/kaboom"],
+            "@/**": ["./src/**"]
         }
     },
     "include": [

@@ -28,6 +28,8 @@ export type TextOptions = {
     textColor?: string;
     /** Textbox's text offset */
     textOffset?: KA.Vec2;
+    /** Textbox's text max width before wrap. */
+    textWidth?: number;
 };
 
 export type GameData = {

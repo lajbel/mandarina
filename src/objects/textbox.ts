@@ -3,6 +3,8 @@ import type * as KA from "kaboom";
 import type { TextboxComp } from "components/textbox";
 import { getGameData } from "game";
 import { textbox } from "components/textbox";
+import { getSpriteDimensions } from "../util";
+import { textWithOptions } from "utils/textWithOptions";
 
 export type Textbox = KA.GameObj<
     KA.PosComp | KA.AnchorComp | KA.OpacityComp | TextboxComp
@@ -27,8 +29,10 @@ export type TextboxOpt = {
     textFont?: string;
     /** Textbox's text color. */
     textColor?: string;
-    /** Textbox's text offset */
+    /** Textbox's text offset. */
     textOffset?: [number, number];
+    /** Textbox's text max width before wrap. */
+    textWidth?: number;
 };
 
 export function addTextbox(opt?: TextboxOpt): Textbox {
@@ -45,19 +49,13 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
         textFont: opt?.textFont ?? "sans-serif",
         textColor: opt?.textColor ?? "#000000",
         textOffset: opt?.textOffset ? k.vec2(...opt.textOffset) : k.vec2(0),
+        textWidth: opt?.textWidth ?? 0,
     };
 
-    let boxDimensions: KA.Vec2;
+    let boxDimensions = k.vec2(options.width, options.height);
 
     if (options.sprite) {
-        const spr = k.add([
-            k.pos(k.vec2(k.width(), k.height()).scale(100)),
-            k.sprite(options.sprite),
-        ]);
-
-        boxDimensions = k.vec2(spr.width, spr.height);
-    } else {
-        boxDimensions = k.vec2(options.width, options.height);
+        boxDimensions = getSpriteDimensions(options.sprite);
     }
 
     // Get the textbox's width and height if is sprite, if not, use the opt values.
@@ -89,13 +87,7 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
             -textboxHeight + options.textOffset.y,
         ),
         k.layer("textbox"),
-        k.text("", {
-            width: textboxWidth,
-            size: options.textSize,
-            font: options.textFont,
-            align: options.textAlign,
-        }),
-        k.color(k.Color.fromHex(options.textColor)),
+        ...textWithOptions("", options),
     ]);
 
     // The textbox's name.
