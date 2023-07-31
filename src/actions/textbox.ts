@@ -1,7 +1,6 @@
-import type { Choice } from "../objects/choices";
 import type { Action } from "types";
-import { createAction, getGameData } from "../game";
-import { addChoices } from "../objects/choices";
+import { createAction, getGameData } from "game";
+import { addChoices } from "objects/choices";
 
 export function showTextbox() {
     const { m } = getGameData();

@@ -3,7 +3,7 @@ import type * as KA from "kaboom";
 import type { TextboxComp } from "components/textbox";
 import { getGameData } from "game";
 import { textbox } from "components/textbox";
-import { getSpriteDimensions } from "../util";
+import { getSpriteDimensions } from "utils/getDimensions";
 import { textWithOptions } from "utils/textWithOptions";
 
 export type Textbox = KA.GameObj<

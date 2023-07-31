@@ -1,12 +1,12 @@
 import type * as KA from "kaboom";
-import type { VisualAction } from "../types";
+import type { VisualAction } from "types";
 import type {
     VisuaLEffectsOpt,
     VisualAlign,
     VisualComp,
 } from "../components/visual";
 import { createAction, getGameData } from "../game";
-import { getAlignment } from "../util";
+import { getAlignment } from "utils/getDimensions";
 import { visual } from "../components/visual";
 
 export function showCharacter(

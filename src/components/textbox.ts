@@ -1,7 +1,7 @@
 import type * as KA from "kaboom";
-import type { Textbox } from "../objects/textbox";
-import { getGameData } from "../game";
-import pronouns from "../data/pronouns.json";
+import type { Textbox } from "objects/textbox";
+import { getGameData } from "game";
+import pronouns from "_data/pronouns.json";
 
 export interface TextboxComp extends KA.Comp {
     /** If is in input mode. */

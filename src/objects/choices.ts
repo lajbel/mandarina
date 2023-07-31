@@ -3,8 +3,8 @@ import type { Action } from "types";
 import { visual } from "components/visual";
 import { choice } from "components/choice";
 import { getGameData } from "game";
-import { getSpriteDimensions } from "../util";
-import { textWithOptions } from "../utils/textWithOptions";
+import { getSpriteDimensions } from "utils/getDimensions";
+import { textWithOptions } from "utils/textWithOptions";
 
 export type Choice = KA.GameObj;
 

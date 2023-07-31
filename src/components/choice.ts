@@ -1,6 +1,6 @@
 import type * as KA from "kaboom";
-import type { Action } from "../types";
-import { getGameData, insertActions } from "../game";
+import type { Action } from "types";
+import { getGameData, insertActions } from "game";
 
 export interface ChoiceComp extends KA.Comp {
     actions: () => Action[];
