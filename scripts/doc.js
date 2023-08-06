@@ -1,5 +1,5 @@
 import fs from "fs";
-import docJson from "../site/public/doc.json" assert { type: "json" };
+import docJson from "../doc.json" assert { type: "json" };
 
 const types = docJson.types;
 
