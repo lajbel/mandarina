@@ -1,10 +1,34 @@
-# Mandarina: A web visual novel engine
+# ![Mandarina 🍊](mandarinalogo.png)
 
-Mandarina is an engine based in kaboom.js, made for make visual **novels**.
+<div align="center">
+Mandarina is a visual novel engine made for be simple. <br><br>
 
-[Documentation](/src/types.ts)
+[![lajbel - mandarina](https://img.shields.io/static/v1?label=lajbel&message=mandarina&color=orange&logo=github)](https://github.com/lajbel/mandarina "Go to GitHub repo")
+[![stars - mandarina](https://img.shields.io/github/stars/lajbel/mandarina?style=social)](https://github.com/lajbel/mandarina)
+[![forks - mandarina](https://img.shields.io/github/forks/lajbel/mandarina?style=social)](https://github.com/lajbel/mandarina) <br>
+[![GitHub tag](https://img.shields.io/github/tag/lajbel/mandarina?include_prereleases=&sort=semver&color=orange)](https://github.com/lajbel/mandarina/releases/)
+[![issues - mandarina](https://img.shields.io/github/issues/lajbel/mandarina)](https://github.com/lajbel/mandarina/issues)
 
-## Example code
+</div>
+
+<div align="center">
+
+[![View site - GH Pages](https://img.shields.io/badge/View_site-GH_Pages-2ea44f?style=for-the-badge)](https://lajbel.github.io/mandarina/)
+[![view - Documentation](https://img.shields.io/badge/view-Documentation-blue?style=for-the-badge)](https://github.com/lajbel/mandarina/wiki "Go to project documentation")
+
+</div>
+
+## Features
+
+-   📖 Simple verbal language for creating visual novels.
+-   🧑‍💻 All in coding, no difficult visual editors.
+-   🎨 Fully customizable.
+-   👾 Easy to integrate minigames
+-   💥 Based in kaboom.js
+
+## An Example
+
+Start coding/reading mandarina code is quite simple!
 
 ```js
 import mandarina from "mandarinavn";
@@ -28,9 +52,10 @@ m.chapter("start", () => [
     // Show our character.
     m.show("t", "normal"),
     // Say something.
-    m.say("t", "Hi human, object, or whatever you are!"),
-    m.say("t", "Welcome to this Mandarina test!"),
-    m.say("t", "This engine are in development, so it's not ready yet."),
+    m.say("t", "Hi, I'm Deffy!"),
+    m.say("t", "What's your name?"),
+    // Ask an input
+    m.input("name"),
 
     // Jump to another chapter
     m.jump("ch1"),
@@ -40,7 +65,7 @@ m.chapter("start", () => [
 m.start();
 ```
 
-Full [`example`](example/)
+![](https://i.imgur.com/kmwGiux.png)
 
 ## Installation
 
