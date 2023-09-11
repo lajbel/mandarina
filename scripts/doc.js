@@ -4,7 +4,7 @@ import docJson from "../doc.json" assert { type: "json" };
 const types = docJson.types;
 
 // Write a markdown file with types json.
-let head = "---\nlayout: default\ntitle: Type Reference\n---\n";
+let head = "---\nlayout: default\ntitle: Type Reference\nnav-order: 4\n---\n";
 let markdown =
     "# Mandarina Type Reference \n This is an automatically generated documentation of the types used in Mandarina. See it in [GitHub](https://github.com/lajbel/mandarina/wiki/Types)";
 let mandarinaFunctions = "# Methods";
@@ -69,12 +69,14 @@ for (const type of Object.keys(types)) {
 markdown += `\n\n${mandarinaFunctions}\n\n${mandarinaTypes}`;
 
 // Create the type reference docs
-fs.writeFileSync("docs/Type Reference.md", head + markdown);
-fs.writeFileSync("../mandarina.wiki/Type Reference.md", markdown);
+fs.writeFileSync("../mandarina.wiki/Type Reference.md", head + markdown);
 
 // Copy wiki in docs
 for (const file of fs.readdirSync("../mandarina.wiki/")) {
     if (!file.endsWith(".md")) continue;
-    if (file === "Home.md" || file == "Type Reference.md") continue;
+    if (file === "Home.md") {
+        fs.copyFileSync("../mandarina.wiki/" + "Home.md", "docs/" + "index.md");
+        continue;
+    }
     fs.copyFileSync("../mandarina.wiki/" + file, "docs/" + file);
 }
