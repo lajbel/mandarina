@@ -4,6 +4,8 @@ title: Basics of Mandarina
 nav_order: 2
 ---
 
+# Basics
+
 In this section, we will understand how Mandarina works from zero.
 
 ## Mandarina function
