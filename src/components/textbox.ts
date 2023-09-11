@@ -28,16 +28,16 @@ export interface TextboxComp extends KA.Comp {
     /** Change the namebox's text. */
     changeName(this: Textbox, text: string, color?: KA.Color): void;
     /** Get user input in textbox. */
-    getInput(this: Textbox): Promise<string>;
+    getInput(this: Textbox, text: string): Promise<string>;
 }
 
 function formatText(text: string) {
     const { m, opt, variables } = getGameData();
-    const pronoun = m.getVar("pronoun") as number;
+    const pronoun = m.getVar<number>("pronoun");
     const pronounData = pronouns[opt.language ?? "english"];
 
     let formattedText = text
-        .replace("[they]", pronounData.their[pronoun])
+        .replace("[they]", pronounData.they[pronoun])
         .replace("[them]", pronounData.them[pronoun])
         .replace("[their]", pronounData.their[pronoun])
         .replace("[theirs]", pronounData.theirs[pronoun])
@@ -53,7 +53,7 @@ function formatText(text: string) {
     return formattedText;
 }
 
-export function textbox(): TextboxComp {
+export function textboxComponent(): TextboxComp {
     const data = getGameData();
     const k = data.k;
     let textbox: KA.GameObj;
@@ -114,6 +114,7 @@ export function textbox(): TextboxComp {
         },
         clear() {
             textbox.text = "";
+            namebox.text = "";
         },
         skip() {
             if (!this.skipped) this.skipped = true;
@@ -152,26 +153,36 @@ export function textbox(): TextboxComp {
                 ),
             );
         },
-        getInput() {
+        async getInput(text: string) {
             const events: KA.EventController[] = [];
+            let value = "";
             this.clear();
+
+            await this.write(text);
 
             const inputPromise = new Promise<string>((resolve) => {
                 const enterPressEvent = k.onKeyPress("enter", () => {
-                    resolve(textbox.text);
+                    resolve(value);
                 });
 
                 const charInputEvent = k.onCharInput((ch) => {
+                    if (ch == " " && value.length == 0) return;
+                    if (k.isKeyDown("shift")) ch = ch.toUpperCase();
+
                     textbox.text += ch;
+                    value += ch;
                 });
 
                 const backspacePressEvent = k.onKeyPressRepeat(
                     "backspace",
                     () => {
+                        if (value.length == 0) return;
+
                         textbox.text = textbox.text.substring(
                             0,
                             textbox.text.length - 1,
                         );
+                        value = value.substring(0, value.length - 1);
                     },
                 );
 

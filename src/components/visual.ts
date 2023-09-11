@@ -57,7 +57,9 @@ export interface VisualCompOpt<TEffect extends VisualEffect[] = any> {
     duration?: number;
 }
 
-export function visual<T extends VisualEffect[] | undefined = undefined>(
+export function visualComponent<
+    T extends VisualEffect[] | undefined = undefined
+>(
     opt: T extends VisualEffect[]
         ? VisualCompOpt<T> & OptByEffects<T>
         : VisualCompOpt,

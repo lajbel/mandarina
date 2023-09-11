@@ -83,12 +83,22 @@ export function say(...args: string[]) {
     });
 }
 
-export function choice(choices: Record<string, () => Action[]>) {
+export function choice(
+    choices: Record<
+        string,
+        {
+            actions: () => Action[];
+            value?: any;
+        }
+    >,
+    setter?: (value: any) => void,
+) {
     return createAction({
         id: "choice",
         type: "normal",
-        start() {
-            addChoices(choices);
+        canSkip: false,
+        async start() {
+            addChoices(choices, setter);
         },
         skip() {
             return;
@@ -99,7 +109,7 @@ export function choice(choices: Record<string, () => Action[]>) {
     });
 }
 
-export function input(v: string) {
+export function input(text: string, setter: (value: any) => void) {
     const { m } = getGameData();
 
     return createAction({
@@ -108,8 +118,8 @@ export function input(v: string) {
         canSkip: false,
         async start() {
             const textbox = m._textbox;
-            const inputText = await textbox?.getInput();
-            m.setVar(v, inputText);
+            const inputText = await textbox?.getInput(text);
+            setter(inputText);
         },
         skip() {
             return;

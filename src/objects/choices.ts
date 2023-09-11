@@ -1,7 +1,7 @@
 import type * as KA from "kaboom";
 import type { Action } from "types";
-import { visual } from "components/visual";
-import { choice } from "components/choice";
+import { visualComponent } from "components/visual";
+import { choiceComponent } from "components/choice";
 import { getGameData } from "game";
 import { getSpriteDimensions } from "utils/getDimensions";
 import { textWithOptions } from "utils/textWithOptions";
@@ -33,8 +33,10 @@ export type ChoiceOpt = {
 
 export function makeChoice(
     text: string,
-    actions: () => Action[],
+    value: any,
+    actions: (v: string) => Action[],
     opt?: ChoiceOpt,
+    setter?: (value: any) => void,
 ): Choice {
     const { k } = getGameData();
 
@@ -67,10 +69,10 @@ export function makeChoice(
                 boxDimensions.y,
             ),
         }),
-        visual({
+        visualComponent({
             visualObj: "choice_box",
         }),
-        choice(actions),
+        choiceComponent(value, actions, setter),
     ]);
 
     choiceParent.add([
@@ -96,29 +98,50 @@ export function makeChoice(
     return choiceParent;
 }
 
-export function addChoices(choices: Record<string, () => Action[]>) {
+export async function addChoices(
+    choices: Record<
+        string,
+        {
+            actions: () => Action[];
+            value?: any;
+        }
+    >,
+    setter?: (value: any) => void,
+) {
     const { k, opt } = getGameData();
-
     const choicesBox = k.make([ k.layer("choices") ]);
 
-    Object.keys(choices).forEach((choiceName) => {
-        const ch = makeChoice(choiceName, choices[choiceName], opt.choice);
-        choicesBox.add(ch);
-    });
+    const choicePromise = new Promise((resolve) => {
+        Object.keys(choices).forEach((choiceName) => {
+            const ch = makeChoice(
+                choiceName,
+                choices[choiceName].value,
+                choices[choiceName].actions,
+                opt.choice,
+                setter,
+            );
 
-    k.add(choicesBox);
+            choicesBox.add(ch);
 
-    choicesBox.onUpdate(() => {
-        const choices = choicesBox.get("mandarina_choice");
-        const choiceLength = choices.length;
-        const choiceHeight = choices[0].getDimensions().y;
-        choices[0].pos.y = k.center().y - choiceHeight * (choiceLength / 2);
+            ch.onClick(() => {
+                resolve(choicesBox);
+            });
+        });
 
-        choices.forEach((choice, i) => {
-            if (i === 0) return;
-            choice.pos.y = choices[i - 1].pos.y + choiceHeight + 20;
+        k.add(choicesBox);
+
+        choicesBox.onUpdate(() => {
+            const choices = choicesBox.get("mandarina_choice");
+            const choiceLength = choices.length;
+            const choiceHeight = choices[0].getDimensions().y;
+            choices[0].pos.y = k.center().y - choiceHeight * (choiceLength / 2);
+
+            choices.forEach((choice, i) => {
+                if (i === 0) return;
+                choice.pos.y = choices[i - 1].pos.y + choiceHeight + 20;
+            });
         });
     });
 
-    return choicesBox;
+    return choicePromise;
 }

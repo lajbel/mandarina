@@ -95,7 +95,12 @@ export type MandarinaPlugin = {
      * @param name Variable's name.
      * @param value Variable's value.
      */
-    setVar<T>(name: string, value: T): void;
+    setVar<T>(name: string, value: T): (value: T) => void;
+    /**
+     * Set game pronoun.
+     * @param v Pronoun index.
+     */
+    setPronoun: (value: number) => void;
     /**
      * Get game variable.
      * @param name Variable's name.
@@ -132,9 +137,10 @@ export type MandarinaPlugin = {
     ): VisualAction;
     /**
      * Receives user input in the textbox.
-     * @param variable Variable's name.
+     * @param text Text to write.
+     * @param setter Variable's setter.
      */
-    input(variable: string): NormalAction;
+    input(text: string, setter: (value: any) => void): NormalAction;
     /**
      * Hides a character in the screen.
      * @param characterId Character's id.
@@ -170,7 +176,16 @@ export type MandarinaPlugin = {
     /** Hides the textbox. */
     hideTextbox(): NormalAction;
     /** Display a set of choices. */
-    choice(choices: Record<string, () => Action[]>): NormalAction;
+    choice(
+        choices: Record<
+            string,
+            {
+                value?: any;
+                actions: () => Action[];
+            }
+        >,
+        setter?: (value: any) => void
+    ): NormalAction;
     // #endregion
 };
 

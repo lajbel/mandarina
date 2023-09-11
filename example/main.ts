@@ -7,10 +7,10 @@ const m = mandarina({
     height: 540,
     textbox: {
         sprite: "textbox",
-        offset: [0, 4],
+        offset: [ 0, 4 ],
         textFont: "sans-serif",
         textSize: 24,
-        textOffset: [3, 3],
+        textOffset: [ 3, 3 ],
     },
     choice: {
         sprite: "choice",
@@ -29,7 +29,7 @@ m.loadImage("code1", "assets/characters/code/code1.png", {
 });
 
 // Some variables
-m.setVar("name", "PlayerUnknown");
+const setName = m.setVar("name", "PlayerUnknown");
 
 // We define our characters.
 m.character("t", "Deffy", {
@@ -55,15 +55,56 @@ m.chapter("start", () => [
     m.show("t", "normal").fadeIn().appearFrom("left"),
     // Say something.
     m.say("t", "Hi, I'm Deffy!"),
+    m.say("t", "Welcome to this example! I wan't to know you better!"),
+
+    // Jump to another chapter.
+    m.jump("presentation"),
+]);
+
+m.chapter("presentation", () => [
     m.say("t", "What's your name?"),
-    m.input("name"),
+    m.input("Write your name: ", setName),
 
     m.say("t", "Oh, cool name [name]"),
-    m.say("t", "And what's your pronoun?"),
+    m.say("t", "And which pronoun do you use?"),
+
+    // Display a set of choices.
+    m.choice(
+        {
+            // The choice's text.
+            "he/him": {
+                // The choice's value.
+                value: 0,
+                // The choice's actions to add to the story.
+                actions: () => [ m.say("t", "Okay, he") ],
+            },
+            "she/her": {
+                value: 1,
+                actions: () => [ m.say("t", "Okay, she") ],
+            },
+            "they/them": {
+                value: 2,
+                actions: () => [ m.say("t", "Okay, they") ],
+            },
+        },
+        // The variable to store the choice's value.
+        m.setPronoun,
+    ),
+
+    m.jump("usercheck"),
+]);
+
+m.chapter("usercheck", () => [
+    m.say("t", "So, your pronoun is [they], and your name is [name]"),
+    m.say("t", "Is that correct?"),
+
     m.choice({
-        "he/him": () => [m.say("t", "Okay, he")],
-        "she/her": () => [m.say("t", "Okay, she")],
-        "they/them": () => [m.say("t", "Okay, they")],
+        yes: {
+            actions: () => [ m.say("t", "Okay, let's go!") ],
+        },
+        no: {
+            actions: () => [ m.say("Oh, will return"), m.jump("presentation") ],
+        },
     }),
 ]);
 

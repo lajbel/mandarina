@@ -63,10 +63,13 @@ export function loadImage(
 }
 
 // Variables
-export function setVar<T>(name: string, value: T) {
+export function setVar<T>(name: string, value: T): (value: T) => void {
     const data = getGameData();
     data.variables[name] = value;
-    return data.variables[name];
+
+    return (value) => {
+        data.variables[name] = value;
+    };
 }
 
 export function getVar(name: string): any {
@@ -164,6 +167,7 @@ function previousAction() {
 
 function skipAction() {
     if (getCurrentAction().canSkip === false) return;
+
     getCurrentAction().skip?.();
     getGameData().processingAction = false;
     getGameData().currentAction++;
@@ -184,6 +188,7 @@ export function startNovel() {
             // User input
             // TODO: Add support for customize keys
             k.onUpdate(() => {
+                k.debug.log(isProcessingAction());
                 if (
                     k.isKeyPressed("space") ||
                     k.isKeyPressed("right") ||

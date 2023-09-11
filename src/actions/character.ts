@@ -7,7 +7,7 @@ import type {
 } from "../components/visual";
 import { createAction, getGameData } from "../game";
 import { getAlignment } from "utils/getDimensions";
-import { visual } from "../components/visual";
+import { visualComponent } from "../components/visual";
 
 export function showCharacter(
     characterId: string,
@@ -44,7 +44,7 @@ export function showCharacter(
                 k.opacity(1),
                 k.anchor("center"),
                 k.pos(0),
-                visual({
+                visualComponent({
                     sprite: expressionSprite,
                     visualObj: "character_sprite",
                     startEffects: [ ...Object.keys(effects) ],

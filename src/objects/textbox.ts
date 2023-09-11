@@ -2,7 +2,7 @@
 import type * as KA from "kaboom";
 import type { TextboxComp } from "components/textbox";
 import { getGameData } from "game";
-import { textbox } from "components/textbox";
+import { textboxComponent } from "components/textbox";
 import { getSpriteDimensions } from "utils/getDimensions";
 import { textWithOptions } from "utils/textWithOptions";
 
@@ -62,13 +62,18 @@ export function addTextbox(opt?: TextboxOpt): Textbox {
     const textboxWidth = boxDimensions.x;
     const textboxHeight = boxDimensions.y;
 
+    // If no text width, use textbox width.
+    if (options.textWidth === 0) {
+        options.textWidth = textboxWidth;
+    }
+
     // The textbox parent object.
     const textboxParent: Textbox = k.make([
         k.pos(options.pos.add(options.offset)),
         k.layer("textbox"),
         k.anchor("bot"),
         k.opacity(1),
-        textbox(),
+        textboxComponent(),
     ]);
 
     // The textbox's background.
