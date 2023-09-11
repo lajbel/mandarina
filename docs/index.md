@@ -4,7 +4,7 @@ title: Home
 nav_order: 1
 ---
 
-# ![Mandarina 🍊](../mandarinalogo.png)
+# ![Mandarina 🍊](images/mandarina_logo_orange.png)
 
 Mandarina is a visual novel engine made for be simple.
 
