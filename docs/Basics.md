@@ -58,6 +58,8 @@ m.chapter("start", () => [
 
 Now, when you start the game, you will see the text "Hello world!" in the textbox.
 
+See more about actions in the [Actions](/Actions.md) section.
+
 ## Characters
 Characters are the people that appear in your visual novel. We should define our characters before our chapters. We will use the `character()` function, as parameter, it needs an `id`, a `display name` and we can define some extra options.
 
@@ -76,4 +78,36 @@ m.chapter("start", () => [
 ]);
 ```
 
-See more about actions in the [Actions](/Actions.md) section.
+## Variables
+Variables are the values that we can use in our game. We can define variables in the our novel, and we can use them in actions.
+
+```js
+m.setVar("girlName", "Juizy");
+
+m.chapter("start", () => [
+    m.say("j", "Hello world!"),
+    m.say("j", "My name is [girlName]"),
+]);
+```
+
+## Choices
+Choices are the options that the player can choose. We can define choices in a chapter, and we can define as many choices as we want.
+
+```js
+m.chapter("start", () => [
+    m.say("j", "Hello world!"),
+    m.say("j", "What's your favorite programming language?"),
+
+    m.choice({
+        "Javascript": {
+            actions: () => [
+                m.say("j", "Nice! I like Javascript too!"),
+            ],
+        },
+        "Python": {
+            actions: () => [
+                m.say("j", "Nice! I like Python too!"),
+            ],
+        },
+    }),
+]);

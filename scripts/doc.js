@@ -73,7 +73,7 @@ fs.writeFileSync("../mandarina.wiki/Type Reference.md", head + markdown);
 
 // Copy wiki in docs
 for (const file of fs.readdirSync("../mandarina.wiki/")) {
-    if (!file.endsWith(".md")) continue;
+    if (!file.endsWith(".md") && file.startsWith("_")) continue;
     if (file === "Home.md") {
         fs.copyFileSync("../mandarina.wiki/" + "Home.md", "docs/" + "index.md");
         continue;

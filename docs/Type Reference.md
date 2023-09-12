@@ -38,6 +38,8 @@ nav-order: 4
 
 ### `textOffset?`: undefined
 
+### `textWidth?`: number
+
 ## `ChoiceOpt`
 ### `sprite?`: string
 
@@ -65,18 +67,31 @@ nav-order: 4
 
 ## `KaboomPlugins`: LayerPlugin
 
+## `TextOptions`
+### `textAlign?`: left | center | right
+
+### `textSize?`: number
+
+### `textFont?`: string
+
+### `textColor?`: string
+
+### `textOffset?`: undefined
+
+### `textWidth?`: number
+
 ## `GameData`
 ### `k`: undefined
 
 ### `m`: MandarinaPlugin
+
+### `actionStack`: undefined
 
 ### `opt`: MandarinaOpt
 
 ### `chapters`: Map
 
 ### `characters`: Map
-
-### `currentChapter`: string
 
 ### `currentAction`: number
 
@@ -90,7 +105,7 @@ nav-order: 4
 
 ### `isProcessingAction`: boolean
 
-## `Inputs`: pc | gamepad | touch
+## `Inputs`: pc | gamepad
 
 ## `GameActions`: next | screenshoot
 
@@ -113,6 +128,8 @@ nav-order: 4
 ### `start`: undefined
 
 ### `setVar`: undefined
+
+### `setPronoun`: undefined
 
 ### `getVar`: T
 
@@ -149,6 +166,8 @@ nav-order: 4
 ### `writeCommaWait?`: number
 
 ### `language?`: english | spanish
+
+### `inputs?`: GameInputs
 
 ## `LoadImageOpt`
 ### `scale?`: number
