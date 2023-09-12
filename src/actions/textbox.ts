@@ -98,7 +98,7 @@ export function choice(
         type: "normal",
         canSkip: false,
         async start() {
-            addChoices(choices, setter);
+            await addChoices(choices, setter);
         },
         skip() {
             return;

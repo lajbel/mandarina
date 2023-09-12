@@ -17,7 +17,7 @@ export function choiceComponent(
         actions: actions,
         add(this: KA.GameObj) {
             this.onClick(() => {
-                insertActions(this.actions());
+                insertActions(this.actions(), 1);
                 this.parent?.destroy();
                 setter?.(value);
             });

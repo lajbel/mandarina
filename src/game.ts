@@ -1,7 +1,6 @@
 import type * as KA from "kaboom";
 import type {
     Action,
-    ActionType,
     CharacterDataOpt,
     GameData,
     LoadImageOpt,
@@ -20,9 +19,9 @@ const LAYERS = [
 ];
 
 export const data: Partial<GameData> = {
-    chapters: new Map<string, BaseAction[]>(),
+    actionStack: [],
+    chapters: new Map<string, Action[]>(),
     characters: new Map(),
-    currentChapter: "start",
     currentAction: 0,
     processingAction: false,
     playingAudios: new Map(),
@@ -67,6 +66,8 @@ export function setVar<T>(name: string, value: T): (value: T) => void {
     const data = getGameData();
     data.variables[name] = value;
 
+    console.log(`Variable ${name} set to ${value}`);
+
     return (value) => {
         data.variables[name] = value;
     };
@@ -79,6 +80,8 @@ export function getVar(name: string): any {
 
 // Chapters
 export function addChapter(name: string, actions: () => Action<any>[]) {
+    console.log(`Chapter ${name} added with ${actions().length} actions.`);
+
     getGameData().chapters.set(name, actions());
 }
 
@@ -101,38 +104,27 @@ export function addCharacter(
 
 export function createAction<T extends Action<unknown>>(opt: T): Action<T> {
     const action = { ...opt };
-
     return action as unknown as Action<T>;
 }
 
 function getCurrentAction() {
-    const data = getGameData();
-
-    const chapter = data.chapters.get(data.currentChapter);
-    if (!chapter)
-        throw new Error(`Chapter "${data.currentChapter}" not found.`);
-
-    return chapter[data.currentAction];
+    const { actionStack, currentAction } = getGameData();
+    return actionStack[currentAction];
 }
 
 function getPreviousAction() {
-    const data = getGameData();
-    const chapter = data.chapters.get(data.currentChapter);
-
-    if (!chapter)
-        throw new Error(`Chapter "${data.currentChapter}" not found.`);
-
-    return chapter[data.currentAction - 1];
+    const { actionStack, currentAction } = getGameData();
+    return actionStack[currentAction - 1];
 }
 
-export function insertActions(actions: Action[]) {
-    const data = getGameData();
-    const chapter = data.chapters.get(data.currentChapter);
+export function insertActions(actions: Action[], mod: number = 0) {
+    const { actionStack, currentAction } = getGameData();
+    actionStack.splice(currentAction + 1, 0, ...actions);
+}
 
-    if (!chapter)
-        throw new Error(`Chapter "${data.currentChapter}" not found.`);
-
-    chapter.splice(data.currentAction, 0, ...actions);
+export function insertChapter(name: string) {
+    const { chapters, actionStack, currentAction } = getGameData();
+    actionStack.splice(currentAction + 1, 0, ...(chapters.get(name) ?? []));
 }
 
 async function nextAction() {
@@ -142,7 +134,9 @@ async function nextAction() {
 
     data.processingAction = true;
 
+    console.log(`Started to process action ${data.currentAction}`, action);
     await action.start();
+    console.log(`Finished to process action ${data.currentAction}`, action);
 
     // If it not stopped by another process, continue
     if (data.processingAction) {
@@ -168,13 +162,18 @@ function previousAction() {
 function skipAction() {
     if (getCurrentAction().canSkip === false) return;
 
+    console.log(`Skipped action ${getGameData().currentAction}`);
     getCurrentAction().skip?.();
-    getGameData().processingAction = false;
-    getGameData().currentAction++;
 }
 
 export function startNovel() {
     const { k, m, opt, isProcessingAction } = getGameData();
+    const input = opt.inputs ?? {
+        pc: {
+            next: "space",
+            screenshoot: "f2",
+        },
+    };
 
     // some variables
     m.setVar("pronoun", 2);
@@ -183,15 +182,14 @@ export function startNovel() {
         k.onLoad(() => {
             k.layers(LAYERS, "textbox");
             m._textbox = addTextbox(opt.textbox);
+            insertChapter("start");
             nextAction();
 
             // User input
-            // TODO: Add support for customize keys
             k.onUpdate(() => {
                 k.debug.log(isProcessingAction());
                 if (
-                    k.isKeyPressed("space") ||
-                    k.isKeyPressed("right") ||
+                    k.isKeyPressed(input.pc?.next) ||
                     k.isKeyPressed("enter") ||
                     k.isMousePressed()
                 ) {

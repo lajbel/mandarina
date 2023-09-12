@@ -35,10 +35,10 @@ export type TextOptions = {
 export type GameData = {
     k: KA.KaboomCtx & KaboomPlugins;
     m: MandarinaPlugin;
+    actionStack: Action[];
     opt: MandarinaOpt;
-    chapters: Map<string, BaseAction[]>;
+    chapters: Map<string, Action[]>;
     characters: Map<string, CharacterData>;
-    currentChapter: string;
     currentAction: number;
     processingAction: boolean;
     playingAudios: Map<string, KA.AudioPlay[]>;
@@ -48,12 +48,12 @@ export type GameData = {
     isProcessingAction(): boolean;
 };
 
-type Inputs = "pc" | "gamepad" | "touch";
+type Inputs = "pc" | "gamepad";
 type GameActions = "next" | "screenshoot";
 
 export type GameInputs = {
-    [key in Inputs]: {
-        [key in GameActions]: KA.Key;
+    [key in Inputs]?: {
+        [key in GameActions]?: KA.Key;
     };
 };
 
@@ -201,6 +201,8 @@ export type MandarinaOpt = {
     writeCommaWait?: number;
     /** Visual Novel language (used for set pronouns languages). */
     language?: "english" | "spanish";
+    /** Input settings. */
+    inputs?: GameInputs;
 };
 
 /** `loadImage()` options. */
@@ -227,6 +229,8 @@ export interface BaseAction {
     autoskip?: boolean;
     /** If action is skippeable. (default to true) */
     canSkip?: boolean;
+    /** If action was auto inserted */
+    inserted?: boolean;
     /** Runs when action starts */
     start(): void | Promise<void>;
     /** Runs when action is backed. */

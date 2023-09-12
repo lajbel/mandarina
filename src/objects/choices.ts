@@ -37,7 +37,7 @@ export function makeChoice(
     actions: (v: string) => Action[],
     opt?: ChoiceOpt,
     setter?: (value: any) => void,
-): Choice {
+) {
     const { k } = getGameData();
 
     const options = {
@@ -118,14 +118,13 @@ export async function addChoices(
                 choices[choiceName].value,
                 choices[choiceName].actions,
                 opt.choice,
-                setter,
+                (v: any) => {
+                    if (setter) setter(v);
+                    resolve(choicesBox);
+                },
             );
 
             choicesBox.add(ch);
-
-            ch.onClick(() => {
-                resolve(choicesBox);
-            });
         });
 
         k.add(choicesBox);

@@ -1,4 +1,4 @@
-import { createAction, getGameData } from "game";
+import { createAction, insertChapter } from "game";
 
 export function jump(name: string) {
     return createAction({
@@ -6,15 +6,11 @@ export function jump(name: string) {
         type: "normal",
         autoskip: true,
         start() {
-            getGameData().currentAction = -1;
-            getGameData().currentChapter = name;
+            insertChapter(name);
         },
         skip() {
             return;
         },
-        back() {
-            getGameData().currentAction = -1;
-            getGameData().currentChapter = name;
-        },
+        back() {},
     });
 }
