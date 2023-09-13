@@ -187,7 +187,6 @@ export function startNovel() {
 
             // User input
             k.onUpdate(() => {
-                k.debug.log(isProcessingAction());
                 if (
                     k.isKeyPressed(input.pc?.next) ||
                     k.isKeyPressed("enter") ||
