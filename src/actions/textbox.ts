@@ -97,6 +97,7 @@ export function choice(
         id: "choice",
         type: "normal",
         canSkip: false,
+        autoSkip: true,
         async start() {
             await addChoices(choices, setter);
         },
@@ -116,6 +117,7 @@ export function input(text: string, setter: (value: any) => void) {
         id: "input",
         type: "normal",
         canSkip: false,
+        autoSkip: true,
         async start() {
             const textbox = m._textbox;
             const inputText = await textbox?.getInput(text);

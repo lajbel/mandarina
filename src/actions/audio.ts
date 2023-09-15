@@ -13,7 +13,7 @@ export function playAudio(
         id: "play_audio",
         type: "audio",
         volume: 0.5,
-        autoskip: true,
+        autoSkip: true,
         start() {
             audioPlay = k.play(audio, {
                 volume: this.volume,

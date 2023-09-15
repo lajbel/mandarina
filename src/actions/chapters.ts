@@ -4,7 +4,7 @@ export function jump(name: string) {
     return createAction({
         id: "jump",
         type: "normal",
-        autoskip: true,
+        autoSkip: true,
         start() {
             insertChapter(name);
         },

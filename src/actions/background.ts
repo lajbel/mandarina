@@ -9,7 +9,7 @@ export function showBackground(background: string | KA.Color) {
     return createAction({
         id: "showBackground",
         type: "visual",
-        autoskip: true,
+        autoSkip: true,
         fade: false,
         start() {
             const comps: KA.Comp[] = [];

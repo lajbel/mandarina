@@ -143,7 +143,7 @@ async function nextAction() {
         data.processingAction = false;
         data.currentAction++;
 
-        if (action.autoskip) nextAction();
+        if (action.autoSkip) nextAction();
     }
 }
 

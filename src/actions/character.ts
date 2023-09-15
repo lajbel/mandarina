@@ -21,7 +21,7 @@ export function showCharacter(
     return createAction({
         id: "show_character",
         type: "visual",
-        autoskip: true,
+        autoSkip: true,
         fade: false,
         start(this: VisualAction) {
             const textbox = m._textbox;

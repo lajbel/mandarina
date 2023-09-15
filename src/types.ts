@@ -226,7 +226,7 @@ export interface BaseAction {
     /** Action's type. */
     type: ActionType;
     /** If action won't wait for an user interaction to continue to the next one. */
-    autoskip?: boolean;
+    autoSkip?: boolean;
     /** If action is skippeable. (default to true) */
     canSkip?: boolean;
     /** If action was auto inserted */
