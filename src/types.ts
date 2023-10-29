@@ -191,6 +191,8 @@ export type MandarinaPlugin = {
 
 /** Mandarina plugin options. */
 export type MandarinaOpt = {
+    /**  Default scene to start. By default, this value is "novel". */
+    defaultScene?: string;
     /** Default textbox options. */
     textbox?: TextboxOpt;
     /** Default choice options. */

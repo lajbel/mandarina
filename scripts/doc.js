@@ -11,69 +11,40 @@ let mandarinaFunctions = "# Methods";
 let mandarinaProperties = "# Properties";
 let mandarinaTypes = "# Types";
 
-const kindAlias = {
-    StringKeyword: "string",
-    NumberKeyword: "number",
-    BooleanKeyword: "boolean",
-};
+// Process doc.json data
+const files = {};
 
-function getTypeKind(type) {
-    if (!type) return "";
-    if (type.kind === "TypeReference") {
-        return type.typeName;
-    } else if (type.kind === "UnionType") {
-        return type.types.map(getTypeKind).join(" | ");
-    } else if (type.kind === "LiteralType") {
-        return type.literal.text;
-    } else return kindAlias[type.kind];
-}
+function constructType(types) {
+    for (const type of Object.keys(types)) {
+        if (type === "undefined") continue;
+        const typeData = types[type];
+        const fileContent = "";
 
-function writeTypes(level, type) {
-    let str = "";
-    for (const t of type) {
-        str += writeType(level, t);
-    }
-    return str;
-}
-
-function writeMembers(level, members) {
-    let str = "";
-    for (const member of Object.values(members)) {
-        str += `\n${writeTypes(level, member)}`;
-    }
-    return str;
-}
-
-function writeType(level, type) {
-    let str = "";
-    str += `${"#".repeat(level)} \`${type.name}${
-        type.questionToken ? "?" : ""
-    }\``;
-
-    if (type?.type?.members) {
-        str += writeMembers(level + 1, type.type.members);
-    } else {
-        str += `: ${getTypeKind(type.type)}\n`;
+        files[type] = {
+            content: fileContent,
+            type: typeData.type?.kind,
+        };
     }
 
-    return str;
+    for (const file of Object.keys(files)) {
+        const fileContent = files[file].content;
+        const type = files[file].type;
+
+        fs.writeFileSync(
+            "../mandarina.wiki/types/" + file + ".md",
+            head + fileContent,
+        );
+    }
 }
 
-// Write documentation
-for (const type of Object.keys(types)) {
-    if (type === "undefined") continue;
-
-    mandarinaTypes += "\n" + writeTypes(2, types[type]);
-}
-
-markdown += `\n\n${mandarinaFunctions}\n\n${mandarinaTypes}`;
+constructType(types);
 
 // Create the type reference docs
 fs.writeFileSync("../mandarina.wiki/Type Reference.md", head + markdown);
 
 // Copy wiki in docs
 for (const file of fs.readdirSync("../mandarina.wiki/")) {
-    if (!file.endsWith(".md") && file.startsWith("_")) continue;
+    if (!file.endsWith(".md") || file.startsWith("_")) continue;
     if (file === "Home.md") {
         fs.copyFileSync("../mandarina.wiki/" + "Home.md", "docs/" + "index.md");
         continue;

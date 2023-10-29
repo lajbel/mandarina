@@ -4,7 +4,6 @@ import fs from "fs";
 import ts from "typescript";
 
 const distDir = "dist";
-const srcDir = "src";
 const srcPath = "src/main.ts";
 
 // Build all formats

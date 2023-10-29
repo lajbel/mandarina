@@ -5,6 +5,8 @@ import mandarina from "../";
 const m = mandarina({
     width: 960,
     height: 540,
+    letterbox: true,
+    stretch: true,
     textbox: {
         sprite: "textbox",
         offset: [ 0, 4 ],

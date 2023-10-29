@@ -65,7 +65,7 @@ m.chapter("start", () => [
     // ...
 ]);
 
-m.chapter("car1", () => [
+m.chapter("chapter1", () => [
     // ...
 ]);
 ```
