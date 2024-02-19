@@ -1,4 +1,4 @@
-import mandarina from "../dist/types";
+import mandarina from "../";
 
 // We create the Mandarina game context,
 // There's the init game options
