@@ -4,7 +4,15 @@
         "strict": true,
         "baseUrl": "./src/",
         "resolveJsonModule": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        // Linting
+        "noImplicitAny": false,
     },
-    "include": ["src/**/*.ts"]
+    "include": [
+        "src/**/*.ts"
+    ]
 }

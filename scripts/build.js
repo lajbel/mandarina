@@ -43,7 +43,8 @@ formats.forEach((fmt) => {
 });
 
 // Create d.ts file
-function buildTypes() {
+async function buildTypes() {
+    // The file should be created with pnpm dts
     let dts = fs.readFileSync(`${distDir}/types.d.ts`, "utf-8");
 
     function writeFile(path, content) {
@@ -137,12 +138,12 @@ function buildTypes() {
         types[stmt.name].push(stmt);
     }
 
-    writeFile(
-        "doc.json",
-        JSON.stringify({
-            types,
-        }),
-    );
+    // writeFile(
+    //     "doc.json",
+    //     JSON.stringify({
+    //         types,
+    //     }),
+    // );
 }
 
 buildTypes();

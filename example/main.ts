@@ -1,4 +1,4 @@
-import mandarina from "../";
+import mandarina from "../dist/types";
 
 // We create the Mandarina game context,
 // There's the init game options
@@ -17,7 +17,6 @@ const m = mandarina({
     choice: {
         sprite: "choice",
     },
-    logMax: 20,
 });
 
 // Load images (assets)

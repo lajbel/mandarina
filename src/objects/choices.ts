@@ -8,6 +8,7 @@ import { textWithOptions } from "utils/textWithOptions";
 
 export type Choice = KA.GameObj;
 
+/** Choice's options. */
 export type ChoiceOpt = {
     /** Choice's sprite. */
     sprite?: string;
